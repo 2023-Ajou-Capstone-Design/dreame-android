@@ -6,7 +6,7 @@
     <TextView
         android:text="Chat Fragment"
         android:layout_width="match_parent"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:layout_height="match_parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,11 +37,15 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
 
     private fun initViews() {
         with(binding) {
-            openFoodShareButton.setOnClickListener {
-                startActivity(Intent(requireActivity(), MapActivity::class.java))
+            openSpotDataButton.setOnClickListener {
+                context?.let {
+                    startActivity(Intent(it, MapActivity::class.java))
+                }
             }
             openFoodShareButton.setOnClickListener {
-                startActivity(Intent(requireActivity(), SharingActivity::class.java))
+                context?.let {
+                    startActivity(Intent(it, SharingActivity::class.java))
+                }
             }
         }
     }
