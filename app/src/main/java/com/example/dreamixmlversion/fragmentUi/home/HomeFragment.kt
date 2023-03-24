@@ -1,0 +1,48 @@
+package com.example.dreamixmlversion.fragmentUi.home
+
+import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.example.dreamixmlversion.R
+import com.example.dreamixmlversion.databinding.FragmentHomeBinding
+import com.example.dreamixmlversion.map.MapActivity
+import com.example.dreamixmlversion.sharing.SharingActivity
+
+class HomeFragment: Fragment(R.layout.fragment_home) {
+
+    companion object {
+        const val TAG = "HomeFragment"
+    }
+
+//    private var binding: FragmentHomeBinding ?= null
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+    }
+
+    private fun initViews() {
+        with(binding) {
+            openFoodShareButton.setOnClickListener {
+                startActivity(Intent(requireActivity(), MapActivity::class.java))
+            }
+            openFoodShareButton.setOnClickListener {
+                startActivity(Intent(requireActivity(), SharingActivity::class.java))
+            }
+        }
+    }
+}
