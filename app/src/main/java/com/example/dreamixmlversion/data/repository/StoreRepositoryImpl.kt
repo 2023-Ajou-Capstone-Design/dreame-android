@@ -2,6 +2,7 @@ package com.example.dreamixmlversion.data.repository
 
 import com.example.dreamixmlversion.data.api.DreameApi
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
+import com.example.dreamixmlversion.ui.map.CategoryItem
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -18,6 +19,10 @@ class StoreRepositoryImpl @Inject constructor(
     override suspend fun refreshSpots(latLng: DreameLatLng) = withContext(Dispatchers.IO) {
         dreameApi.getAllSpotsNearbyUser()
             .body()?.items
+    }
+
+    override suspend fun getAllCategories(): List<CategoryItem> {
+        return dreameApi.getAllCategories()
     }
 
     override suspend fun getDetailStoreInfo(storeId: Int): DetailInfoItem {

@@ -106,6 +106,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initCategory() {
         categoryAdapter = CategoryAdapter()
+        viewModel.getCategories()
         categoryAdapter.setOnCategoryClickListener {
             // todo : viewModel.getStores() 카테고리명 파라미터를 담은 함수로 호출하여 BottomSheetStoreList recyclerView를 갱신한다.
 
