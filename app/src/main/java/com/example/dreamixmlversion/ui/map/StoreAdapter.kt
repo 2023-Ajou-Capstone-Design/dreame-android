@@ -56,7 +56,7 @@ class StoreAdapter @Inject constructor(): ListAdapter<StoreDataEntityItem, Store
         }
     }
 
-    fun setStoreClickListener(onStoreItemClickListener: (StoreDataEntityItem) -> Unit) {
+    fun setOnStoreClickListener(onStoreItemClickListener: (StoreDataEntityItem) -> Unit) {
         this.onStoreClickListener = onStoreItemClickListener
     }
 }

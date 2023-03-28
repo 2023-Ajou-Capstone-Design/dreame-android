@@ -28,17 +28,26 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
+    private val searchEditTextView: EditText by lazy {
+        findViewById<EditText>(R.id.searchEditTextView)
+    }
+
+    @Inject lateinit var categoryAdapter: CategoryAdapter
+    private val categoryRecyclerView: RecyclerView by lazy {
+        findViewById(R.id.categoryRecyclerView)
+    }
+
+    @Inject lateinit var storeAdapter: StoreAdapter
     private lateinit var bottomSheetStoreListBehavior: BottomSheetBehavior<ConstraintLayout>
     private val bottomSheetStoreList by lazy {
         findViewById<ConstraintLayout>(R.id.bottomSheetStoreList)
     }
+
     private lateinit var bottomSheetDetailBehavior: BottomSheetBehavior<ConstraintLayout>
     private val bottomSheetDetail by lazy {
         findViewById<ConstraintLayout>(R.id.bottomSheetDetail)
     }
-    private val searchEditTextView: EditText by lazy {
-        findViewById<EditText>(R.id.searchEditTextView)
-    }
+
     private val favoritesImageButton: ImageButton by lazy {
         findViewById(R.id.favoritesImageButton)
     }
@@ -50,9 +59,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
     private lateinit var naverMap: NaverMap
 
-    @Inject
-    lateinit var storeAdapter: StoreAdapter
-
     private val viewModel: StoreViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,15 +69,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView.onCreate(savedInstanceState)
 
         initSearchEditTextView()
-        initCategoryLiveData()
-        initFavoritesImageButton()
-        initStoreAdapter()
-        initBottomSheetStoreListDialog()
+        initCategory()
+        initBottomSheetStoreList()
         initBottomSheetDetailDialog()
         initStoreLiveData()
+        initFavoritesImageButton()
 
         val dreameLatLng = DreameLatLng(37.279159, 127.044082) // 위치 임의 선정
-        viewModel.getSpots(dreameLatLng)
+        val cameraUpdate =
+            CameraUpdate.scrollTo(LatLng(dreameLatLng.lat, dreameLatLng.lng))
+                .animate(CameraAnimation.Easing)
+        naverMap.moveCamera(cameraUpdate)
+
+        viewModel.getStores(dreameLatLng)
     }
 
     private fun initSearchEditTextView() {
@@ -88,17 +98,24 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun initCategoryLiveData() {
-        viewModel.getCategories()
+    private fun initCategory() {
+        categoryAdapter = CategoryAdapter()
+        categoryAdapter.setOnCategoryClickListener {
+            // todo : viewModel.getStores() 카테고리명 파라미터를 담은 함수로 호출하여 BottomSheetStoreList recyclerView를 갱신한다.
+        }
+        categoryRecyclerView.adapter = categoryAdapter
 
-//        viewModel.queriedStoresLiveData.observe(this) {
-//            when (it) {
-//                is StoreUiState.Uninitialized -> checkLocationPermission()
-//                is StoreUiState.Loading -> showProgressBarInBottomSheet()
-//                is StoreUiState.SuccessGetStores -> successGettingStores(it)
-//                is StoreUiState.Error -> TODO()
-//            }
-//        }
+        viewModel.queriedCategoriesLiveData.observe(this) {
+            when (it) {
+                is CategoryUiState.Uninitialized -> {}
+                is CategoryUiState.SuccessGetCategories -> updateCategoryRecyclerView(it.categories)
+                CategoryUiState.Error -> TODO()
+            }
+        }
+    }
+
+    private fun updateCategoryRecyclerView(categories: List<CategoryItem>) {
+        categoryAdapter.submitList(categories)
     }
 
     private fun initFavoritesImageButton() {
@@ -140,7 +157,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView.onLowMemory()
     }
 
-    private fun initBottomSheetStoreListDialog() {
+    private fun initBottomSheetStoreList() {
+        storeAdapter = StoreAdapter()
+        storeAdapter.setOnStoreClickListener {
+            bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+
         bottomSheetStoreListBehavior = BottomSheetBehavior.from(bottomSheetStoreList)
         bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         bottomSheetStoreListBehavior.addBottomSheetCallback(object :
@@ -156,7 +179,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
 
         })
-
     }
 
     private fun initBottomSheetDetailDialog() {
@@ -181,13 +203,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 is StoreUiState.SuccessGetStores -> successGettingStores(it)
                 is StoreUiState.Error -> TODO()
             }
-        }
-    }
-
-    private fun initStoreAdapter() {
-        storeAdapter = StoreAdapter()
-        storeAdapter.setStoreClickListener {
-
         }
     }
 

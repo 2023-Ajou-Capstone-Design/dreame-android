@@ -18,9 +18,16 @@ class CategoryAdapter @Inject constructor(): ListAdapter<CategoryItem, CategoryA
         RecyclerView.ViewHolder(binding.root) {
         fun bind(store: CategoryItem) {
             with(binding) {
-
+                categoryButton.apply {
+                    text = store.name
+                    setOnClickListener { categoryClickListener(store) }
+                }
             }
         }
+    }
+
+    fun setOnCategoryClickListener(onCategoryClickListener: (CategoryItem) -> Unit) {
+        this.categoryClickListener = onCategoryClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryAdapter.ViewHolder =
