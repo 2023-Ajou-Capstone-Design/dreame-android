@@ -89,7 +89,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initCategoryLiveData() {
-        viewModel.
+        viewModel.getCategories()
+
+//        viewModel.queriedStoresLiveData.observe(this) {
+//            when (it) {
+//                is StoreUiState.Uninitialized -> checkLocationPermission()
+//                is StoreUiState.Loading -> showProgressBarInBottomSheet()
+//                is StoreUiState.SuccessGetStores -> successGettingStores(it)
+//                is StoreUiState.Error -> TODO()
+//            }
+//        }
     }
 
     private fun initFavoritesImageButton() {
