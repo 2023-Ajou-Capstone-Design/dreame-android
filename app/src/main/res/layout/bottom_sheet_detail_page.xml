@@ -85,7 +85,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/bottomSheetImageButtonLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetImageButtonLinearLayout"
-            android:text="날로먹자" />
+            tools:text="날로먹자" />
 
         <TextView
             android:id="@+id/bottomSheetDetailCategoryTextView"
@@ -95,7 +95,7 @@
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/bottomSheetDetailStoreNameTextView"
             app:layout_constraintStart_toEndOf="@id/bottomSheetDetailStoreNameTextView"
-            android:text="일식당" />
+            tools:text="일식당" />
 
         <TextView
             android:id="@+id/bottomSheetDetailWorkingTimeTextView"
@@ -105,7 +105,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailStoreNameTextView"
-            android:text="09:00~21:00" />
+            tools:text="09:00~21:00" />
 
         <TextView
             android:id="@+id/bottomSheetDetailAddressTextView"
@@ -114,7 +114,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailWorkingTimeTextView"
-            android:text="수원시 영통구 원천동 1-1" />
+            tools:text="수원시 영통구 원천동 1-1" />
 
         <TextView
             android:id="@+id/bottomSheetDetailPhoneNumberTextView"
@@ -124,7 +124,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailAddressTextView"
-            android:text="031-123-3467" />
+            tools:text="031-123-3467" />
 
         <TextView
             android:id="@+id/bottomSheetDetailProvidedSubjectTextView"
@@ -134,7 +134,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailPhoneNumberTextView"
-            android:text="제공대상1, 제공대상2" />
+            tools:text="제공대상1, 제공대상2" />
 
         <TextView
             android:id="@+id/bottomSheetDetailProvidedItemTextView"
@@ -144,7 +144,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailProvidedSubjectTextView"
-            android:text="제공품목" />
+            tools:text="제공품목" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,4 +1,4 @@
-package com.example.dreamixmlversion.ui.map
+package com.example.dreamixmlversion.ui.map.uistate
 
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataEntityItem
 

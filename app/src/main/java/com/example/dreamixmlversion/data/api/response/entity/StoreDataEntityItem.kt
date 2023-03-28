@@ -7,7 +7,7 @@ data class StoreDataEntityItem(
     @SerializedName("Category")
     val category: Int?,
     @SerializedName("StoreID")
-    val storeID: Int?,
+    val storeID: Int,
     @SerializedName("StorePoitLat")
     val storePoitLat: Double?,
     @SerializedName("StorePoitLng")

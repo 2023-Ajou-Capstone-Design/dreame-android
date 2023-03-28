@@ -7,10 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.data.repository.CategoryRepository
 import com.example.dreamixmlversion.data.repository.StoreRepository
+import com.example.dreamixmlversion.ui.map.uistate.CategoryUiState
+import com.example.dreamixmlversion.ui.map.uistate.DetailUiState
+import com.example.dreamixmlversion.ui.map.uistate.StoreUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,6 +43,19 @@ class StoreViewModel @Inject constructor(
             _queriedCategoriesLiveData.postValue(
                 CategoryUiState.SuccessGetCategories(
                     categoryRepository.getAllCategories()
+                )
+            )
+        }
+    }
+
+    private val _queriedDetailInfoLiveData = MutableLiveData<DetailUiState>(DetailUiState.Uninitialized)
+    val queriedDetailInfoLiveData: LiveData<DetailUiState> = _queriedDetailInfoLiveData
+    fun getDetailStoreInfo(storeId: Int) {
+        viewModelScope.launch {
+            _queriedDetailInfoLiveData.postValue(DetailUiState.Loading)
+            _queriedDetailInfoLiveData.postValue(
+                DetailUiState.SuccessGetDetailInfo(
+                    storeRepository.getDetailStoreInfo(storeId)
                 )
             )
         }

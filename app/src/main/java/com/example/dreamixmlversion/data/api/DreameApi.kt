@@ -2,6 +2,7 @@ package com.example.dreamixmlversion.data.api
 
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataResponse
 import com.example.dreamixmlversion.ui.map.CategoryItem
+import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import retrofit2.Response
 import retrofit2.http.POST
 
@@ -12,7 +13,7 @@ interface DreameApi {
     suspend fun getAllSpotsNearbyUser(): Response<StoreDataResponse>
 
     // 특정 지점의 detail 정보 get (by storeID)
-    suspend fun getDetailSpotData(): String
+    suspend fun getDetailSpotData(): Response<DetailInfoItem>
 
     // 사용자 위치를 기준으로 반경 2km 내의 특정 카테고리에 해당하는 모든 지점들 filter
     suspend fun getAllCategories(): List<CategoryItem>
