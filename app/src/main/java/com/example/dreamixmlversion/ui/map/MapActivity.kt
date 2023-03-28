@@ -72,14 +72,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         initCategory()
         initBottomSheetStoreList()
         initBottomSheetDetailDialog()
-        initStoreLiveData()
         initFavoritesImageButton()
 
         val dreameLatLng = DreameLatLng(37.279159, 127.044082) // 위치 임의 선정
-        val cameraUpdate =
-            CameraUpdate.scrollTo(LatLng(dreameLatLng.lat, dreameLatLng.lng))
-                .animate(CameraAnimation.Easing)
-        naverMap.moveCamera(cameraUpdate)
+//        val cameraUpdate =
+//            CameraUpdate.scrollTo(LatLng(dreameLatLng.lat, dreameLatLng.lng))
+//                .animate(CameraAnimation.Easing)
+//        naverMap.moveCamera(cameraUpdate)
 
         viewModel.getStores(dreameLatLng)
     }
@@ -159,10 +158,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initBottomSheetStoreList() {
         storeAdapter = StoreAdapter()
-        storeAdapter.setOnStoreClickListener {
-            bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
 
         bottomSheetStoreListBehavior = BottomSheetBehavior.from(bottomSheetStoreList)
         bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
@@ -179,20 +174,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
 
         })
-    }
 
-    private fun initBottomSheetDetailDialog() {
-        bottomSheetDetailBehavior = BottomSheetBehavior.from(bottomSheetDetail)
-        bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        bottomSheetDetailBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
+        storeAdapter.setOnStoreClickListener {
+            bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
 
-            }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
-            }
-        })
+        initStoreLiveData()
     }
 
     private fun initStoreLiveData() {
@@ -206,9 +194,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun checkLocationPermission() {
-
-    }
+    private fun checkLocationPermission() {}
 
     private fun showProgressBarInBottomSheet() {
         bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -230,7 +216,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         recyclerView.adapter = storeAdapter
 
         storeAdapter.submitList(state.stores)
-//        storeAdapter.notifyDataSetChanged()
     }
 
     private fun markStoresOnMap(stores: List<StoreDataEntityItem>) {
@@ -259,6 +244,20 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun drawDetailStoreInfo() {
         bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    private fun initBottomSheetDetailDialog() {
+        bottomSheetDetailBehavior = BottomSheetBehavior.from(bottomSheetDetail)
+        bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetDetailBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+        })
     }
 
     @UiThread

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomSheetDetail"
     android:layout_width="match_parent"
-    android:layout_height="600dp"
+    android:layout_height="450dp"
     android:background="@color/white"
     app:behavior_hideable="true"
-    app:behavior_peekHeight="600dp"
+    app:behavior_peekHeight="450dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <View
@@ -85,7 +85,7 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/bottomSheetImageButtonLinearLayout"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetImageButtonLinearLayout"
-            tools:text="날로먹자" />
+            android:text="날로먹자" />
 
         <TextView
             android:id="@+id/bottomSheetDetailCategoryTextView"
@@ -95,7 +95,7 @@
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@id/bottomSheetDetailStoreNameTextView"
             app:layout_constraintStart_toEndOf="@id/bottomSheetDetailStoreNameTextView"
-            tools:text="일식당" />
+            android:text="일식당" />
 
         <TextView
             android:id="@+id/bottomSheetDetailWorkingTimeTextView"
@@ -105,7 +105,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailStoreNameTextView"
-            tools:text="09:00~21:00" />
+            android:text="09:00~21:00" />
 
         <TextView
             android:id="@+id/bottomSheetDetailAddressTextView"
@@ -114,7 +114,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailWorkingTimeTextView"
-            tools:text="수원시 영통구 원천동 1-1" />
+            android:text="수원시 영통구 원천동 1-1" />
 
         <TextView
             android:id="@+id/bottomSheetDetailPhoneNumberTextView"
@@ -124,7 +124,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailAddressTextView"
-            tools:text="031-123-3467" />
+            android:text="031-123-3467" />
 
         <TextView
             android:id="@+id/bottomSheetDetailProvidedSubjectTextView"
@@ -134,7 +134,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailPhoneNumberTextView"
-            tools:text="제공대상1, 제공대상2" />
+            android:text="제공대상1, 제공대상2" />
 
         <TextView
             android:id="@+id/bottomSheetDetailProvidedItemTextView"
@@ -144,7 +144,7 @@
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailProvidedSubjectTextView"
-            tools:text="제공품목" />
+            android:text="제공품목" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
