@@ -1,15 +1,14 @@
 package com.example.dreamixmlversion.data.repository
 
 import com.example.dreamixmlversion.data.api.SpotApi
-import com.example.dreamixmlversion.data.api.response.mapper.processToList
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class SpotRepositoryImpl @Inject constructor(
+class StoreRepositoryImpl @Inject constructor(
     private val spotApi: SpotApi
-): SpotRepository {
+): StoreRepository {
 
 //    override val spots = mutableListOf<SpotDataEntity>()
 

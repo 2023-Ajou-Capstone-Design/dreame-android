@@ -1,8 +1,10 @@
 package com.example.dreamixmlversion.ui.map
 
+import android.content.Context
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
@@ -26,15 +28,19 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout>
+    private lateinit var bottomSheetStoreListBehavior: BottomSheetBehavior<ConstraintLayout>
+    private val bottomSheetStoreList by lazy {
+        findViewById<ConstraintLayout>(R.id.bottomSheetStoreList)
+    }
+    private lateinit var bottomSheetDetailBehavior: BottomSheetBehavior<ConstraintLayout>
+    private val bottomSheetDetail by lazy {
+        findViewById<ConstraintLayout>(R.id.bottomSheetDetail)
+    }
     private val searchEditTextView: EditText by lazy {
         findViewById<EditText>(R.id.searchEditTextView)
     }
     private val favoritesImageButton: ImageButton by lazy {
         findViewById(R.id.favoritesImageButton)
-    }
-    private val bottomSheet by lazy {
-        findViewById<ConstraintLayout>(R.id.bottomSheetStoreList)
     }
     private val progressBar: ProgressBar by lazy {
         findViewById(R.id.bottomSheetProgressBar)
@@ -56,28 +62,34 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView.getMapAsync(this)
         mapView.onCreate(savedInstanceState)
 
-        storeAdapter = StoreAdapter(
-            spotClickListener = {
-
-            }
-        )
-
         initSearchEditTextView()
-        initCategoryRecyclerView()
+        initCategoryLiveData()
         initFavoritesImageButton()
-        initBottomSheetDialog()
-        initSpotLiveData()
+        initStoreAdapter()
+        initBottomSheetStoreListDialog()
+        initBottomSheetDetailDialog()
+        initStoreLiveData()
 
         val dreameLatLng = DreameLatLng(37.279159, 127.044082) // 위치 임의 선정
         viewModel.getSpots(dreameLatLng)
     }
 
     private fun initSearchEditTextView() {
+        searchEditTextView.setOnEditorActionListener { editText, actionId, event ->
+            currentFocus?.let { view ->
+                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
 
+                // todo 검색 query to server and process
+
+                view.clearFocus()
+            }
+            return@setOnEditorActionListener true
+        }
     }
 
-    private fun initCategoryRecyclerView() {
-
+    private fun initCategoryLiveData() {
+        viewModel.
     }
 
     private fun initFavoritesImageButton() {
@@ -119,15 +131,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         mapView.onLowMemory()
     }
 
-    private fun initBottomSheetDialog() {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-        bottomSheetBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
+    private fun initBottomSheetStoreListDialog() {
+        bottomSheetStoreListBehavior = BottomSheetBehavior.from(bottomSheetStoreList)
+        bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetStoreListBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                   BottomSheetBehavior.STATE_HIDDEN -> {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
 
-                   }
+                    }
                 }
             }
 
@@ -137,14 +150,35 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    private fun initSpotLiveData() {
-        viewModel.queriedSpotsLiveData.observe(this) {
+    private fun initBottomSheetDetailDialog() {
+        bottomSheetDetailBehavior = BottomSheetBehavior.from(bottomSheetDetail)
+        bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomSheetDetailBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+
+            }
+        })
+    }
+
+    private fun initStoreLiveData() {
+        viewModel.queriedStoresLiveData.observe(this) {
             when (it) {
                 is StoreUiState.Uninitialized -> checkLocationPermission()
                 is StoreUiState.Loading -> showProgressBarInBottomSheet()
-                is StoreUiState.SuccessGetSpots -> successGettingStores(it)
+                is StoreUiState.SuccessGetStores -> successGettingStores(it)
                 is StoreUiState.Error -> TODO()
             }
+        }
+    }
+
+    private fun initStoreAdapter() {
+        storeAdapter = StoreAdapter()
+        storeAdapter.setStoreClickListener {
+
         }
     }
 
@@ -153,7 +187,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun showProgressBarInBottomSheet() {
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         progressBar.isVisible = true
     }
 
@@ -161,13 +195,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         progressBar.isVisible = false
     }
 
-    private fun successGettingStores(state: StoreUiState.SuccessGetSpots) {
+    private fun successGettingStores(state: StoreUiState.SuccessGetStores) {
         hideProgressBarInBottomSheet()
         spreadStoresInBottomSheet(state)
         markStoresOnMap(state.stores)
     }
 
-    private fun spreadStoresInBottomSheet(state: StoreUiState.SuccessGetSpots) {
+    private fun spreadStoresInBottomSheet(state: StoreUiState.SuccessGetStores) {
         val recyclerView = findViewById<RecyclerView>(R.id.bottomSheetStoreRecyclerView)
         recyclerView.adapter = storeAdapter
 
@@ -184,10 +218,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 width = 140
                 height = 140
                 setOnClickListener {
-                    val cameraUpdate = CameraUpdate.scrollTo(LatLng(store.storePoitLat, store.storePoitLng)).animate(CameraAnimation.Easing)
+                    val cameraUpdate =
+                        CameraUpdate.scrollTo(LatLng(store.storePoitLat, store.storePoitLng))
+                            .animate(CameraAnimation.Easing)
                     naverMap.moveCamera(cameraUpdate)
 
                     // todo -> detail Bottom Sheet
+                    drawDetailStoreInfo()
 
                     true
                 }
@@ -195,8 +232,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun drawDetailStoreInfo() {
+        bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+    }
+
     @UiThread
     override fun onMapReady(map: NaverMap) {
         naverMap = map
     }
+
+
 }

@@ -7,7 +7,7 @@ sealed class StoreUiState {
 
     object Loading: StoreUiState()
 
-    data class SuccessGetSpots(
+    data class SuccessGetStores(
         val stores: List<StoreDataEntityItem>
     ): StoreUiState()
 

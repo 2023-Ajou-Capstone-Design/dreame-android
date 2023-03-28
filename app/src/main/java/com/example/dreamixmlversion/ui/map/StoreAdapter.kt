@@ -11,15 +11,15 @@ import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class StoreAdapter @Inject constructor(
-    private val spotClickListener: (StoreDataEntityItem) -> Unit
+class StoreAdapter @Inject constructor(): ListAdapter<StoreDataEntityItem, StoreAdapter.ViewHolder>(diffUtil) {
+
+    private lateinit var onStoreClickListener: (StoreDataEntityItem) -> Unit
 //    private val favoriteClickListener: (StoreDataEntityItem) -> Unit
-): ListAdapter<StoreDataEntityItem, StoreAdapter.ViewHolder>(diffUtil) {
 
     inner class ViewHolder(private val binding: ItemStoreBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(store: StoreDataEntityItem) {
             with(binding) {
-                root.setOnClickListener { spotClickListener(store) }
+                root.setOnClickListener { onStoreClickListener(store) }
 //                favoriteButton.setOnClickListener { favoriteClickListener(spot) }
 
                 storeNameTextView.text = store.storeID.toString()
@@ -54,5 +54,9 @@ class StoreAdapter @Inject constructor(
             }
 
         }
+    }
+
+    fun setStoreClickListener(onStoreItemClickListener: (StoreDataEntityItem) -> Unit) {
+        this.onStoreClickListener = onStoreItemClickListener
     }
 }

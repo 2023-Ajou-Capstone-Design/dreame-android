@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -15,33 +15,39 @@
     <EditText
         android:id="@+id/searchEditTextView"
         android:layout_width="match_parent"
-        android:paddingHorizontal="4dp"
-        android:layout_gravity="top"
-        android:layout_marginTop="20dp"
         android:layout_height="40dp"
+        android:layout_gravity="top"
         android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
         android:background="@color/white"
         android:drawableStart="@drawable/baseline_search_24"
+        android:hint="검색"
+        android:imeOptions="actionSearch"
         android:inputType="text"
+        android:paddingHorizontal="4dp"
         android:textColor="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/categoryRecyclerView"
-        android:layout_marginTop="70dp"
-        tools:listitem="@layout/item_category"
-        android:layout_marginHorizontal="30dp"
         android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="70dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_category" />
 
     <ImageButton
         android:id="@+id/favoritesImageButton"
-        android:src="@drawable/bookmark_unchecked"
         android:layout_width="50dp"
-        android:layout_margin="12dp"
-        android:background="@color/white"
         android:layout_height="50dp"
-        android:layout_gravity="bottom|end" />
+        android:layout_gravity="bottom|end"
+        android:layout_margin="12dp"
+        android:background="@drawable/shape_favorites_button"
+        android:src="@drawable/baseline_bookmark_border_24" />
 
     <include layout="@layout/bottom_sheet_store_list" />
+
+    <include layout="@layout/bottom_sheet_detail_page" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
