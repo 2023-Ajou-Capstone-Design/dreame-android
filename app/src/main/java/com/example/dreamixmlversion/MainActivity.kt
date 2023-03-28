@@ -2,14 +2,11 @@ package com.example.dreamixmlversion
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import com.example.dreamixmlversion.databinding.ActivityMainBinding
-import com.example.dreamixmlversion.fragmentUi.chat.ChatFragment
-import com.example.dreamixmlversion.fragmentUi.home.HomeFragment
-import com.example.dreamixmlversion.fragmentUi.user.UserFragment
-import com.google.android.material.navigation.NavigationBarView
+import com.example.dreamixmlversion.ui.chat.ChatFragment
+import com.example.dreamixmlversion.ui.home.HomeFragment
+import com.example.dreamixmlversion.ui.user.UserFragment
 
 class MainActivity : AppCompatActivity() {
 

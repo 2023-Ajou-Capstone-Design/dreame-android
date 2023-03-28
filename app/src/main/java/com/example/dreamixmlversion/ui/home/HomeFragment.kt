@@ -1,4 +1,4 @@
-package com.example.dreamixmlversion.fragmentUi.home
+package com.example.dreamixmlversion.ui.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.dreamixmlversion.R
 import com.example.dreamixmlversion.databinding.FragmentHomeBinding
-import com.example.dreamixmlversion.map.MapActivity
-import com.example.dreamixmlversion.sharing.SharingActivity
+import com.example.dreamixmlversion.ui.map.MapActivity
+import com.example.dreamixmlversion.ui.sharing.SharingActivity
 
 class HomeFragment: Fragment(R.layout.fragment_home) {
 

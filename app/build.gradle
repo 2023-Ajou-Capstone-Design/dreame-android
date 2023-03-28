@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -34,6 +36,15 @@ android {
     viewBinding {
         enabled = true
     }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 dependencies {
@@ -48,8 +59,31 @@ dependencies {
 
     implementation("androidx.fragment:fragment-ktx:1.5.6")
 
+    // kakaomap api
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation files('libs/libDaumMapAndroid.jar')
 
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.44.2")
+    kapt("com.google.dagger:hilt-android-compiler:2.44.2")
 
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // viewModel KTX
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+    // ViewModel - Activity
+    implementation 'androidx.activity:activity-ktx:1.7.0'
+
+    // Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4"
+
+    // 네이버 지도 SDK
+    //noinspection GradleCompatible
+//    implementation("com.android.support:appcompat-v7:28.0.0")
+
+    implementation("com.naver.maps:map-sdk:3.16.2")
 }

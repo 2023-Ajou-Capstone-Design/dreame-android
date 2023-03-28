@@ -1,15 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:orientation="vertical"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    android:layout_height="match_parent">
-    
-    <RelativeLayout
+    android:orientation="vertical">
+
+    <com.naver.maps.map.MapView
         android:id="@+id/mapView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-    </RelativeLayout>
+    <EditText
+        android:id="@+id/searchEditTextView"
+        android:layout_width="match_parent"
+        android:paddingHorizontal="4dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="20dp"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="30dp"
+        android:background="@color/white"
+        android:drawableStart="@drawable/baseline_search_24"
+        android:inputType="text"
+        android:textColor="@color/black" />
 
-</RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/categoryRecyclerView"
+        android:layout_marginTop="70dp"
+        tools:listitem="@layout/item_category"
+        android:layout_marginHorizontal="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"/>
+
+    <ImageButton
+        android:id="@+id/favoritesImageButton"
+        android:src="@drawable/bookmark_unchecked"
+        android:layout_width="50dp"
+        android:layout_margin="12dp"
+        android:background="@color/white"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end" />
+
+    <include layout="@layout/bottom_sheet_store_list" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="dreami_main_color">#FF93D8F5</color>
+    <color name="category_background_color">#FFE49F</color>
+    <color name="image_thumbnail_color">#FF6599</color>
 </resources>

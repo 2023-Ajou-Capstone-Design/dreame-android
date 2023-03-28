@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="600dp"
+    android:background="@color/white"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="600dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <ImageView
+        android:id="@+id/bottomSheetDetailImageView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/image_thumbnail_color"
+        app:layout_constraintDimensionRatio=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomSheetDetailConstraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailImageView">
+
+        <LinearLayout
+            android:id="@+id/bottomSheetImageButtonLinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toEndOf="@id/bottomSheetDetailConstraintLayout"
+            app:layout_constraintStart_toStartOf="@id/bottomSheetDetailConstraintLayout"
+            app:layout_constraintTop_toTopOf="@id/bottomSheetDetailConstraintLayout">
+
+            <ImageButton
+                android:id="@+id/bottomSheetDetailCallButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:src="@drawable/baseline_call_24" />
+
+            <ImageButton
+                android:id="@+id/bottomSheetDetailFavoriteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:src="@drawable/baseline_bookmark_border_24" />
+
+            <ImageButton
+                android:id="@+id/bottomSheetDetailDistanceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:src="@drawable/baseline_assistant_direction_24" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bottomSheetDetailStoreNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/bottomSheetImageButtonLinearLayout"
+            app:layout_constraintTop_toBottomOf="@id/bottomSheetImageButtonLinearLayout"
+            tools:text="날로먹자" />
+
+        <TextView
+            android:id="@+id/bottomSheetDetailCategoryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/bottomSheetDetailStoreNameTextView"
+            app:layout_constraintStart_toEndOf="@id/bottomSheetDetailStoreNameTextView"
+            tools:text="일식당" />
+
+        <TextView
+            android:id="@+id/bottomSheetDetailWorkingTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailStoreNameTextView"
+            tools:text="09:00~21:00" />
+
+        <TextView
+            android:id="@+id/bottomSheetDetailAddressTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailWorkingTimeTextView"
+            tools:text="수원시 영통구 원천동 1-1" />
+
+        <TextView
+            android:id="@+id/bottomSheetDetailPhoneNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailAddressTextView"
+            tools:text="031-123-3467" />
+
+        <TextView
+            android:id="@+id/bottomSheetDetailProvidedSubjectTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailPhoneNumberTextView"
+            tools:text="제공대상1, 제공대상2" />
+
+        <TextView
+            android:id="@+id/bottomSheetDetailProvidedItemTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottomSheetDetailProvidedSubjectTextView"
+            tools:text="제공품목" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

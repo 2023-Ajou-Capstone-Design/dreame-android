@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/bottomSheetStoreList"
+    android:layout_height="600dp"
+    app:behavior_peekHeight="200dp"
+    app:behavior_draggable="true"
+    app:behavior_hideable="true"
+    android:background="@color/white"
+
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <View
+        android:layout_width="30dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="12dp"
+        android:background="#cccccc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bottomSheetStoreRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/item_store" />
+
+    <ProgressBar
+        android:id="@+id/bottomSheetProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/bottomSheetStoreRecyclerView"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="@id/bottomSheetStoreRecyclerView"
+        app:layout_constraintTop_toTopOf="@id/bottomSheetStoreRecyclerView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

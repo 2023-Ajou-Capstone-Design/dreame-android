@@ -1,4 +1,4 @@
-package com.example.dreamixmlversion.fragmentUi.user
+package com.example.dreamixmlversion.ui.user
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.dreamixmlversion.R
-import com.example.dreamixmlversion.databinding.FragmentHomeBinding
 import com.example.dreamixmlversion.databinding.FragmentUserBinding
 
 class UserFragment: Fragment(R.layout.fragment_user) {
