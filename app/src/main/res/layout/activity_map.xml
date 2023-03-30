@@ -27,116 +27,107 @@
         android:paddingHorizontal="4dp"
         android:textColor="@color/black" />
 
-    <LinearLayout
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
         android:layout_width="wrap_content"
-        android:layout_gravity="top"
-        android:orientation="horizontal"
-        android:layout_marginTop="60dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:chipSpacingHorizontal="10dp"
+        app:chipSpacingVertical="4dp"
+        app:singleSelection="true">
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroup"
+        <com.google.android.material.chip.Chip
+            android:id="@+id/foodChipButton"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:chipSpacingHorizontal="10dp"
-            app:chipSpacingVertical="4dp"
-            app:singleSelection="true">
+            android:text="음식점"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:chipBackgroundColor="@color/category_background_color"
+            app:chipEndPadding="4dp"
+            app:chipMinHeight="20dp"
+            app:chipStartPadding="4dp" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/foodChipButton"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="음식점"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:chipBackgroundColor="@color/category_background_color"
-                app:chipEndPadding="4dp"
-                app:chipMinHeight="20dp"
-                app:chipStartPadding="4dp" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/cafeChipButton"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="카페"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:chipBackgroundColor="@color/category_background_color"
-                app:chipEndPadding="4dp"
-                app:chipMinHeight="20dp"
-                app:chipStartPadding="4dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cafeChipButton"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카페"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:chipBackgroundColor="@color/category_background_color"
+            app:chipEndPadding="4dp"
+            app:chipMinHeight="20dp"
+            app:chipStartPadding="4dp" />
 
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/convenienceStoreChipButton"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="편의점"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:chipBackgroundColor="@color/category_background_color"
-                app:chipEndPadding="4dp"
-                app:chipMinHeight="20dp"
-                app:chipStartPadding="4dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/convenienceStoreChipButton"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="편의점"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:chipBackgroundColor="@color/category_background_color"
+            app:chipEndPadding="4dp"
+            app:chipMinHeight="20dp"
+            app:chipStartPadding="4dp" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/martChipButton"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="마트"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:chipBackgroundColor="@color/category_background_color"
-                app:chipEndPadding="4dp"
-                app:chipMinHeight="20dp"
-                app:chipStartPadding="4dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/martChipButton"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="마트"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:chipBackgroundColor="@color/category_background_color"
+            app:chipEndPadding="4dp"
+            app:chipMinHeight="20dp"
+            app:chipStartPadding="4dp" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/educationChipButton"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="교육"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:chipBackgroundColor="@color/category_background_color"
-                app:chipEndPadding="4dp"
-                app:chipMinHeight="20dp"
-                app:chipStartPadding="4dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/educationChipButton"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="교육"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:chipBackgroundColor="@color/category_background_color"
+            app:chipEndPadding="4dp"
+            app:chipMinHeight="20dp"
+            app:chipStartPadding="4dp" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/goodInfluenceStoreChipButton"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="선한영향력가게"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:chipBackgroundColor="@color/category_background_color"
-                app:chipEndPadding="4dp"
-                app:chipMinHeight="20dp"
-                app:chipStartPadding="4dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/goodInfluenceStoreChipButton"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="선한영향력가게"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:chipBackgroundColor="@color/category_background_color"
+            app:chipEndPadding="4dp"
+            app:chipMinHeight="20dp"
+            app:chipStartPadding="4dp" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/franchiseeChipButton"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="아동급식카드가맹점"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:chipBackgroundColor="@color/category_background_color"
-                app:chipEndPadding="4dp"
-                app:chipMinHeight="20dp"
-                app:chipStartPadding="4dp" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/franchiseeChipButton"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아동급식카드가맹점"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:chipBackgroundColor="@color/category_background_color"
+            app:chipEndPadding="4dp"
+            app:chipMinHeight="20dp"
+            app:chipStartPadding="4dp" />
 
-        </com.google.android.material.chip.ChipGroup>
-
-    </LinearLayout>
+    </com.google.android.material.chip.ChipGroup>
 
 <!--    <androidx.recyclerview.widget.RecyclerView-->
 <!--        android:id="@+id/categoryRecyclerView"-->
