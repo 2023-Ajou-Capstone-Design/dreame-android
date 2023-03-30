@@ -33,8 +33,8 @@ class StoreRepositoryImpl @Inject constructor(
         mbr: Int
     ) = withContext(Dispatchers.IO) {
         dreameApi.getStoresClickedCategoryName(
-            storeType, category, subCategory,
-            latLng.lat.toFloat(), latLng.lng.toFloat(), mbr
+//            storeType, category, subCategory,
+//            latLng.lat.toFloat(), latLng.lng.toFloat(), mbr
         ).body()?.items ?: listOf()
     }
 

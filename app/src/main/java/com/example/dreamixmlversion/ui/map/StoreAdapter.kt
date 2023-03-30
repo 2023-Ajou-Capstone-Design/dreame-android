@@ -5,25 +5,27 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dreamixmlversion.data.api.response.entity.StoreDataByCategoryClicked
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
+import com.example.dreamixmlversion.data.db.entity.CategoryEntity
 import com.example.dreamixmlversion.databinding.ItemStoreBinding
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class StoreAdapter @Inject constructor(): ListAdapter<StoreDataForMarking, StoreAdapter.ViewHolder>(diffUtil) {
+class StoreAdapter @Inject constructor(): ListAdapter<StoreDataByCategoryClicked, StoreAdapter.ViewHolder>(diffUtil) {
 
-    private lateinit var onStoreClickListener: (StoreDataForMarking) -> Unit
+    private lateinit var onStoreClickListener: (StoreDataByCategoryClicked) -> Unit
 //    private val favoriteClickListener: (StoreDataEntityItem) -> Unit
 
     inner class ViewHolder(private val binding: ItemStoreBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(store: StoreDataForMarking) {
+        fun bind(store: StoreDataByCategoryClicked) {
             with(binding) {
                 root.setOnClickListener { onStoreClickListener(store) }
 //                favoriteButton.setOnClickListener { favoriteClickListener(spot) }
 
-                storeNameTextView.text = store.storeId.toString()
-//                categoryTextView.text = store.category.toString()
+                storeNameTextView.text = store.storeName
+                categoryTextView.text = store.cateName
                 storeOpeningTextView.text = "미정"
             }
         }
@@ -38,17 +40,17 @@ class StoreAdapter @Inject constructor(): ListAdapter<StoreDataForMarking, Store
     }
 
     companion object {
-        val diffUtil = object: DiffUtil.ItemCallback<StoreDataForMarking>() {
+        val diffUtil = object: DiffUtil.ItemCallback<StoreDataByCategoryClicked>() {
             override fun areItemsTheSame(
-                oldItem: StoreDataForMarking,
-                newItem: StoreDataForMarking
+                oldItem: StoreDataByCategoryClicked,
+                newItem: StoreDataByCategoryClicked
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: StoreDataForMarking,
-                newItem: StoreDataForMarking
+                oldItem: StoreDataByCategoryClicked,
+                newItem: StoreDataByCategoryClicked
             ): Boolean {
                 return oldItem.storeId == newItem.storeId
             }
@@ -56,7 +58,7 @@ class StoreAdapter @Inject constructor(): ListAdapter<StoreDataForMarking, Store
         }
     }
 
-    fun setOnStoreClickListener(onStoreItemClickListener: (StoreDataForMarking) -> Unit) {
+    fun setOnStoreClickListener(onStoreItemClickListener: (StoreDataByCategoryClicked) -> Unit) {
         this.onStoreClickListener = onStoreItemClickListener
     }
 }

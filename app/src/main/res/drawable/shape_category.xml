@@ -4,10 +4,9 @@
 
     <solid android:color="@color/category_background_color" />
 
-    <size
-        android:width="50dp"
-        android:height="40dp" />
+<!--    <size-->
+<!--        android:height="20dp" />-->
 
-    <corners android:radius="40dp"/>
+    <corners android:radius="100dp"/>
 
 </shape>

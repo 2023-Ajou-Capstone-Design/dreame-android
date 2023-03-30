@@ -5,28 +5,29 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dreamixmlversion.data.db.entity.CategoryEntity
 import com.example.dreamixmlversion.databinding.ItemCategoryBinding
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class CategoryAdapter @Inject constructor(): ListAdapter<CategoryItem, CategoryAdapter.ViewHolder>(diffUtil) {
+class CategoryAdapter @Inject constructor(): ListAdapter<CategoryEntity, CategoryAdapter.ViewHolder>(diffUtil) {
 
-    private lateinit var categoryClickListener: (CategoryItem) -> Unit
+    private lateinit var categoryClickListener: (CategoryEntity) -> Unit
 
     inner class ViewHolder(private val binding: ItemCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(store: CategoryItem) {
+        fun bind(store: CategoryEntity) {
             with(binding) {
                 categoryButton.apply {
-                    text = store.name
+                    text = store.categoryName
                     setOnClickListener { categoryClickListener(store) }
                 }
             }
         }
     }
 
-    fun setOnCategoryClickListener(onCategoryClickListener: (CategoryItem) -> Unit) {
+    fun setOnCategoryClickListener(onCategoryClickListener: (CategoryEntity) -> Unit) {
         this.categoryClickListener = onCategoryClickListener
     }
 
@@ -39,25 +40,21 @@ class CategoryAdapter @Inject constructor(): ListAdapter<CategoryItem, CategoryA
     }
 
     companion object {
-        val diffUtil = object : DiffUtil.ItemCallback<CategoryItem>() {
+        val diffUtil = object : DiffUtil.ItemCallback<CategoryEntity>() {
             override fun areItemsTheSame(
-                oldItem: CategoryItem,
-                newItem: CategoryItem
+                oldItem: CategoryEntity,
+                newItem: CategoryEntity
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: CategoryItem,
-                newItem: CategoryItem
+                oldItem: CategoryEntity,
+                newItem: CategoryEntity
             ): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.categoryName == newItem.categoryName
             }
 
         }
     }
 }
-
-data class CategoryItem(
-    val name: String
-)

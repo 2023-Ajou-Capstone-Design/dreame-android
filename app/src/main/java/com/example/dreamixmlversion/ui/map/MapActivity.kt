@@ -13,10 +13,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.dreamixmlversion.R
+import com.example.dreamixmlversion.data.api.response.entity.StoreDataByCategoryClicked
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
+import com.example.dreamixmlversion.data.db.entity.CategoryEntity
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.databinding.ActivityMapBinding
+import com.example.dreamixmlversion.ui.map.uistate.CategoryUiState
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import com.example.dreamixmlversion.ui.map.uistate.DetailUiState
 import com.example.dreamixmlversion.ui.map.uistate.StoreUiState
@@ -33,6 +37,8 @@ import javax.inject.Inject
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var binding: ActivityMapBinding
+
+    private lateinit var dreameLatLng: DreameLatLng
 
     @Inject lateinit var storeAdapter: StoreAdapter
     @Inject lateinit var categoryAdapter: CategoryAdapter
@@ -71,14 +77,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         initBottomSheetStoreList()
         initBottomSheetDetailDialog()
         initFavoritesImageButton()
-
-        val dreameLatLng = DreameLatLng(37.279159, 127.044082) // 위치 임의 선정
-//        val cameraUpdate =
-//            CameraUpdate.scrollTo(LatLng(dreameLatLng.lat, dreameLatLng.lng))
-//                .animate(CameraAnimation.Easing)
-//        naverMap.moveCamera(cameraUpdate)
-
-        viewModel.getStores(dreameLatLng, 1)
+        bindMarkingOnMap()
     }
 
     private fun initSearchEditTextView() {
@@ -96,21 +95,27 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initCategory() {
-//        viewModel.getCategories()
-
-//        viewModel.queriedCategoriesLiveData.observe(this) {
-//            when (it) {
-//                is CategoryUiState.Uninitialized -> {}
-//                is CategoryUiState.SuccessGetCategories -> updateCategoryRecyclerView(it.categories)
-//                CategoryUiState.Error -> TODO()
-//            }
-//        }
         categoryAdapter = CategoryAdapter()
+        categoryAdapter.submitList(CategoryEntity.getMainCategories())
         categoryAdapter.setOnCategoryClickListener {
-
+            viewModel.getStoresByClickedCategory(
+                dreameLatLng,
+                2000,
+                it.storeType,
+                it.categoryId!!,
+                "subCategory"
+            )
         }
-        categoryAdapter.submitList(null)
         binding.categoryRecyclerView.adapter = categoryAdapter
+
+        storeAdapter = StoreAdapter()
+
+        storeAdapter.setOnStoreClickListener {
+            bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            moveToPos(it.storePointLat.toDouble(), it.storePointLng.toDouble())
+            viewModel.getDetailStoreInfo(it.storeId)
+        }
     }
 
     private fun initFavoritesImageButton() {
@@ -153,37 +158,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initBottomSheetStoreList() {
-        storeAdapter = StoreAdapter()
-
         bottomSheetStoreListBehavior = BottomSheetBehavior.from(bottomSheetStoreList)
         bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-//        bottomSheetStoreListBehavior.addBottomSheetCallback(object :
-//            BottomSheetBehavior.BottomSheetCallback() {
-//            override fun onStateChanged(bottomSheet: View, newState: Int) {
-//                when (newState) {
-//                    BottomSheetBehavior.STATE_HIDDEN -> {
-//
-//                    }
-//                }
-//            }
-//
-//            override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-//
-//        })
 
-        storeAdapter.setOnStoreClickListener {
-            bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            moveToPos(it.storePointLat.toDouble(), it.storePointLng.toDouble())
-            viewModel.getDetailStoreInfo(it.storeId)
-        }
-
-        viewModel.queriedStoresLiveData.observe(this) {
+        viewModel.queriedStoresByClickedCategoryLiveData.observe(this) {
             when (it) {
-                is StoreUiState.Uninitialized -> checkLocationPermission()
-//                is StoreUiState.Loading -> showProgressBarInBottomSheetStoreList()
-                is StoreUiState.SuccessGetStores -> successGettingStores(it)
-                is StoreUiState.Error -> TODO()
+                is CategoryUiState.Uninitialized -> {}
+                is CategoryUiState.Loading -> showProgressBarInBottomSheetStoreList()
+                is CategoryUiState.SuccessGetStoresByCategory -> spreadStoresInBottomSheet(it.stores)
+                is CategoryUiState.Error -> {}
             }
         }
     }
@@ -199,17 +182,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         bottomSheetStoreListProgressBar.isVisible = false
     }
 
-    private fun successGettingStores(state: StoreUiState.SuccessGetStores) {
-        hideProgressBarInBottomSheet()
-//        spreadStoresInBottomSheet(state)
-        markStoresOnMap(state.stores)
-    }
 
-    private fun spreadStoresInBottomSheet(state: StoreUiState.SuccessGetStores) {
+    private fun spreadStoresInBottomSheet(stores: List<StoreDataByCategoryClicked>) {
+        hideProgressBarInBottomSheet()
         val recyclerView = findViewById<RecyclerView>(R.id.bottomSheetStoreRecyclerView)
         recyclerView.adapter = storeAdapter
 
-        storeAdapter.submitList(state.stores)
+        storeAdapter.submitList(stores)
     }
 
     private fun markStoresOnMap(stores: List<StoreDataForMarking>) {
@@ -272,6 +251,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 is DetailUiState.Loading -> showProgressBarInBottomSheetDetail()
                 is DetailUiState.SuccessGetDetailInfo -> successGettingDetailStoreInfo(it.detailInfoItem)
                 is DetailUiState.Error -> TODO()
+            }
+        }
+    }
+
+    private fun bindMarkingOnMap() {
+        dreameLatLng = DreameLatLng(37.279159, 127.044082) // 위치 임의 선정
+
+        viewModel.getStoresNearbyUserForMarking(dreameLatLng, 2000)
+        viewModel.queriedStoresLiveData.observe(this) {
+            when (it) {
+                is StoreUiState.Uninitialized -> checkLocationPermission()
+                is StoreUiState.SuccessGetStores -> markStoresOnMap(it.stores)
+                is StoreUiState.Error -> TODO()
             }
         }
     }
