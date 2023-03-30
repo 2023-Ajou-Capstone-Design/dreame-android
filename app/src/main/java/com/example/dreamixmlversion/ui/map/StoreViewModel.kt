@@ -21,20 +21,22 @@ class StoreViewModel @Inject constructor(
     private val _queriedStoresLiveData = MutableLiveData<StoreUiState>(StoreUiState.Uninitialized)
     val queriedStoresLiveData: LiveData<StoreUiState> = _queriedStoresLiveData
 
-    fun getStores(latLng: DreameLatLng, categoryName: String? = null) {
+    fun getStores(latLng: DreameLatLng, mbr: Int) {
         viewModelScope.launch {
             _queriedStoresLiveData.postValue(StoreUiState.Loading)
             _queriedStoresLiveData.postValue(
                 StoreUiState.SuccessGetStores(
-                    storeRepository.refreshSpots(
-                        latLng
-                    ) ?: listOf()
+                    storeRepository.getStoresNearbyUserForMarking(
+                        latLng,
+                        mbr
+                    )
                 )
             )
         }
     }
 
-    private val _queriedCategoriesLiveData = MutableLiveData<CategoryUiState>(CategoryUiState.Uninitialized)
+    private val _queriedCategoriesLiveData =
+        MutableLiveData<CategoryUiState>(CategoryUiState.Uninitialized)
     val queriedCategoriesLiveData: LiveData<CategoryUiState> = _queriedCategoriesLiveData
     fun getCategories() {
         viewModelScope.launch {
@@ -46,7 +48,8 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-    private val _queriedDetailInfoLiveData = MutableLiveData<DetailUiState>(DetailUiState.Uninitialized)
+    private val _queriedDetailInfoLiveData =
+        MutableLiveData<DetailUiState>(DetailUiState.Uninitialized)
     val queriedDetailInfoLiveData: LiveData<DetailUiState> = _queriedDetailInfoLiveData
     fun getDetailStoreInfo(storeId: Int) {
         viewModelScope.launch {

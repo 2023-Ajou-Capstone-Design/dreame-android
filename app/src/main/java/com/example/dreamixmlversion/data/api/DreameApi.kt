@@ -1,16 +1,20 @@
 package com.example.dreamixmlversion.data.api
 
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataResponse
+import com.example.dreamixmlversion.data.api.response.entity.StoreMarkingResponse
 import com.example.dreamixmlversion.ui.map.CategoryItem
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import retrofit2.Response
 import retrofit2.http.POST
 
-interface DreameApi {
+interface DreameMapApi {
 
     // 사용자 위치를 기준으로 반경 2km 내의 모든 지점들 get
     @POST("v3/cd3c2c46-a4e3-4e92-ae54-f69873e041a5")
-    suspend fun getAllSpotsNearbyUser(): Response<StoreDataResponse>
+    suspend fun getAllStoresNearbyUserForMarking(
+        userPointLng: Float,
+        userPointLat: Float,
+        mbr: Int
+    ): Response<StoreMarkingResponse>
 
     // 특정 지점의 detail 정보 get (by storeID)
     suspend fun getDetailSpotData(): Response<DetailInfoItem>

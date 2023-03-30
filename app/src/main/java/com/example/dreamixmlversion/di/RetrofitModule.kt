@@ -1,6 +1,6 @@
 package com.example.dreamixmlversion.di
 
-import com.example.dreamixmlversion.data.api.DreameApi
+import com.example.dreamixmlversion.data.api.DreameMapApi
 import com.example.dreamixmlversion.data.api.Url
 import dagger.Module
 import dagger.Provides
@@ -21,7 +21,7 @@ object RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): DreameApi {
-        return retrofit.create(DreameApi::class.java)
+    fun provideRetrofit(): DreameMapApi {
+        return retrofit.create(DreameMapApi::class.java)
     }
 }

@@ -1,6 +1,6 @@
 package com.example.dreamixmlversion.data.repository
 
-import com.example.dreamixmlversion.data.api.DreameApi
+import com.example.dreamixmlversion.data.api.DreameMapApi
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.ui.map.CategoryItem
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
@@ -9,16 +9,19 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class StoreRepositoryImpl @Inject constructor(
-    private val dreameApi: DreameApi
+    private val dreameApi: DreameMapApi
 ): StoreRepository {
 
 //    override val spots = mutableListOf<SpotDataEntity>()
 
     // spots에 저장 (SpotDataEntity 형태로 가공)
     // 정렬되어 받음
-    override suspend fun refreshSpots(latLng: DreameLatLng) = withContext(Dispatchers.IO) {
-        dreameApi.getAllSpotsNearbyUser()
-            .body()?.items
+    override suspend fun getStoresNearbyUserForMarking(
+        latLng: DreameLatLng,
+        mbr: Int
+    ) = withContext(Dispatchers.IO) {
+        dreameApi.getAllStoresNearbyUserForMarking(latLng.lng.toFloat(), latLng.lat.toFloat(), mbr)
+            .body()?.items ?: listOf()
     }
 
     override suspend fun getAllCategories(): List<CategoryItem> {

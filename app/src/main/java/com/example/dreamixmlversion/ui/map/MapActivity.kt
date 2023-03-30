@@ -292,13 +292,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun bindDetailInfo(detailInfoOfStore: DetailInfoItem) {
         // todo : image
-        findViewById<TextView>(R.id.bottomSheetDetailStoreNameTextView).text = detailInfoOfStore.storeName
-        findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text = detailInfoOfStore.categoryName
-        findViewById<TextView>(R.id.bottomSheetDetailWorkingTimeTextView).text = detailInfoOfStore.workingTime
-        findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text = detailInfoOfStore.address
-        findViewById<TextView>(R.id.bottomSheetDetailPhoneNumberTextView).text = detailInfoOfStore.phoneNumber
-        findViewById<TextView>(R.id.bottomSheetDetailProvidedSubjectTextView).text = detailInfoOfStore.providedSubject
-        findViewById<TextView>(R.id.bottomSheetDetailProvidedItemTextView).text = detailInfoOfStore.providedItem
+//        findViewById<TextView>(R.id.bottomSheetDetailStoreNameTextView).text = detailInfoOfStore.storeName
+//        findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text = detailInfoOfStore.categoryName
+//        findViewById<TextView>(R.id.bottomSheetDetailWorkingTimeTextView).text = detailInfoOfStore.workingTime
+//        findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text = detailInfoOfStore.address
+//        findViewById<TextView>(R.id.bottomSheetDetailPhoneNumberTextView).text = detailInfoOfStore.phoneNumber
+//        findViewById<TextView>(R.id.bottomSheetDetailProvidedSubjectTextView).text = detailInfoOfStore.providedSubject
+//        findViewById<TextView>(R.id.bottomSheetDetailProvidedItemTextView).text = detailInfoOfStore.providedItem
     }
 
     @UiThread
