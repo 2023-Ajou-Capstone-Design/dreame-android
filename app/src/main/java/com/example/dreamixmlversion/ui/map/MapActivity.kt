@@ -116,7 +116,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initFavoriteButton() {
         binding.favoritesImageButton.setOnClickListener {
-
+            viewModel.getFavoriteStores("") // todo userId 기입
         }
     }
 

@@ -29,5 +29,7 @@ interface StoreRepository {
 
     suspend fun getDetailStoreInfo(storeId: Int, storeType: String): DetailInfoItem
 
-    suspend fun toggleFavoriteSpot()
+    suspend fun getFavoriteStores(
+        userId: String
+    ): List<StoreDataOnBottomSheetList>
 }

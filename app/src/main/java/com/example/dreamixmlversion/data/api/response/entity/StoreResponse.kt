@@ -8,12 +8,8 @@ data class StoreDataForMarkingResponse(
     val items: List<StoreDataForMarking>
 )
 
-data class StoreDataByCategoryClickedResponse(
+data class StoreDataBottomSheetListResponse(
     @SerializedName("items")
     val items: List<StoreDataOnBottomSheetList>
 )
 
-data class StoreDataBySearchingKeywordResponse(
-    @SerializedName("items")
-    val items: List<StoreDataOnBottomSheetList>
-)

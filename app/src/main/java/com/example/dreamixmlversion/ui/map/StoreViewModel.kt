@@ -81,7 +81,14 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-//    fun toggleSpotFavorite(spot: SpotDataEntity) {
-//        spotRepository.
-//    }
+    fun getFavoriteStores(userId: String) {
+        viewModelScope.launch {
+            _queriedStoresOnBottomSheetListLiveData.postValue(BottomSheetListUiState.Loading)
+            _queriedStoresOnBottomSheetListLiveData.postValue(
+                BottomSheetListUiState.SuccessGetStoresOnBottomSheetList(
+                    storeRepository.getFavoriteStores(userId)
+                )
+            )
+        }
+    }
 }

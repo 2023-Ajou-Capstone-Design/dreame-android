@@ -53,19 +53,21 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getDetailStoreInfo(storeId: Int, storeType: String): DetailInfoItem {
+    override suspend fun getDetailStoreInfo(storeId: Int, storeType: String)= withContext(Dispatchers.IO) {
 
         // todo : storeId 파라미터로 api 호출
 //        dreameApi.getDetailSpotData(storeId, storeType)
 
-        return DetailInfoItem(
+        DetailInfoItem(
             "사나운치킨", "치킨", "16:00~03:00",
             "수원시 영통구 원천동 1-1", "031-123-3467",
             "결식아동, 소방관", "닭"
         )
     }
 
-    override suspend fun toggleFavoriteSpot() {
-        TODO("Not yet implemented")
+    override suspend fun getFavoriteStores(userId: String) = withContext(Dispatchers.IO) {
+//        dreameApi.getFavoriteStores(userId).body()?.items ?: listOf()
+        dreameApi.getFavoriteStores().body()?.items ?: listOf()
     }
+
 }
