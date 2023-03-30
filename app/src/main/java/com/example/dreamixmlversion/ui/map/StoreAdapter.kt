@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataEntityItem
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
 import com.example.dreamixmlversion.databinding.ItemStoreBinding
 import dagger.hilt.android.scopes.ActivityScoped

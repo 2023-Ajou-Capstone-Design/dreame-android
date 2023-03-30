@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.data.repository.StoreRepository
-import com.example.dreamixmlversion.ui.map.uistate.CategoryUiState
 import com.example.dreamixmlversion.ui.map.uistate.DetailUiState
 import com.example.dreamixmlversion.ui.map.uistate.StoreUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,18 +34,18 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-    private val _queriedCategoriesLiveData =
-        MutableLiveData<CategoryUiState>(CategoryUiState.Uninitialized)
-    val queriedCategoriesLiveData: LiveData<CategoryUiState> = _queriedCategoriesLiveData
-    fun getCategories() {
-        viewModelScope.launch {
-//            _queriedCategoriesLiveData.postValue(
-//                CategoryUiState.SuccessGetCategories(
-//                    storeRepository.getAllCategories()
-//                )
-//            )
-        }
-    }
+//    private val _queriedCategoriesLiveData =
+//        MutableLiveData<CategoryUiState>(CategoryUiState.Uninitialized)
+//    val queriedCategoriesLiveData: LiveData<CategoryUiState> = _queriedCategoriesLiveData
+//    fun getCategories() {
+//        viewModelScope.launch {
+////            _queriedCategoriesLiveData.postValue(
+////                CategoryUiState.SuccessGetCategories(
+////                    storeRepository.getAllCategories()
+////                )
+////            )
+//        }
+//    }
 
     private val _queriedDetailInfoLiveData =
         MutableLiveData<DetailUiState>(DetailUiState.Uninitialized)

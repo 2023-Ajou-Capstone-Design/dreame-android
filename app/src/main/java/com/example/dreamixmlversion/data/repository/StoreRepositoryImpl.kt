@@ -2,7 +2,6 @@ package com.example.dreamixmlversion.data.repository
 
 import com.example.dreamixmlversion.data.api.DreameMapApi
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
-import com.example.dreamixmlversion.ui.map.CategoryItem
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -26,9 +25,19 @@ class StoreRepositoryImpl @Inject constructor(
             .body()?.items ?: listOf()
     }
 
-    override suspend fun getAllCategories(): List<CategoryItem> {
-        return dreameApi.getAllCategories()
+    override suspend fun getStoresNearbyUserByCategoryClicked(
+        storeType: String,
+        category: String,
+        subCategory: String,
+        latLng: DreameLatLng,
+        mbr: Int
+    ) = withContext(Dispatchers.IO) {
+        dreameApi.getStoresClickedCategoryName(
+            storeType, category, subCategory,
+            latLng.lat.toFloat(), latLng.lng.toFloat(), mbr
+        ).body()?.items ?: listOf()
     }
+
 
     override suspend fun getDetailStoreInfo(storeId: Int): DetailInfoItem {
 

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dreamixmlversion.R
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
-import com.example.dreamixmlversion.ui.map.uistate.CategoryUiState
+import com.example.dreamixmlversion.databinding.ActivityMapBinding
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import com.example.dreamixmlversion.ui.map.uistate.DetailUiState
 import com.example.dreamixmlversion.ui.map.uistate.StoreUiState
@@ -32,16 +32,11 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private val searchEditTextView: EditText by lazy {
-        findViewById<EditText>(R.id.searchEditTextView)
-    }
-
-    @Inject lateinit var categoryAdapter: CategoryAdapter
-    private val categoryRecyclerView: RecyclerView by lazy {
-        findViewById(R.id.categoryRecyclerView)
-    }
+    private lateinit var binding: ActivityMapBinding
 
     @Inject lateinit var storeAdapter: StoreAdapter
+    @Inject lateinit var categoryAdapter: CategoryAdapter
+
     private lateinit var bottomSheetStoreListBehavior: BottomSheetBehavior<ConstraintLayout>
     private val bottomSheetStoreList by lazy {
         findViewById<ConstraintLayout>(R.id.bottomSheetStoreList)
@@ -52,28 +47,24 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         findViewById<ConstraintLayout>(R.id.bottomSheetDetail)
     }
 
-    private val favoritesImageButton: ImageButton by lazy {
-        findViewById(R.id.favoritesImageButton)
-    }
     private val bottomSheetStoreListProgressBar: ProgressBar by lazy {
         findViewById(R.id.bottomSheetStoreListProgressBar)
     }
     private val bottomSheetDetailProgressBar: ProgressBar by lazy {
         findViewById(R.id.bottomSheetDetailProgressBar)
     }
-    private val mapView: MapView by lazy {
-        findViewById(R.id.mapView)
-    }
+
     private lateinit var naverMap: NaverMap
 
     private val viewModel: StoreViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_map)
+        binding = ActivityMapBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        mapView.getMapAsync(this)
-        mapView.onCreate(savedInstanceState)
+        binding.mapView.getMapAsync(this)
+        binding.mapView.onCreate(savedInstanceState)
 
         initSearchEditTextView()
         initCategory()
@@ -91,7 +82,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initSearchEditTextView() {
-        searchEditTextView.setOnEditorActionListener { editText, actionId, event ->
+        binding.searchEditTextView.setOnEditorActionListener { editText, actionId, event ->
             currentFocus?.let { view ->
                 val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
@@ -105,25 +96,21 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initCategory() {
+//        viewModel.getCategories()
+
+//        viewModel.queriedCategoriesLiveData.observe(this) {
+//            when (it) {
+//                is CategoryUiState.Uninitialized -> {}
+//                is CategoryUiState.SuccessGetCategories -> updateCategoryRecyclerView(it.categories)
+//                CategoryUiState.Error -> TODO()
+//            }
+//        }
         categoryAdapter = CategoryAdapter()
-        viewModel.getCategories()
         categoryAdapter.setOnCategoryClickListener {
-            // todo : viewModel.getStores() 카테고리명 파라미터를 담은 함수로 호출하여 BottomSheetStoreList recyclerView를 갱신한다.
 
         }
-        categoryRecyclerView.adapter = categoryAdapter
-
-        viewModel.queriedCategoriesLiveData.observe(this) {
-            when (it) {
-                is CategoryUiState.Uninitialized -> {}
-                is CategoryUiState.SuccessGetCategories -> updateCategoryRecyclerView(it.categories)
-                CategoryUiState.Error -> TODO()
-            }
-        }
-    }
-
-    private fun updateCategoryRecyclerView(categories: List<CategoryItem>) {
-        categoryAdapter.submitList(categories)
+        categoryAdapter.submitList(null)
+        binding.categoryRecyclerView.adapter = categoryAdapter
     }
 
     private fun initFavoritesImageButton() {
@@ -132,37 +119,37 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onStart() {
         super.onStart()
-        mapView.onStart()
+        binding.mapView.onStart()
     }
 
     override fun onResume() {
         super.onResume()
-        mapView.onResume()
+        binding.mapView.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        mapView.onPause()
+        binding.mapView.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
-        mapView.onSaveInstanceState(outState)
+        binding.mapView.onSaveInstanceState(outState)
     }
 
     override fun onStop() {
         super.onStop()
-        mapView.onStop()
+        binding.mapView.onStop()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mapView.onDestroy()
+        binding.mapView.onDestroy()
     }
 
     override fun onLowMemory() {
         super.onLowMemory()
-        mapView.onLowMemory()
+        binding.mapView.onLowMemory()
     }
 
     private fun initBottomSheetStoreList() {

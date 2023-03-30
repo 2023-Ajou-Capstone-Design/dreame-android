@@ -1,6 +1,5 @@
 package com.example.dreamixmlversion.ui.map.uistate
 
-import com.example.dreamixmlversion.ui.map.CategoryItem
 
 sealed class DetailUiState {
     object Uninitialized: DetailUiState()
