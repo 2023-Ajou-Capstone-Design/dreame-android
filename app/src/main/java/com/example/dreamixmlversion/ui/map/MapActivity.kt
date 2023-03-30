@@ -4,8 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -14,17 +12,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.example.dreamixmlversion.R
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataByCategoryClicked
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
+import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.CategoryEntity
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.databinding.ActivityMapBinding
-import com.example.dreamixmlversion.ui.map.uistate.CategoryUiState
-import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
-import com.example.dreamixmlversion.ui.map.uistate.DetailUiState
-import com.example.dreamixmlversion.ui.map.uistate.StoreUiState
+import com.example.dreamixmlversion.ui.map.uistate.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
@@ -77,7 +71,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         initCategory()
         initBottomSheetStoreList()
         initBottomSheetDetailDialog()
-        initFavoritesImageButton()
+        initFavoriteButton()
         bindMarkingOnMap()
     }
 
@@ -90,6 +84,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 // todo 검색 query to server and process
 
                 view.clearFocus()
+                viewModel.getStoresBySearchingKeyword(editText.toString(), dreameLatLng, 2000)
             }
             return@setOnEditorActionListener true
         }
@@ -119,8 +114,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun initFavoritesImageButton() {
-//        favoritesImageButton.setImageResource(R.drawable.bookmark_unchecked)
+    private fun initFavoriteButton() {
+        binding.favoritesImageButton.setOnClickListener {
+
+        }
     }
 
     override fun onStart() {
@@ -162,12 +159,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         bottomSheetStoreListBehavior = BottomSheetBehavior.from(bottomSheetStoreList)
         bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
-        viewModel.queriedStoresByClickedCategoryLiveData.observe(this) {
+        viewModel.queriedStoresOnBottomSheetListLiveData.observe(this) {
             when (it) {
-                is CategoryUiState.Uninitialized -> {}
-                is CategoryUiState.Loading -> showProgressBarInBottomSheetStoreList()
-                is CategoryUiState.SuccessGetStoresByCategory -> spreadStoresInBottomSheet(it.stores)
-                is CategoryUiState.Error -> {}
+                is BottomSheetListUiState.Uninitialized -> {}
+                is BottomSheetListUiState.Loading -> showProgressBarInBottomSheetStoreList()
+                is BottomSheetListUiState.SuccessGetStoresOnBottomSheetList -> spreadStoresInBottomSheet(it.stores)
+                is BottomSheetListUiState.Error -> {}
             }
         }
     }
@@ -184,7 +181,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
 
-    private fun spreadStoresInBottomSheet(stores: List<StoreDataByCategoryClicked>) {
+    private fun spreadStoresInBottomSheet(stores: List<StoreDataOnBottomSheetList>) {
         hideProgressBarInBottomSheet()
         val recyclerView = findViewById<RecyclerView>(R.id.bottomSheetStoreRecyclerView)
         recyclerView.adapter = storeAdapter

@@ -4,10 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dreamixmlversion.data.db.entity.CategoryEntity
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.data.repository.StoreRepository
-import com.example.dreamixmlversion.ui.map.uistate.CategoryUiState
+import com.example.dreamixmlversion.ui.map.uistate.BottomSheetListUiState
 import com.example.dreamixmlversion.ui.map.uistate.DetailUiState
 import com.example.dreamixmlversion.ui.map.uistate.StoreUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,32 +27,40 @@ class StoreViewModel @Inject constructor(
             _queriedStoresLiveData.postValue(
                 StoreUiState.SuccessGetStores(
                     storeRepository.getStoresNearbyUserForMarking(
-                        latLng,
-                        mbr
+                        latLng, mbr
                     )
                 )
             )
         }
     }
 
-    private val _queriedStoresByClickedCategoryLiveData =
-        MutableLiveData<CategoryUiState>(CategoryUiState.Uninitialized)
-    val queriedStoresByClickedCategoryLiveData: LiveData<CategoryUiState> =
-        _queriedStoresByClickedCategoryLiveData
+    private val _queriedStoresOnBottomSheetListLiveData =
+        MutableLiveData<BottomSheetListUiState>(BottomSheetListUiState.Uninitialized)
+    val queriedStoresOnBottomSheetListLiveData: LiveData<BottomSheetListUiState> =
+        _queriedStoresOnBottomSheetListLiveData
 
     fun getStoresByClickedCategory(
-        latLng: DreameLatLng,
-        mbr: Int,
-        storeType: String,
-        category: String,
-        subCategory: String
+        latLng: DreameLatLng, mbr: Int, storeType: String, category: String, subCategory: String
     ) {
         viewModelScope.launch {
-            _queriedStoresByClickedCategoryLiveData.postValue(CategoryUiState.Loading)
-            _queriedStoresByClickedCategoryLiveData.postValue(
-                CategoryUiState.SuccessGetStoresByCategory(
+            _queriedStoresOnBottomSheetListLiveData.postValue(BottomSheetListUiState.Loading)
+            _queriedStoresOnBottomSheetListLiveData.postValue(
+                BottomSheetListUiState.SuccessGetStoresOnBottomSheetList(
                     storeRepository.getStoresNearbyUserByCategoryClicked(
                         storeType, category, subCategory, latLng, mbr
+                    )
+                )
+            )
+        }
+    }
+
+    fun getStoresBySearchingKeyword(keyword: String, latLng: DreameLatLng, mbr: Int) {
+        viewModelScope.launch {
+            _queriedStoresOnBottomSheetListLiveData.postValue(BottomSheetListUiState.Loading)
+            _queriedStoresOnBottomSheetListLiveData.postValue(
+                BottomSheetListUiState.SuccessGetStoresOnBottomSheetList(
+                    storeRepository.getStoresBySearchingKeyword(
+                        keyword, latLng, mbr
                     )
                 )
             )

@@ -1,6 +1,7 @@
 package com.example.dreamixmlversion.data.api
 
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataByCategoryClickedResponse
+import com.example.dreamixmlversion.data.api.response.entity.StoreDataBySearchingKeywordResponse
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarkingResponse
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import retrofit2.Response
@@ -28,6 +29,16 @@ interface DreameMapApi {
 //        mbr: Int,
     ): Response<StoreDataByCategoryClickedResponse>
 
+    // db에 keyword 검색
+//    @POST("/KeywordSearch?Keyword={Keyword}&myPositionLat={myPositionLat}&myPositionLng={myPositionLng}&mbr={mbr}")
+    @POST("v3/7b43db1b-b928-4b38-a3d5-60675c6ad58b")
+    suspend fun searchByKeyword(
+//        @Path("Keyword") keyword: String,
+//        @Path("myPositionLat") myPositionLat: Float,
+//        @Path("myPositionLng") myPositionLng: Float,
+//        @Path("mbr") mbr: Int
+    ): Response<StoreDataBySearchingKeywordResponse>
+
     // 특정 지점의
     // detail 정보 get (by storeID)
 //    @POST("/StoreID?StoreID={StoreID}&StoreType={StoreType}")
@@ -41,6 +52,4 @@ interface DreameMapApi {
     // db 업데이트 및 spots 최신화
     suspend fun updateFavoriteSpot()
 
-    // db에 keyword 검색
-    suspend fun searchByKeyword(): String
 }

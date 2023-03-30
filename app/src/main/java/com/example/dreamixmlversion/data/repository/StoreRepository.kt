@@ -1,7 +1,7 @@
 package com.example.dreamixmlversion.data.repository
 
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataByCategoryClicked
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
+import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 
@@ -19,8 +19,13 @@ interface StoreRepository {
         subCategory: String,
         latLng: DreameLatLng,
         mbr: Int
-    ): List<StoreDataByCategoryClicked>
+    ): List<StoreDataOnBottomSheetList>
 
+    suspend fun getStoresBySearchingKeyword(
+        keyword: String,
+        latLng: DreameLatLng,
+        mbr: Int
+    ): List<StoreDataOnBottomSheetList>
 
     suspend fun getDetailStoreInfo(storeId: Int, storeType: String): DetailInfoItem
 

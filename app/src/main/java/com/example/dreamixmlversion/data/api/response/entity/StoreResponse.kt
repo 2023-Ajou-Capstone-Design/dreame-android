@@ -10,5 +10,10 @@ data class StoreDataForMarkingResponse(
 
 data class StoreDataByCategoryClickedResponse(
     @SerializedName("items")
-    val items: List<StoreDataByCategoryClicked>
+    val items: List<StoreDataOnBottomSheetList>
+)
+
+data class StoreDataBySearchingKeywordResponse(
+    @SerializedName("items")
+    val items: List<StoreDataOnBottomSheetList>
 )

@@ -5,21 +5,21 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataByCategoryClicked
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
+import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.CategoryEntity
 import com.example.dreamixmlversion.databinding.ItemStoreBinding
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class StoreAdapter @Inject constructor(): ListAdapter<StoreDataByCategoryClicked, StoreAdapter.ViewHolder>(diffUtil) {
+class StoreAdapter @Inject constructor(): ListAdapter<StoreDataOnBottomSheetList, StoreAdapter.ViewHolder>(diffUtil) {
 
-    private lateinit var onStoreClickListener: (StoreDataByCategoryClicked) -> Unit
+    private lateinit var onStoreClickListener: (StoreDataOnBottomSheetList) -> Unit
 //    private val favoriteClickListener: (StoreDataEntityItem) -> Unit
 
     inner class ViewHolder(private val binding: ItemStoreBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(store: StoreDataByCategoryClicked) {
+        fun bind(store: StoreDataOnBottomSheetList) {
             with(binding) {
                 root.setOnClickListener { onStoreClickListener(store) }
 //                favoriteButton.setOnClickListener { favoriteClickListener(spot) }
@@ -40,17 +40,17 @@ class StoreAdapter @Inject constructor(): ListAdapter<StoreDataByCategoryClicked
     }
 
     companion object {
-        val diffUtil = object: DiffUtil.ItemCallback<StoreDataByCategoryClicked>() {
+        val diffUtil = object: DiffUtil.ItemCallback<StoreDataOnBottomSheetList>() {
             override fun areItemsTheSame(
-                oldItem: StoreDataByCategoryClicked,
-                newItem: StoreDataByCategoryClicked
+                oldItem: StoreDataOnBottomSheetList,
+                newItem: StoreDataOnBottomSheetList
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: StoreDataByCategoryClicked,
-                newItem: StoreDataByCategoryClicked
+                oldItem: StoreDataOnBottomSheetList,
+                newItem: StoreDataOnBottomSheetList
             ): Boolean {
                 return oldItem.storeId == newItem.storeId
             }
@@ -58,7 +58,7 @@ class StoreAdapter @Inject constructor(): ListAdapter<StoreDataByCategoryClicked
         }
     }
 
-    fun setOnStoreClickListener(onStoreItemClickListener: (StoreDataByCategoryClicked) -> Unit) {
+    fun setOnStoreClickListener(onStoreItemClickListener: (StoreDataOnBottomSheetList) -> Unit) {
         this.onStoreClickListener = onStoreItemClickListener
     }
 }

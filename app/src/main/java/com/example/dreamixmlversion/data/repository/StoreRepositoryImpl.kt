@@ -1,6 +1,7 @@
 package com.example.dreamixmlversion.data.repository
 
 import com.example.dreamixmlversion.data.api.DreameMapApi
+import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +36,19 @@ class StoreRepositoryImpl @Inject constructor(
         dreameApi.getStoresClickedCategoryName(
 //            storeType, category, subCategory,
 //            latLng.lat.toFloat(), latLng.lng.toFloat(), mbr
+        ).body()?.items ?: listOf()
+    }
+
+    override suspend fun getStoresBySearchingKeyword(
+        keyword: String,
+        latLng: DreameLatLng,
+        mbr: Int
+    ): List<StoreDataOnBottomSheetList> = withContext(Dispatchers.IO) {
+        dreameApi.searchByKeyword(
+//            keyword,
+//            latLng.lat.toFloat(),
+//            latLng.lng.toFloat(),
+//            mbr
         ).body()?.items ?: listOf()
     }
 
