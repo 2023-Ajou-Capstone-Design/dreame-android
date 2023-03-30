@@ -28,8 +28,13 @@ interface DreameMapApi {
 //        mbr: Int,
     ): Response<StoreDataByCategoryClickedResponse>
 
-    // 특정 지점의 detail 정보 get (by storeID)
-    suspend fun getDetailSpotData(): Response<DetailInfoItem>
+    // 특정 지점의
+    // detail 정보 get (by storeID)
+//    @POST("/StoreID?StoreID={StoreID}&StoreType={StoreType}")
+    suspend fun getDetailSpotData(
+//        @Path("StoreID") storeId: Int,
+//        @Path("StoreType") storeType: String
+    ): Response<DetailInfoItem>
 
     // 사용자 위치를 기준으로 반경 2km 내의 특정 카테고리에 해당하는 모든 지점들 filter
 

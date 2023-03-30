@@ -63,12 +63,12 @@ class StoreViewModel @Inject constructor(
     private val _queriedDetailInfoLiveData =
         MutableLiveData<DetailUiState>(DetailUiState.Uninitialized)
     val queriedDetailInfoLiveData: LiveData<DetailUiState> = _queriedDetailInfoLiveData
-    fun getDetailStoreInfo(storeId: Int) {
+    fun getDetailStoreInfo(storeId: Int, storeType: String) {
         viewModelScope.launch {
             _queriedDetailInfoLiveData.postValue(DetailUiState.Loading)
             _queriedDetailInfoLiveData.postValue(
                 DetailUiState.SuccessGetDetailInfo(
-                    storeRepository.getDetailStoreInfo(storeId)
+                    storeRepository.getDetailStoreInfo(storeId, storeType)
                 )
             )
         }

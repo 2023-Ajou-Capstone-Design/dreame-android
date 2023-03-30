@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
@@ -114,7 +115,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
             moveToPos(it.storePointLat.toDouble(), it.storePointLng.toDouble())
-            viewModel.getDetailStoreInfo(it.storeId)
+            viewModel.getDetailStoreInfo(it.storeId, it.storeType)
         }
     }
 
@@ -249,7 +250,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             when (it) {
                 is DetailUiState.Uninitialized -> {}
                 is DetailUiState.Loading -> showProgressBarInBottomSheetDetail()
-                is DetailUiState.SuccessGetDetailInfo -> successGettingDetailStoreInfo(it.detailInfoItem)
+                is DetailUiState.SuccessGetDetailInfo -> bindDetailInfo(it.detailInfoItem)
                 is DetailUiState.Error -> TODO()
             }
         }
@@ -273,20 +274,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         bottomSheetDetailProgressBar.isVisible = true
     }
 
-    private fun successGettingDetailStoreInfo(detailInfoOfStore: DetailInfoItem) {
-        bottomSheetDetailProgressBar.isVisible = false
-        bindDetailInfo(detailInfoOfStore)
-    }
-
     private fun bindDetailInfo(detailInfoOfStore: DetailInfoItem) {
+        bottomSheetDetailProgressBar.isVisible = false
         // todo : image
-//        findViewById<TextView>(R.id.bottomSheetDetailStoreNameTextView).text = detailInfoOfStore.storeName
-//        findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text = detailInfoOfStore.categoryName
-//        findViewById<TextView>(R.id.bottomSheetDetailWorkingTimeTextView).text = detailInfoOfStore.workingTime
-//        findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text = detailInfoOfStore.address
-//        findViewById<TextView>(R.id.bottomSheetDetailPhoneNumberTextView).text = detailInfoOfStore.phoneNumber
-//        findViewById<TextView>(R.id.bottomSheetDetailProvidedSubjectTextView).text = detailInfoOfStore.providedSubject
-//        findViewById<TextView>(R.id.bottomSheetDetailProvidedItemTextView).text = detailInfoOfStore.providedItem
+        findViewById<TextView>(R.id.bottomSheetDetailStoreNameTextView).text = detailInfoOfStore.storeName
+        findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text = detailInfoOfStore.categoryName
+        findViewById<TextView>(R.id.bottomSheetDetailWorkingTimeTextView).text = detailInfoOfStore.workingTime
+        findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text = detailInfoOfStore.address
+        findViewById<TextView>(R.id.bottomSheetDetailPhoneNumberTextView).text = detailInfoOfStore.phoneNumber
+        findViewById<TextView>(R.id.bottomSheetDetailProvidedSubjectTextView).text = detailInfoOfStore.providedSubject
+        findViewById<TextView>(R.id.bottomSheetDetailProvidedItemTextView).text = detailInfoOfStore.providedItem
     }
 
     @UiThread

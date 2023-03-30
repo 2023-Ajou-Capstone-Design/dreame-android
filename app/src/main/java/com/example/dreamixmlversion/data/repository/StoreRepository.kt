@@ -22,7 +22,7 @@ interface StoreRepository {
     ): List<StoreDataByCategoryClicked>
 
 
-    suspend fun getDetailStoreInfo(storeId: Int): DetailInfoItem
+    suspend fun getDetailStoreInfo(storeId: Int, storeType: String): DetailInfoItem
 
     suspend fun toggleFavoriteSpot()
 }

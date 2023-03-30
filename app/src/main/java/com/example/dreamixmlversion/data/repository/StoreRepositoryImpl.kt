@@ -39,10 +39,10 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getDetailStoreInfo(storeId: Int): DetailInfoItem {
+    override suspend fun getDetailStoreInfo(storeId: Int, storeType: String): DetailInfoItem {
 
         // todo : storeId 파라미터로 api 호출
-//        dreameApi.getDetailSpotData()
+//        dreameApi.getDetailSpotData(storeId, storeType)
 
         return DetailInfoItem(
             "사나운치킨", "치킨", "16:00~03:00",
