@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class StoreDataEntityItem(
     @SerializedName("Category")
-    val category: Int?,
+    val z: Int?,
     @SerializedName("StoreID")
     val storeID: Int,
     @SerializedName("StorePoitLat")

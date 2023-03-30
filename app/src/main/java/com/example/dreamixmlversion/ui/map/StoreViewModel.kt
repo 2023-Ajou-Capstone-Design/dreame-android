@@ -23,7 +23,7 @@ class StoreViewModel @Inject constructor(
 
     fun getStores(latLng: DreameLatLng, mbr: Int) {
         viewModelScope.launch {
-            _queriedStoresLiveData.postValue(StoreUiState.Loading)
+//            _queriedStoresLiveData.postValue(StoreUiState.Loading)
             _queriedStoresLiveData.postValue(
                 StoreUiState.SuccessGetStores(
                     storeRepository.getStoresNearbyUserForMarking(

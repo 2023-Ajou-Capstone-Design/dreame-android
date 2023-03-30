@@ -7,7 +7,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.annotation.UiThread
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dreamixmlversion.R
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataEntityItem
+import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.ui.map.uistate.CategoryUiState
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
@@ -24,6 +23,7 @@ import com.example.dreamixmlversion.ui.map.uistate.StoreUiState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
+import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import dagger.hilt.android.AndroidEntryPoint
@@ -87,7 +87,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 //                .animate(CameraAnimation.Easing)
 //        naverMap.moveCamera(cameraUpdate)
 
-        viewModel.getStores(dreameLatLng)
+        viewModel.getStores(dreameLatLng, 1)
     }
 
     private fun initSearchEditTextView() {
@@ -187,14 +187,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         storeAdapter.setOnStoreClickListener {
             bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
             bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            moveToPos(it.storePoitLat!!, it.storePoitLng!!)
-            viewModel.getDetailStoreInfo(it.storeID)
+            moveToPos(it.storePointLat.toDouble(), it.storePointLng.toDouble())
+            viewModel.getDetailStoreInfo(it.storeId)
         }
 
         viewModel.queriedStoresLiveData.observe(this) {
             when (it) {
                 is StoreUiState.Uninitialized -> checkLocationPermission()
-                is StoreUiState.Loading -> showProgressBarInBottomSheetStoreList()
+//                is StoreUiState.Loading -> showProgressBarInBottomSheetStoreList()
                 is StoreUiState.SuccessGetStores -> successGettingStores(it)
                 is StoreUiState.Error -> TODO()
             }
@@ -214,7 +214,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun successGettingStores(state: StoreUiState.SuccessGetStores) {
         hideProgressBarInBottomSheet()
-        spreadStoresInBottomSheet(state)
+//        spreadStoresInBottomSheet(state)
         markStoresOnMap(state.stores)
     }
 
@@ -225,16 +225,25 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         storeAdapter.submitList(state.stores)
     }
 
-    private fun markStoresOnMap(stores: List<StoreDataEntityItem>) {
+    private fun markStoresOnMap(stores: List<StoreDataForMarking>) {
         stores.forEach { store ->
             Marker().apply {
-                position = LatLng(store.storePoitLat!!, store.storePoitLng!!) // null 처리 필요
+                position = LatLng(store.storePointLat.toDouble(), store.storePointLng.toDouble()) // null 처리 필요
                 map = naverMap
                 icon = OverlayImage.fromResource(R.drawable.locationpin)
                 width = 140
                 height = 140
+//                captionText = store.storeName
+//                captionRequestedWidth = 150
+                val infoWindow = InfoWindow()
+                infoWindow.adapter = object: InfoWindow.DefaultTextAdapter(this@MapActivity) {
+                    override fun getText(p0: InfoWindow): CharSequence {
+                        return store.storeName
+                    }
+                }
+                infoWindow.open(this)
                 setOnClickListener {
-                    moveToPos(store.storePoitLat, store.storePoitLng)
+                    moveToPos(store.storePointLat.toDouble(), store.storePointLng.toDouble())
 
                     // todo -> detail Bottom Sheet
                     drawDetailStoreInfo()

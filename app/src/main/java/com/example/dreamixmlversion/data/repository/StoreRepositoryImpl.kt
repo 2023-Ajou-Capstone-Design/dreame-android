@@ -20,7 +20,9 @@ class StoreRepositoryImpl @Inject constructor(
         latLng: DreameLatLng,
         mbr: Int
     ) = withContext(Dispatchers.IO) {
-        dreameApi.getAllStoresNearbyUserForMarking(latLng.lng.toFloat(), latLng.lat.toFloat(), mbr)
+//        dreameApi.getAllStoresNearbyUserForMarking(latLng.lat.toFloat(), latLng.lng.toFloat(), mbr)
+//            .body()?.items ?: listOf()
+        dreameApi.getAllStoresNearbyUserForMarking()
             .body()?.items ?: listOf()
     }
 

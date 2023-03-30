@@ -6,24 +6,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataEntityItem
+import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
 import com.example.dreamixmlversion.databinding.ItemStoreBinding
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 @ActivityScoped
-class StoreAdapter @Inject constructor(): ListAdapter<StoreDataEntityItem, StoreAdapter.ViewHolder>(diffUtil) {
+class StoreAdapter @Inject constructor(): ListAdapter<StoreDataForMarking, StoreAdapter.ViewHolder>(diffUtil) {
 
-    private lateinit var onStoreClickListener: (StoreDataEntityItem) -> Unit
+    private lateinit var onStoreClickListener: (StoreDataForMarking) -> Unit
 //    private val favoriteClickListener: (StoreDataEntityItem) -> Unit
 
     inner class ViewHolder(private val binding: ItemStoreBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind(store: StoreDataEntityItem) {
+        fun bind(store: StoreDataForMarking) {
             with(binding) {
                 root.setOnClickListener { onStoreClickListener(store) }
 //                favoriteButton.setOnClickListener { favoriteClickListener(spot) }
 
-                storeNameTextView.text = store.storeID.toString()
-                categoryTextView.text = store.category.toString()
+                storeNameTextView.text = store.storeId.toString()
+//                categoryTextView.text = store.category.toString()
                 storeOpeningTextView.text = "미정"
             }
         }
@@ -38,25 +39,25 @@ class StoreAdapter @Inject constructor(): ListAdapter<StoreDataEntityItem, Store
     }
 
     companion object {
-        val diffUtil = object: DiffUtil.ItemCallback<StoreDataEntityItem>() {
+        val diffUtil = object: DiffUtil.ItemCallback<StoreDataForMarking>() {
             override fun areItemsTheSame(
-                oldItem: StoreDataEntityItem,
-                newItem: StoreDataEntityItem
+                oldItem: StoreDataForMarking,
+                newItem: StoreDataForMarking
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: StoreDataEntityItem,
-                newItem: StoreDataEntityItem
+                oldItem: StoreDataForMarking,
+                newItem: StoreDataForMarking
             ): Boolean {
-                return oldItem.storeID == newItem.storeID
+                return oldItem.storeId == newItem.storeId
             }
 
         }
     }
 
-    fun setOnStoreClickListener(onStoreItemClickListener: (StoreDataEntityItem) -> Unit) {
+    fun setOnStoreClickListener(onStoreItemClickListener: (StoreDataForMarking) -> Unit) {
         this.onStoreClickListener = onStoreItemClickListener
     }
 }

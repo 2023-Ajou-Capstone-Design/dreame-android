@@ -5,8 +5,6 @@ import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
 sealed class StoreUiState {
     object Uninitialized: StoreUiState()
 
-    object Loading: StoreUiState()
-
     data class SuccessGetStores(
         val stores: List<StoreDataForMarking>
     ): StoreUiState()
