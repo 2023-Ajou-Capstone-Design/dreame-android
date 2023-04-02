@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/sharingThumbnailImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:background="@color/teal_200"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sharingTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/sharingThumbnailImageView"
+        app:layout_constraintTop_toTopOf="@id/sharingThumbnailImageView"
+        tools:text="Title" />
+
+    <TextView
+        android:id="@+id/sharingAddressTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/sharingTitleTextView"
+        app:layout_constraintTop_toBottomOf="@id/sharingTitleTextView"
+        tools:text="수원시 영통구 원천동" />
+
+    <TextView
+        android:id="@+id/sharingTimeTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="@id/sharingAddressTextView"
+        app:layout_constraintTop_toBottomOf="@id/sharingAddressTextView"
+        tools:text="오후 4시 10분" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
