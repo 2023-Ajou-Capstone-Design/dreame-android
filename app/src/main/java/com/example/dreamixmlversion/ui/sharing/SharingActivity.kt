@@ -7,6 +7,7 @@ import com.example.dreamixmlversion.databinding.ActivitySharingBinding
 class SharingActivity: AppCompatActivity() {
 
     lateinit var binding: ActivitySharingBinding
+    lateinit var sharingAdapter: SharingAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

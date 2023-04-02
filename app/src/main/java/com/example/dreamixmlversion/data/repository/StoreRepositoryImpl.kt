@@ -1,6 +1,6 @@
 package com.example.dreamixmlversion.data.repository
 
-import com.example.dreamixmlversion.data.api.DreameMapApi
+import com.example.dreamixmlversion.data.api.DreameApi
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
@@ -9,7 +9,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class StoreRepositoryImpl @Inject constructor(
-    private val dreameApi: DreameMapApi
+    private val dreameApi: DreameApi
 ): StoreRepository {
 
 //    override val spots = mutableListOf<SpotDataEntity>()

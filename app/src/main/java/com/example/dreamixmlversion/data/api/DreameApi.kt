@@ -1,5 +1,6 @@
 package com.example.dreamixmlversion.data.api
 
+import com.example.dreamixmlversion.data.api.response.entity.SharingListResponse
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataBottomSheetListResponse
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarkingResponse
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
@@ -7,7 +8,7 @@ import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface DreameMapApi {
+interface DreameApi {
 
 //    @POST("/MyPosition?myPositionLng={myPositionLng}&myPositionLng={myPositionLat}")
     @POST("v3/99a78bae-47e1-42f1-8421-5d90c4c8a28e")
@@ -54,5 +55,7 @@ interface DreameMapApi {
     suspend fun getFavoriteStores(
 //        @Path("userId") userId: String
     ): Response<StoreDataBottomSheetListResponse>
+
+    suspend fun getSharingInfo(): Response<SharingListResponse>
 
 }
