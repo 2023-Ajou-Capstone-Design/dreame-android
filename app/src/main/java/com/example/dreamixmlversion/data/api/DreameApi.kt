@@ -1,8 +1,6 @@
 package com.example.dreamixmlversion.data.api
 
-import com.example.dreamixmlversion.data.api.response.entity.SharingListResponse
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataBottomSheetListResponse
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarkingResponse
+import com.example.dreamixmlversion.data.api.response.entity.*
 import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import retrofit2.Response
 import retrofit2.http.POST
@@ -57,5 +55,9 @@ interface DreameApi {
     ): Response<StoreDataBottomSheetListResponse>
 
     suspend fun getSharingInfo(): Response<SharingListResponse>
+
+    suspend fun getSharingDetailInfo(): SharingDetailInfo
+
+    suspend fun registerNewSharing(): SharingRegister
 
 }

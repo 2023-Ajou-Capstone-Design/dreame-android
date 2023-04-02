@@ -1,5 +1,7 @@
 package com.example.dreamixmlversion.di
 
+import com.example.dreamixmlversion.data.repository.SharingRepository
+import com.example.dreamixmlversion.data.repository.SharingRepositoryImpl
 import com.example.dreamixmlversion.data.repository.StoreRepository
 import com.example.dreamixmlversion.data.repository.StoreRepositoryImpl
 import dagger.Binds
@@ -16,7 +18,7 @@ abstract class RepositoryModule {
     @Binds
     abstract fun bindStoreRepository(impl: StoreRepositoryImpl): StoreRepository
 
-//    @ViewModelScoped
-//    @Binds
-//    abstract fun bindCategoryRepository(impl: CategoryRepositoryImpl): CategoryRepository
+    @ViewModelScoped
+    @Binds
+    abstract fun bindSharingRepository(impl: SharingRepositoryImpl): SharingRepository
 }
