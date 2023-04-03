@@ -14,9 +14,9 @@ interface StoreRepository {
     // mbr(거리)
 
     suspend fun getStoresNearbyUserByCategoryClicked(
-        storeType: String,
         category: String,
         subCategory: String,
+        storeType: String,
         latLng: DreameLatLng,
         mbr: Int
     ): List<StoreDataOnBottomSheetList>

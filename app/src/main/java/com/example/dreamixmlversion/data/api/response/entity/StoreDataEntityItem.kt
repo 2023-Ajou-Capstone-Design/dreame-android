@@ -7,7 +7,7 @@ data class StoreDataForMarking(
     @SerializedName("StoreType") val storeType: String,
     @SerializedName("StorePointLat") val storePointLat: Float,
     @SerializedName("StorePointLng") val storePointLng: Float,
-    @SerializedName("storeName") val storeName: String
+    @SerializedName("StoreName") val storeName: String
 )
 
 data class StoreDataOnBottomSheetList(

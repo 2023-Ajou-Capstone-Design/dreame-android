@@ -5,7 +5,9 @@ import com.google.gson.annotations.SerializedName
 
 data class StoreDataForMarkingResponse(
     @SerializedName("items")
-    val items: List<StoreDataForMarking>
+    val items: List<StoreDataForMarking>,
+    @SerializedName("total")
+    val total: Int
 )
 
 data class StoreDataBottomSheetListResponse(

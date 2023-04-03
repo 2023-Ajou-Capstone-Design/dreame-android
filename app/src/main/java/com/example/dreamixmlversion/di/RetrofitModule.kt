@@ -15,7 +15,7 @@ import javax.inject.Singleton
 object RetrofitModule {
 
     private val retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl(Url.MOCKY_URL)
+        .baseUrl(Url.AWS_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

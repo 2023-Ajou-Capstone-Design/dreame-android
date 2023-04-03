@@ -47,7 +47,7 @@ class StoreViewModel @Inject constructor(
             _queriedStoresOnBottomSheetListLiveData.postValue(
                 BottomSheetListUiState.SuccessGetStoresOnBottomSheetList(
                     storeRepository.getStoresNearbyUserByCategoryClicked(
-                        storeType, category, subCategory, latLng, mbr
+                        category, subCategory, storeType, latLng, mbr
                     )
                 )
             )

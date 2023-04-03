@@ -1,5 +1,6 @@
 package com.example.dreamixmlversion.ui.sharing
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +27,9 @@ class SharingActivity: AppCompatActivity() {
 
     private fun initRecyclerView() {
         sharingAdapter = SharingAdapter {
-
+            startActivity(Intent(this, SharingDetailActivity::class.java).apply {
+//                putExtra(SharingDetailActivity.SHARING_DETAIL_NAME, it.)
+            })
         }
         binding.sharingRecyclerView.adapter = sharingAdapter
 

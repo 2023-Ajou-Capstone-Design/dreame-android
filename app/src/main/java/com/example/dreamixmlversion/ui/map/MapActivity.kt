@@ -35,8 +35,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var dreameLatLng: DreameLatLng
 
-    @Inject lateinit var storeAdapter: StoreAdapter
-    @Inject lateinit var categoryAdapter: CategoryAdapter
+    @Inject
+    lateinit var storeAdapter: StoreAdapter
+    @Inject
+    lateinit var categoryAdapter: CategoryAdapter
 
     private lateinit var bottomSheetStoreListBehavior: BottomSheetBehavior<ConstraintLayout>
     private val bottomSheetStoreList by lazy {
@@ -56,6 +58,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private lateinit var naverMap: NaverMap
+
+    private lateinit var markers: List<Marker>
 
     private val viewModel: StoreViewModel by viewModels()
 
@@ -77,14 +81,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initSearchEditTextView() {
         binding.searchEditTextView.setOnEditorActionListener { editText, actionId, event ->
+
             currentFocus?.let { view ->
-                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                val inputMethodManager =
+                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
 
                 // todo 검색 query to server and process
 
-                view.clearFocus()
-                viewModel.getStoresBySearchingKeyword(editText.toString(), dreameLatLng, 2000)
+                viewModel.getStoresBySearchingKeyword(editText.toString(), dreameLatLng, 5000)
             }
             return@setOnEditorActionListener true
         }
@@ -94,12 +99,18 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         categoryAdapter = CategoryAdapter()
         categoryAdapter.submitList(CategoryEntity.getMainCategories())
         categoryAdapter.setOnCategoryClickListener {
+
             viewModel.getStoresByClickedCategory(
-                dreameLatLng,
-                2000,
-                it.storeType,
-                it.categoryId!!,
-                "subCategory"
+//                category =  it.categoryId!!,
+//                subCategory = "01",
+//                storeType = it.storeType,
+//                latLng = dreameLatLng,
+//                mbr = 5000,
+                category = "2",
+                subCategory = "2",
+                storeType = "1",
+                latLng = dreameLatLng,
+                mbr = 5000
             )
         }
         binding.categoryRecyclerView.adapter = categoryAdapter
@@ -163,7 +174,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             when (it) {
                 is BottomSheetListUiState.Uninitialized -> {}
                 is BottomSheetListUiState.Loading -> showProgressBarInBottomSheetStoreList()
-                is BottomSheetListUiState.SuccessGetStoresOnBottomSheetList -> spreadStoresInBottomSheet(it.stores)
+                is BottomSheetListUiState.SuccessGetStoresOnBottomSheetList -> spreadStoresInBottomSheet(
+                    it.stores
+                )
                 is BottomSheetListUiState.Error -> {}
             }
         }
@@ -183,24 +196,37 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun spreadStoresInBottomSheet(stores: List<StoreDataOnBottomSheetList>) {
         hideProgressBarInBottomSheet()
+        clearMarkers()
+
         val recyclerView = findViewById<RecyclerView>(R.id.bottomSheetStoreRecyclerView)
         recyclerView.adapter = storeAdapter
 
         storeAdapter.submitList(stores)
+        markStoresOnMap(stores.map {
+            StoreDataForMarking(
+                storeId = it.storeId,
+                storeType = it.storeType,
+                storePointLat = it.storePointLat,
+                storePointLng = it.storePointLng,
+                storeName = it.storeName
+            )
+        })
     }
 
     private fun markStoresOnMap(stores: List<StoreDataForMarking>) {
+        val markers = mutableListOf<Marker>()
         stores.forEach { store ->
-            Marker().apply {
-                position = LatLng(store.storePointLat.toDouble(), store.storePointLng.toDouble()) // null 처리 필요
+            markers.add(Marker().apply {
+                position = LatLng(
+                    store.storePointLat.toDouble(),
+                    store.storePointLng.toDouble()
+                ) // null 처리 필요
                 map = naverMap
                 icon = OverlayImage.fromResource(R.drawable.locationpin)
                 width = 140
                 height = 140
-//                captionText = store.storeName
-//                captionRequestedWidth = 150
                 val infoWindow = InfoWindow()
-                infoWindow.adapter = object: InfoWindow.DefaultTextAdapter(this@MapActivity) {
+                infoWindow.adapter = object : InfoWindow.DefaultTextAdapter(this@MapActivity) {
                     override fun getText(p0: InfoWindow): CharSequence {
                         return store.storeName
                     }
@@ -210,12 +236,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                     moveToPos(store.storePointLat.toDouble(), store.storePointLng.toDouble())
 
                     // todo -> detail Bottom Sheet
-                    drawDetailStoreInfo()
+                    drawDetailStoreInfo(store.storeId, store.storeType)
 
                     true
                 }
-            }
+            })
         }
+        this.markers = markers
     }
 
     private fun moveToPos(lat: Double, lng: Double) {
@@ -225,9 +252,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         naverMap.moveCamera(cameraUpdate)
     }
 
-    private fun drawDetailStoreInfo() {
+    private fun clearMarkers() {
+        markers.forEach { marker ->
+            marker.map = null
+        }
+    }
+
+    private fun drawDetailStoreInfo(storeId: Int, storeType: String) {
         bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        viewModel.getDetailStoreInfo(storeId, storeType)
     }
 
     private fun initBottomSheetDetailDialog() {
@@ -254,9 +288,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun bindMarkingOnMap() {
-        dreameLatLng = DreameLatLng(37.279159, 127.044082) // 위치 임의 선정
+        dreameLatLng = DreameLatLng(37.2784, 127.0442) // 위치 임의 선정
+//        moveToPos(dreameLatLng.lat, dreameLatLng.lng)
 
-        viewModel.getStoresNearbyUserForMarking(dreameLatLng, 2000)
+        viewModel.getStoresNearbyUserForMarking(dreameLatLng, 7000)
         viewModel.queriedStoresLiveData.observe(this) {
             when (it) {
                 is StoreUiState.Uninitialized -> checkLocationPermission()
@@ -274,13 +309,20 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun bindDetailInfo(detailInfoOfStore: DetailInfoItem) {
         bottomSheetDetailProgressBar.isVisible = false
         // todo : image
-        findViewById<TextView>(R.id.bottomSheetDetailStoreNameTextView).text = detailInfoOfStore.storeName
-        findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text = detailInfoOfStore.categoryName
-        findViewById<TextView>(R.id.bottomSheetDetailWorkingTimeTextView).text = detailInfoOfStore.workingTime
-        findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text = detailInfoOfStore.address
-        findViewById<TextView>(R.id.bottomSheetDetailPhoneNumberTextView).text = detailInfoOfStore.phoneNumber
-        findViewById<TextView>(R.id.bottomSheetDetailProvidedSubjectTextView).text = detailInfoOfStore.providedSubject
-        findViewById<TextView>(R.id.bottomSheetDetailProvidedItemTextView).text = detailInfoOfStore.providedItem
+        findViewById<TextView>(R.id.bottomSheetDetailStoreNameTextView).text =
+            detailInfoOfStore.storeName
+        findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text =
+            detailInfoOfStore.categoryName
+        findViewById<TextView>(R.id.bottomSheetDetailWorkingTimeTextView).text =
+            detailInfoOfStore.workingTime
+        findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text =
+            detailInfoOfStore.address
+        findViewById<TextView>(R.id.bottomSheetDetailPhoneNumberTextView).text =
+            detailInfoOfStore.phoneNumber
+        findViewById<TextView>(R.id.bottomSheetDetailProvidedSubjectTextView).text =
+            detailInfoOfStore.providedSubject
+        findViewById<TextView>(R.id.bottomSheetDetailProvidedItemTextView).text =
+            detailInfoOfStore.providedItem
     }
 
     @UiThread
