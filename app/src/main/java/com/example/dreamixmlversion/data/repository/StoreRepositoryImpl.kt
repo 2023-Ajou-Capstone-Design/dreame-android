@@ -25,9 +25,9 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getStoresNearbyUserByCategoryClicked(
-        category: String,
-        subCategory: String,
-        storeType: String,
+        category: Int,
+        subCategory: Int,
+        storeType: Int,
         latLng: DreameLatLng,
         mbr: Int
     ) = withContext(Dispatchers.IO) {

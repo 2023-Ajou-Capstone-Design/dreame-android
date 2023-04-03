@@ -20,9 +20,9 @@ interface DreameApi {
     @POST("/Category")
 //    @POST("v3/7b43db1b-b928-4b38-a3d5-60675c6ad58b")
     suspend fun getStoresClickedCategoryName(
-        @Query("Category") category: String,
-        @Query("SubCategory") subCategory: String,
-        @Query("StoreType") storeType: String,
+        @Query("Category") category: Int,
+        @Query("SubCategory") subCategory: Int,
+        @Query("StoreType") storeType: Int,
         @Query("myPositionLat") myPositionLat: Float,
         @Query("myPositionLng") myPositionLng: Float,
         @Query("mbr") mbr: Int,

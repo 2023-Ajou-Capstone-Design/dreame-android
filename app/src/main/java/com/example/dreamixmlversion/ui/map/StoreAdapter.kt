@@ -12,8 +12,7 @@ import com.example.dreamixmlversion.databinding.ItemStoreBinding
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
-@ActivityScoped
-class StoreAdapter @Inject constructor(): ListAdapter<StoreDataOnBottomSheetList, StoreAdapter.ViewHolder>(diffUtil) {
+class StoreAdapter: ListAdapter<StoreDataOnBottomSheetList, StoreAdapter.ViewHolder>(diffUtil) {
 
     private lateinit var onStoreClickListener: (StoreDataOnBottomSheetList) -> Unit
 //    private val favoriteClickListener: (StoreDataEntityItem) -> Unit

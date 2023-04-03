@@ -54,7 +54,7 @@ class SharingActivity : AppCompatActivity() {
 
     private fun callSharing() {
         viewModel.getSharingItemsNearbyUser(
-            DreameLatLng(13.00, 23.00), 1000
+            DreameLatLng(13.00, 23.00), 5000
         )
     }
 

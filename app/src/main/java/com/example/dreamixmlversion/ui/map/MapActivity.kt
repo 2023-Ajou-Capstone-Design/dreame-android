@@ -35,9 +35,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var dreameLatLng: DreameLatLng
 
-    @Inject
     lateinit var storeAdapter: StoreAdapter
-    @Inject
     lateinit var categoryAdapter: CategoryAdapter
 
     private lateinit var bottomSheetStoreListBehavior: BottomSheetBehavior<ConstraintLayout>
@@ -82,6 +80,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun initSearchEditTextView() {
         binding.searchEditTextView.setOnEditorActionListener { editText, actionId, event ->
 
+
             currentFocus?.let { view ->
                 val inputMethodManager =
                     getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -89,7 +88,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 // todo 검색 query to server and process
 
-                viewModel.getStoresBySearchingKeyword(editText.toString(), dreameLatLng, 5000)
+                viewModel.getStoresBySearchingKeyword(editText.text.toString(), dreameLatLng, 5000)
             }
             return@setOnEditorActionListener true
         }
@@ -101,14 +100,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         categoryAdapter.setOnCategoryClickListener {
 
             viewModel.getStoresByClickedCategory(
-//                category =  it.categoryId!!,
-//                subCategory = "01",
-//                storeType = it.storeType,
-//                latLng = dreameLatLng,
-//                mbr = 5000,
-                category = "2",
-                subCategory = "2",
-                storeType = "1",
+                category = it.category,
+                subCategory = it.subCategory,
+                storeType = it.storeType,
                 latLng = dreameLatLng,
                 mbr = 5000
             )

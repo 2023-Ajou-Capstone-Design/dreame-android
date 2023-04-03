@@ -10,8 +10,7 @@ import com.example.dreamixmlversion.databinding.ItemCategoryBinding
 import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
-@ActivityScoped
-class CategoryAdapter @Inject constructor(): ListAdapter<CategoryEntity, CategoryAdapter.ViewHolder>(diffUtil) {
+class CategoryAdapter: ListAdapter<CategoryEntity, CategoryAdapter.ViewHolder>(diffUtil) {
 
     private lateinit var categoryClickListener: (CategoryEntity) -> Unit
 
