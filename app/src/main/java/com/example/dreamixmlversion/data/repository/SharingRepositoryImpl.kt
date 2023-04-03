@@ -15,7 +15,9 @@ class SharingRepositoryImpl @Inject constructor(
         latLng: DreameLatLng,
         mbr: Int
     ): List<SharingDataItemEntity> {
-        return dreameApi.getSharingInfo().body()?.items ?: listOf()
+        return dreameApi.getSharingInfo(
+            latLng.lat.toFloat(), latLng.lng.toFloat(), mbr
+        ).body()?.items ?: listOf()
     }
 
     override suspend fun getDetailSharingInfo(

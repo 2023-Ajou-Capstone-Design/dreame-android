@@ -42,7 +42,6 @@ class SharingViewModel @Inject constructor(
         MutableLiveData<SharingDetailUiState>(SharingDetailUiState.Uninitialized)
     val queriedSharingDetailInfoLiveData: LiveData<SharingDetailUiState> =
         _queriedSharingDetailInfoLiveData
-
     fun getSharingDetailInfo(userId: String, writingId: String) {
         viewModelScope.launch {
             _queriedSharingDetailInfoLiveData.postValue(SharingDetailUiState.Loading)

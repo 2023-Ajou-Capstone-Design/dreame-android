@@ -1,10 +1,12 @@
 package com.example.dreamixmlversion.data.api.response.entity
 
 data class SharingDataItemEntity(
-    val image: String,
+    val thumbnailImage: String,
+    val writingId: String,
+    val userId: String,
+    val uploadTime: String,
     val title: String,
-    val address: String,
-//    val time: Date
+    val town: String
 )
 
 data class SharingDetailInfo(

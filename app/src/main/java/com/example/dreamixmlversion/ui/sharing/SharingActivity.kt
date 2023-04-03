@@ -2,6 +2,8 @@ package com.example.dreamixmlversion.ui.sharing
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -10,11 +12,17 @@ import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.databinding.ActivitySharingBinding
 import com.example.dreamixmlversion.ui.sharing.uiState.SharingUiState
 
-class SharingActivity: AppCompatActivity() {
+class SharingActivity : AppCompatActivity() {
 
     lateinit var binding: ActivitySharingBinding
     lateinit var sharingAdapter: SharingAdapter
     private val viewModel: SharingViewModel by viewModels()
+//    private val startForResult =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//            if (result.resultCode == SharingDetailActivity.RESULT_CODE) {
+//
+//            }
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +36,8 @@ class SharingActivity: AppCompatActivity() {
     private fun initRecyclerView() {
         sharingAdapter = SharingAdapter {
             startActivity(Intent(this, SharingDetailActivity::class.java).apply {
-//                putExtra(SharingDetailActivity.SHARING_DETAIL_NAME, it.)
+                putExtra(SharingDetailActivity.WRITING_ID, it.writingId)
+                putExtra(SharingDetailActivity.USER_ID, it.userId)
             })
         }
         binding.sharingRecyclerView.adapter = sharingAdapter
@@ -62,6 +71,8 @@ class SharingActivity: AppCompatActivity() {
     }
 
     private fun initFloatingButton() {
-        TODO("Not yet implemented")
+        binding.addSharingFloatingButton.setOnClickListener {
+
+        }
     }
 }

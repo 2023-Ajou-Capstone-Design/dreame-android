@@ -6,14 +6,26 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/sharingImageView"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:background="@color/teal_200"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/imageViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/dreami_main_color"
+        app:layout_constraintBottom_toTopOf="@id/akaTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewPager"
+        app:layout_constraintEnd_toEndOf="@id/imageViewPager"
+        app:layout_constraintStart_toStartOf="@id/imageViewPager"
+        app:tabBackground="@drawable/selector_tab"
+        app:tabIndicator="@null" />
 
     <TextView
         android:id="@+id/akaTextView"
@@ -25,11 +37,11 @@
         android:textSize="12sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sharingImageView"
+        app:layout_constraintTop_toBottomOf="@id/imageViewPager"
         tools:text="닉네임" />
 
     <TextView
-        android:id="@+id/addressTextView"
+        android:id="@+id/townTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
@@ -45,8 +57,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@id/addressTextView"
-        app:layout_constraintTop_toBottomOf="@id/addressTextView"
+        app:layout_constraintEnd_toEndOf="@id/townTextView"
+        app:layout_constraintTop_toBottomOf="@id/townTextView"
         tools:text="오후 4시 10분" />
 
     <TextView
@@ -88,5 +100,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="채팅하기" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,7 +55,12 @@ interface DreameApi {
 //        @Path("userId") userId: String
     ): Response<StoreDataBottomSheetListResponse>
 
-    suspend fun getSharingInfo(): Response<SharingListResponse>
+    @POST("FoodSharingList")
+    suspend fun getSharingInfo(
+        @Query("myPositionLat") myPositionLat: Float,
+        @Query("myPositionLng") myPositionLng: Float,
+        @Query("mbr") mbr: Int
+    ): Response<SharingListResponse>
 
     suspend fun getSharingDetailInfo(): SharingDetailInfo
 
