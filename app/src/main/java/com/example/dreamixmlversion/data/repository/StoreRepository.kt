@@ -1,9 +1,9 @@
 package com.example.dreamixmlversion.data.repository
 
+import com.example.dreamixmlversion.data.api.response.entity.DetailInfoItem
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
-import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 
 interface StoreRepository {
 
@@ -14,9 +14,10 @@ interface StoreRepository {
     // mbr(거리)
 
     suspend fun getStoresNearbyUserByCategoryClicked(
-        category: Int,
-        subCategory: Int,
-        storeType: Int,
+        path: String,
+        category: String?,
+        subCategory: String?,
+        storeType: String?,
         latLng: DreameLatLng,
         mbr: Int
     ): List<StoreDataOnBottomSheetList>

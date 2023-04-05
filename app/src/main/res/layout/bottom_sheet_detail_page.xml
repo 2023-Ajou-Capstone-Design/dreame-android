@@ -98,6 +98,16 @@
             tools:text="일식당" />
 
         <TextView
+            android:id="@+id/bottomSheetDetailSubCategoryTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/bottomSheetDetailCategoryTextView"
+            app:layout_constraintStart_toEndOf="@id/bottomSheetDetailCategoryTextView"
+            tools:text="기타" />
+
+        <TextView
             android:id="@+id/bottomSheetDetailWorkingTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

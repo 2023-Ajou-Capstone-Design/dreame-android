@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dreamixmlversion.R
+import com.example.dreamixmlversion.data.api.response.entity.DetailInfoItem
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.CategoryEntity
@@ -100,6 +101,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         categoryAdapter.setOnCategoryClickListener {
 
             viewModel.getStoresByClickedCategory(
+                path = it.path,
                 category = it.category,
                 subCategory = it.subCategory,
                 storeType = it.storeType,
@@ -108,15 +110,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             )
         }
         binding.categoryRecyclerView.adapter = categoryAdapter
-
-        storeAdapter = StoreAdapter()
-
-        storeAdapter.setOnStoreClickListener {
-            bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-            moveToPos(it.storePointLat.toDouble(), it.storePointLng.toDouble())
-            viewModel.getDetailStoreInfo(it.storeId, it.storeType)
-        }
     }
 
     private fun initFavoriteButton() {
@@ -161,6 +154,15 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initBottomSheetStoreList() {
+        storeAdapter = StoreAdapter()
+
+        storeAdapter.setOnStoreClickListener {
+            bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+            moveToPos(it.storePointLat.toDouble(), it.storePointLng.toDouble())
+            viewModel.getDetailStoreInfo(it.storeId, it.storeType)
+        }
+
         bottomSheetStoreListBehavior = BottomSheetBehavior.from(bottomSheetStoreList)
         bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
 
@@ -198,11 +200,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         storeAdapter.submitList(stores)
         markStoresOnMap(stores.map {
             StoreDataForMarking(
+                distance = it.distance,
                 storeId = it.storeId,
-                storeType = it.storeType,
+                storeName = it.storeName,
                 storePointLat = it.storePointLat,
                 storePointLng = it.storePointLng,
-                storeName = it.storeName
+                storeType = it.storeType
             )
         })
     }
@@ -302,21 +305,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun bindDetailInfo(detailInfoOfStore: DetailInfoItem) {
         bottomSheetDetailProgressBar.isVisible = false
-        // todo : image
-        findViewById<TextView>(R.id.bottomSheetDetailStoreNameTextView).text =
-            detailInfoOfStore.storeName
-        findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text =
-            detailInfoOfStore.categoryName
+        findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text = detailInfoOfStore.address
+        findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text = detailInfoOfStore.cateName
         findViewById<TextView>(R.id.bottomSheetDetailWorkingTimeTextView).text =
-            detailInfoOfStore.workingTime
-        findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text =
-            detailInfoOfStore.address
-        findViewById<TextView>(R.id.bottomSheetDetailPhoneNumberTextView).text =
-            detailInfoOfStore.phoneNumber
+            "${detailInfoOfStore.dayStart}~${detailInfoOfStore.dayFinish}"
+        findViewById<TextView>(R.id.bottomSheetDetailPhoneNumberTextView).text = detailInfoOfStore.phone
         findViewById<TextView>(R.id.bottomSheetDetailProvidedSubjectTextView).text =
-            detailInfoOfStore.providedSubject
-        findViewById<TextView>(R.id.bottomSheetDetailProvidedItemTextView).text =
-            detailInfoOfStore.providedItem
+            "${detailInfoOfStore.provided1}, ${detailInfoOfStore.provided2}"
+        findViewById<TextView>(R.id.bottomSheetDetailStoreNameTextView).text = detailInfoOfStore.storeName
+        // todo : image
+        findViewById<TextView>(R.id.bottomSheetDetailSubCategoryTextView).text = detailInfoOfStore.subCateName
     }
 
     @UiThread

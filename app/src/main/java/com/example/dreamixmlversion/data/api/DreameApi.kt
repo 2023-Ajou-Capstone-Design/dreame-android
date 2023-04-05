@@ -1,7 +1,6 @@
 package com.example.dreamixmlversion.data.api
 
 import com.example.dreamixmlversion.data.api.response.entity.*
-import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -17,12 +16,13 @@ interface DreameApi {
         @Query("mbr") mbr: Int
     ): Response<StoreDataForMarkingResponse>
 
-    @POST("/Category")
+    @POST("/Category/{Path}")
 //    @POST("v3/7b43db1b-b928-4b38-a3d5-60675c6ad58b")
     suspend fun getStoresClickedCategoryName(
-        @Query("Category") category: Int,
-        @Query("SubCategory") subCategory: Int,
-        @Query("StoreType") storeType: Int,
+        @Path("Path") path: String,
+        @Query("Category") category: String ?= null,
+        @Query("SubCategory") subCategory: String ?= null,
+        @Query("StoreType") storeType: String ?= null,
         @Query("myPositionLat") myPositionLat: Float,
         @Query("myPositionLng") myPositionLng: Float,
         @Query("mbr") mbr: Int,

@@ -12,11 +12,13 @@ import com.example.dreamixmlversion.ui.map.uistate.StoreUiState
 import com.example.dreamixmlversion.ui.sharing.uiState.RegisterUiState
 import com.example.dreamixmlversion.ui.sharing.uiState.SharingDetailUiState
 import com.example.dreamixmlversion.ui.sharing.uiState.SharingUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@HiltViewModel
 class SharingViewModel @Inject constructor(
     private val sharingRepository: SharingRepository
 ) : ViewModel() {

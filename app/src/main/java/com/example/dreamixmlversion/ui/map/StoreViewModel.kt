@@ -40,14 +40,19 @@ class StoreViewModel @Inject constructor(
         _queriedStoresOnBottomSheetListLiveData
 
     fun getStoresByClickedCategory(
-        latLng: DreameLatLng, mbr: Int, storeType: Int, category: Int, subCategory: Int
+        path: String, latLng: DreameLatLng, mbr: Int, storeType: String?, category: String?, subCategory: String?
     ) {
         viewModelScope.launch {
             _queriedStoresOnBottomSheetListLiveData.postValue(BottomSheetListUiState.Loading)
             _queriedStoresOnBottomSheetListLiveData.postValue(
                 BottomSheetListUiState.SuccessGetStoresOnBottomSheetList(
                     storeRepository.getStoresNearbyUserByCategoryClicked(
-                        category, subCategory, storeType, latLng, mbr
+                        path = path,
+                        category = category,
+                        subCategory = subCategory,
+                        storeType = storeType,
+                        latLng = latLng,
+                        mbr = mbr
                     )
                 )
             )

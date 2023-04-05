@@ -3,7 +3,6 @@ package com.example.dreamixmlversion.data.repository
 import com.example.dreamixmlversion.data.api.DreameApi
 import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
-import com.example.dreamixmlversion.ui.map.uistate.DetailInfoItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -25,14 +24,15 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getStoresNearbyUserByCategoryClicked(
-        category: Int,
-        subCategory: Int,
-        storeType: Int,
+        path: String,
+        category: String?,
+        subCategory: String?,
+        storeType: String?,
         latLng: DreameLatLng,
         mbr: Int
     ) = withContext(Dispatchers.IO) {
         dreameApi.getStoresClickedCategoryName(
-            category, subCategory, storeType, // subCategory가 필요한가?
+            path, category, subCategory, storeType, // subCategory가 필요한가?
             latLng.lat.toFloat(), latLng.lng.toFloat(), mbr
         ).body()?.items ?: listOf()
     }

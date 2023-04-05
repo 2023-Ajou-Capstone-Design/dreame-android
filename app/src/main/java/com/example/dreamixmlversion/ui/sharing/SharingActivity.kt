@@ -11,18 +11,20 @@ import com.example.dreamixmlversion.data.api.response.entity.SharingDataItemEnti
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.databinding.ActivitySharingBinding
 import com.example.dreamixmlversion.ui.sharing.uiState.SharingUiState
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SharingActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivitySharingBinding
-    lateinit var sharingAdapter: SharingAdapter
+    private lateinit var binding: ActivitySharingBinding
+    private lateinit var sharingAdapter: SharingAdapter
     private val viewModel: SharingViewModel by viewModels()
-//    private val startForResult =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == SharingDetailActivity.RESULT_CODE) {
-//
-//            }
-//        }
+    private val startForRegisterNewSharing =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == SharingDetailActivity.RESULT_CODE) {
+
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +55,9 @@ class SharingActivity : AppCompatActivity() {
     }
 
     private fun callSharing() {
-        viewModel.getSharingItemsNearbyUser(
-            DreameLatLng(13.00, 23.00), 5000
-        )
+//        viewModel.getSharingItemsNearbyUser(
+//            DreameLatLng(13.00, 23.00), 5000
+//        )
     }
 
     private fun showProgressBar() {
@@ -72,7 +74,8 @@ class SharingActivity : AppCompatActivity() {
 
     private fun initFloatingButton() {
         binding.addSharingFloatingButton.setOnClickListener {
-
+//            startForRegisterNewSharing.launch()
+            startActivity(Intent(this, RegisterNewSharingActivity::class.java))
         }
     }
 }

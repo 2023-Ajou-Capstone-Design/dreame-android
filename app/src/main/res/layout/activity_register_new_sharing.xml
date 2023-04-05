@@ -35,13 +35,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:text="글 제목"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageRecyclerView"
-        tools:text="글 제목" />
+        app:layout_constraintTop_toBottomOf="@id/imageRecyclerView" />
 
     <EditText
         android:id="@+id/titleEditTextView"
@@ -50,7 +50,8 @@
         android:layout_marginTop="4dp"
         android:maxLines="1"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:background="@color/gray_background"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
@@ -61,22 +62,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:text="글 내용"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleEditTextView"
-        tools:text="글 내용" />
+        app:layout_constraintTop_toBottomOf="@id/titleEditTextView" />
 
     <EditText
         android:id="@+id/contentEditTextView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="4dp"
-        android:textSize="18sp"
+        android:textSize="24sp"
+        android:layout_marginBottom="12dp"
+        android:gravity="top|left"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/gray_background"
+        app:layout_constraintBottom_toTopOf="@id/registerNewSharingButton"
         app:layout_constraintTop_toBottomOf="@id/contentTextView" />
 
     <androidx.appcompat.widget.AppCompatButton

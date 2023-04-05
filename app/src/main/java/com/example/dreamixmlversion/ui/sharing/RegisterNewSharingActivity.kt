@@ -1,8 +1,10 @@
 package com.example.dreamixmlversion.ui.sharing
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +12,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.dreamixmlversion.databinding.ActivityRegisterNewSharingBinding
 
-class RegisterNewSharing : AppCompatActivity() {
+class RegisterNewSharingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterNewSharingBinding
     private lateinit var registerImageAdapter: RegisterImageAdapter
@@ -25,11 +27,11 @@ class RegisterNewSharing : AppCompatActivity() {
         setContentView(binding.root)
 
         initRecyclerView()
-        initGetImageFromExternalStorage()
+        initGalleryImageButton()
         initRegisterSharingButton()
     }
 
-    private fun initGetImageFromExternalStorage() {
+    private fun initGalleryImageButton() {
         binding.galleryImageButton.setOnClickListener {
             checkExternalStoragePermission()
         }
@@ -39,12 +41,18 @@ class RegisterNewSharing : AppCompatActivity() {
         when {
             ContextCompat.checkSelfPermission(
                 this,
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED -> loadImage()
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                loadImage()
+            }
             shouldShowRequestPermissionRationale(
-                android.Manifest.permission.READ_EXTERNAL_STORAGE
-            ) -> showPermissionInfoDialog()
-            else -> requestReadExternalStorage()
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) -> {
+                showPermissionInfoDialog()
+            }
+            else -> {
+                requestReadExternalStorage()
+            }
         }
     }
 
@@ -88,7 +96,7 @@ class RegisterNewSharing : AppCompatActivity() {
     private fun requestReadExternalStorage() {
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
             REQUEST_EXTERNAL_STORAGE_CODE
         )
     }
@@ -102,12 +110,12 @@ class RegisterNewSharing : AppCompatActivity() {
     private fun initRegisterSharingButton() {
         with(binding) {
             registerNewSharingButton.setOnClickListener {
-
+                checkExternalStoragePermission()
             }
         }
     }
 
     companion object {
-        const val REQUEST_EXTERNAL_STORAGE_CODE = 1000
+        const val REQUEST_EXTERNAL_STORAGE_CODE = 2000
     }
 }
