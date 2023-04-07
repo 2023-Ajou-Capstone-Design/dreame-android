@@ -9,7 +9,7 @@ enum class CategoryEntity(
     val categoryName: String
 ) {
     CATEGORY_FOOD("Category", "1", null, null,"음식점"),
-    CATEGORY_CAFE("SubCategory", "1", null, null,"카페"),
+    CATEGORY_CAFE("SubCategory", "1", "6", null,"카페"),
     CATEGORY_CONVENIENCE_STORE("SubCategory", "2", "4", null, "편의점"),
     CATEGORY_MART("Category", "2", null, null, "마트"),
     CATEGORY_EDUCATION("Category", "4", null, null, "교육"),

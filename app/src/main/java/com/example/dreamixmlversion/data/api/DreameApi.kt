@@ -16,7 +16,7 @@ interface DreameApi {
         @Query("mbr") mbr: Int
     ): Response<StoreDataForMarkingResponse>
 
-    @POST("/Category/{Path}")
+    @POST("/Choose/{Path}")
 //    @POST("v3/7b43db1b-b928-4b38-a3d5-60675c6ad58b")
     suspend fun getStoresClickedCategoryName(
         @Path("Path") path: String,
@@ -40,7 +40,7 @@ interface DreameApi {
 
     // 특정 지점의
     // detail 정보 get (by storeID)
-    @POST("/StoreID")
+    @POST("/StoreDetail")
     suspend fun getDetailSpotData(
         @Query("StoreID") storeId: Int,
         @Query("StoreType") storeType: String

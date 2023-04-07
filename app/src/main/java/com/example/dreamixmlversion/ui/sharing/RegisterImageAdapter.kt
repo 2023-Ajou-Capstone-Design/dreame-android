@@ -19,7 +19,6 @@ class RegisterImageAdapter(
                 deleteImageButton.setOnClickListener {
                     deleteImageClickListener(sharingImageItem)
                 }
-                previewImageView.setImageURI(sharingImageItem.uri)
             }
         }
     }

@@ -79,7 +79,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initSearchEditTextView() {
-        binding.searchEditTextView.setOnEditorActionListener { editText, actionId, event ->
+        binding.searchEditTextView.setOnEditorActionListener { editText, _, _ ->
 
 
             currentFocus?.let { view ->

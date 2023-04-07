@@ -31,6 +31,15 @@ class RegisterNewSharingActivity : AppCompatActivity() {
         initRegisterSharingButton()
     }
 
+    private fun initRecyclerView() {
+        registerImageAdapter = RegisterImageAdapter(deleteImageClickListener = {
+            val list = arrayListOf<SharingImageItem>()
+            list.addAll(registerImageAdapter.currentList)
+            list.remove(it)
+            registerImageAdapter.submitList(list)
+        })
+    }
+
     private fun initGalleryImageButton() {
         binding.galleryImageButton.setOnClickListener {
             checkExternalStoragePermission()
@@ -60,6 +69,24 @@ class RegisterNewSharingActivity : AppCompatActivity() {
         imageLoadLauncher.launch("image/*")
     }
 
+    private fun showPermissionInfoDialog() {
+        AlertDialog.Builder(this).apply {
+            setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
+            setNegativeButton("취소", null)
+            setPositiveButton("동의") { _, _ ->
+                requestReadExternalStorage()
+            }
+        }.show()
+    }
+
+    private fun requestReadExternalStorage() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+            REQUEST_EXTERNAL_STORAGE_CODE
+        )
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -79,40 +106,21 @@ class RegisterNewSharingActivity : AppCompatActivity() {
 
     private fun updateImages(uriList: List<Uri>) {
         val images = uriList.map { SharingImageItem(it) }
-        val updatedImages = registerImageAdapter.currentList.toMutableList().apply { addAll(images) }
+        val updatedImages =
+            registerImageAdapter.currentList.toMutableList().apply { addAll(images) }
         registerImageAdapter.submitList(updatedImages)
-    }
-
-    private fun showPermissionInfoDialog() {
-        AlertDialog.Builder(this).apply {
-            setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
-            setNegativeButton("취소", null)
-            setPositiveButton("동의") { _, _ ->
-                requestReadExternalStorage()
-            }
-        }.show()
-    }
-
-    private fun requestReadExternalStorage() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-            REQUEST_EXTERNAL_STORAGE_CODE
-        )
-    }
-
-    private fun initRecyclerView() {
-        registerImageAdapter = RegisterImageAdapter { sharingImageItem ->
-            registerImageAdapter.currentList.remove(sharingImageItem)
-        }
     }
 
     private fun initRegisterSharingButton() {
         with(binding) {
             registerNewSharingButton.setOnClickListener {
-                checkExternalStoragePermission()
+                registerNewSharingToServer()
             }
         }
+    }
+
+    private fun registerNewSharingToServer() = with(binding) {
+
     }
 
     companion object {

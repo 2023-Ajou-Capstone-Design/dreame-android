@@ -12,4 +12,5 @@
     <color name="category_background_color">#FFE49F</color>
     <color name="image_thumbnail_color">#FF6599</color>
     <color name="gray_background">#E6E6E6</color>
+    <color name="warm_color">#FFEEB9</color>
 </resources>
