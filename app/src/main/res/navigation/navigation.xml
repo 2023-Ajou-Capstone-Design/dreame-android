@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/login_screen"
+    android:id="@+id/navigation">
+
+    <fragment
+        android:id="@+id/login_screen"
+        tools:layout="@layout/fragment_login"
+        android:label="fragment_login"
+        android:name="com.example.dreamixmlversion.ui.login.LoginScreen">
+
+        <action
+            android:id="@+id/action_login_screen_to_question"
+            app:destination="@id/question"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/question"
+        android:name="com.example.dreamixmlversion.ui.login.QuestionScreen"
+        android:label="fragment_question"
+        tools:layout="@layout/fragment_question">
+        <action
+            android:id="@+id/action_question_to_register_nickname"
+            app:destination="@id/registerNickname"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerNickname"
+        android:name="com.example.dreamixmlversion.ui.login.RegisterNickNameScreen"
+        android:label="fragment_register_nickname"
+        tools:layout="@layout/fragment_register_nickname">
+    </fragment>
+
+</navigation>

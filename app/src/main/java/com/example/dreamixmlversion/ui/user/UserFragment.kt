@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.dreamixmlversion.R
+import com.example.dreamixmlversion.databinding.FragmentHomeBinding
 import com.example.dreamixmlversion.databinding.FragmentUserBinding
 
 class UserFragment: Fragment(R.layout.fragment_user) {
@@ -14,14 +15,24 @@ class UserFragment: Fragment(R.layout.fragment_user) {
         const val TAG = "UserFragment"
     }
 
-    private var binding: FragmentUserBinding ?= null
+    private var _binding: FragmentUserBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FragmentUserBinding.inflate(inflater, container, false)
-        .also { binding = it }
-        .root
+    ): View {
+        _binding = FragmentUserBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViews()
+    }
+
+    private fun initViews() {
+
+    }
 }

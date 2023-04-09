@@ -3,6 +3,8 @@
 
     <string name="title_home">Home</string>
     <string name="title_chat">Chat</string>
-    <string name="title_user">User</string>f
+    <string name="title_user">User</string>
+
+    <string name="shared_preference_manager_key">SHARED_PREFERENCE_MANAGER_KEY</string>
 
 </resources>
