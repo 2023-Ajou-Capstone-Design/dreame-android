@@ -9,7 +9,7 @@ sealed class SharingDetailUiState {
     object Loading: SharingDetailUiState()
 
     data class SuccessGetDetailInfo(
-        val detailInfoItem: SharingDetailInfo
+        val detailInfoItem: SharingDetailInfo?
     ): SharingDetailUiState()
 
     object Error: SharingDetailUiState()

@@ -6,95 +6,113 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:padding="12dp">
-
-    <ImageButton
-        android:id="@+id/galleryImageButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="30dp"
-        android:background="@color/dreami_main_color"
-        android:src="@drawable/baseline_image_24"
+    
+    <ScrollView
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/imageRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/galleryImageButton"
-        tools:listitem="@layout/item_sharing_image_attched" />
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="글 제목"
-        android:textColor="@color/black"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageRecyclerView" />
-
-    <EditText
-        android:id="@+id/titleEditTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:maxLines="1"
-        android:textColor="@color/black"
-        android:background="@color/gray_background"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        tools:text="adkvjadskvajsd;vlkasdjvlkasdjv" />
-
-    <TextView
-        android:id="@+id/contentTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="글 내용"
-        android:textColor="@color/black"
-        android:textSize="26sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/titleEditTextView" />
-
-    <EditText
-        android:id="@+id/contentEditTextView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="4dp"
-        android:textSize="24sp"
-        android:layout_marginBottom="12dp"
-        android:gravity="top|left"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/gray_background"
-        app:layout_constraintBottom_toTopOf="@id/registerNewSharingButton"
-        app:layout_constraintTop_toBottomOf="@id/contentTextView" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/registerNewSharingButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/dreami_main_color"
-        android:text="등록"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_height="0dp">
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/galleryImageButton"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/dreami_main_color"
+                android:src="@drawable/baseline_image_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/imageRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/galleryImageButton"
+                tools:listitem="@layout/item_sharing_image_attched" />
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="글 제목"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageRecyclerView" />
+
+            <EditText
+                android:id="@+id/titleEditTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/gray_background"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleTextView"
+                tools:text="adkvjadskvajsd;vlkasdjvlkasdjv" />
+
+            <TextView
+                android:id="@+id/contentTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="글 내용"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/titleEditTextView" />
+
+            <EditText
+                android:id="@+id/contentEditTextView"
+                android:layout_width="0dp"
+                android:layout_height="400dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="12dp"
+                android:background="@color/gray_background"
+                android:gravity="top|left"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@id/registerNewSharingButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/contentTextView" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/registerNewSharingButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/dreami_main_color"
+                android:text="등록"
+                android:textColor="@color/black"
+                android:textSize="22sp"
+                app:layout_constraintTop_toBottomOf="@id/contentEditTextView"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,10 +2,13 @@ package com.example.dreamixmlversion.di
 
 import com.example.dreamixmlversion.data.api.DreameApi
 import com.example.dreamixmlversion.data.api.Url
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -14,9 +17,18 @@ import javax.inject.Singleton
 @Module
 object RetrofitModule {
 
+    private val interceptor = HttpLoggingInterceptor().apply {
+        this.level = HttpLoggingInterceptor.Level.BODY
+    }
+
+    private val client = OkHttpClient.Builder().apply {
+        this.addInterceptor(interceptor)
+    }.build()
+
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(Url.AWS_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .client(client)
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         .build()
 
     @Provides

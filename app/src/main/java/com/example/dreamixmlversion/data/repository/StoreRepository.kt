@@ -28,9 +28,15 @@ interface StoreRepository {
         mbr: Int
     ): List<StoreDataOnBottomSheetList>
 
-    suspend fun getDetailStoreInfo(storeId: Int, storeType: String): DetailInfoItem
+    suspend fun getDetailStoreInfo(storeId: Int, storeType: String): DetailInfoItem?
 
     suspend fun getFavoriteStores(
         userId: String
     ): List<StoreDataOnBottomSheetList>
+
+    suspend fun updateFavorite(
+        storeId: Int,
+        storeType: String,
+        userId: String
+    ): Boolean
 }

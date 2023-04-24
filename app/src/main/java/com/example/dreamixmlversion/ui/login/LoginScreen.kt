@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import com.example.dreamixmlversion.R
 
 class LoginScreen: Fragment() {
@@ -20,9 +21,10 @@ class LoginScreen: Fragment() {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
         view.findViewById<Button>(R.id.loginButton).setOnClickListener {
-            val address = view.findViewById<EditText>(R.id.addressEditTextView).text
+            val address = view.findViewById<EditText>(R.id.addressEditTextView).text.toString()
 
-            Navigation.findNavController(view).navigate(R.id.action_login_screen_to_question)
+            val action = LoginScreenDirections.actionLoginScreenToQuestion(address)
+            view.findNavController().navigate(action)
         }
 
         return view

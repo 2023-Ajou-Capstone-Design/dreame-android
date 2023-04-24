@@ -32,7 +32,7 @@ class StoreRepositoryImpl @Inject constructor(
         mbr: Int
     ) = withContext(Dispatchers.IO) {
         dreameApi.getStoresClickedCategoryName(
-            path, category, subCategory, storeType, // subCategory가 필요한가?
+            path, category, subCategory, storeType,
             latLng.lat.toFloat(), latLng.lng.toFloat(), mbr
         ).body()?.items ?: listOf()
     }
@@ -51,15 +51,21 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getDetailStoreInfo(storeId: Int, storeType: String)= withContext(Dispatchers.IO) {
+    override suspend fun getDetailStoreInfo(storeId: Int, storeType: String) = withContext(Dispatchers.IO) {
 
         // todo : storeId 파라미터로 api 호출
-        dreameApi.getDetailSpotData(storeId, storeType).body()!!
+        dreameApi.getDetailSpotData(storeId, storeType).body()?.items?.first()
+//        dreameApi.getDetailSpotData(5064, "1").body()!!
     }
 
     override suspend fun getFavoriteStores(userId: String) = withContext(Dispatchers.IO) {
 //        dreameApi.getFavoriteStores(userId).body()?.items ?: listOf()
-        dreameApi.getFavoriteStores().body()?.items ?: listOf()
+        dreameApi.getFavoriteStores(userId).body()?.items ?: listOf()
+    }
+
+    override suspend fun updateFavorite(storeId: Int, storeType: String, userId: String): Boolean {
+//        return dreameApi.updateFavorite(storeId, storeType, userId)
+        return true
     }
 
 }

@@ -96,4 +96,10 @@ class StoreViewModel @Inject constructor(
             )
         }
     }
+
+//    fun updateFavorite(storeId: Int, storeType: String, userId: String) {
+//        viewModelScope.launch {
+//            storeRepository.
+//        }
+//    }
 }

@@ -16,6 +16,7 @@ class RegisterImageAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(sharingImageItem: SharingImageItem) {
             with(binding) {
+                previewImageView.setImageURI(sharingImageItem.uri)
                 deleteImageButton.setOnClickListener {
                     deleteImageClickListener(sharingImageItem)
                 }

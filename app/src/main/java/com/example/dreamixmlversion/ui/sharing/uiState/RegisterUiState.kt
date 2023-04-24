@@ -9,7 +9,7 @@ sealed class RegisterUiState {
     object Loading: RegisterUiState()
 
     data class RegisterSharing(
-        val isSuccess: SharingRegister
+        val isSuccess: Boolean
     ): RegisterUiState()
 
     object Error: RegisterUiState()

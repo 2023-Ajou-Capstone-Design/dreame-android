@@ -1,25 +1,26 @@
 package com.example.dreamixmlversion.data.api.response.entity
 
+import com.google.gson.annotations.SerializedName
+
 data class SharingDataItemEntity(
-    val thumbnailImage: String,
-    val writingId: String,
-    val userId: String,
-    val uploadTime: String,
-    val title: String,
-    val town: String
+    @SerializedName("Photo1") val thumbnailImage: String,
+    @SerializedName("Title") val title: String,
+    @SerializedName("Town") val town: String,
+    @SerializedName("UploadTime") val uploadTime: String,
+    @SerializedName("UserID") val userId: String,
+    @SerializedName("WritingID") val writingId: String
 )
 
 data class SharingDetailInfo(
-    val userId: String,
-    val writingId: String,
-    val photo1: String,
-    val photo2: String,
-    val photo3: String,
-    val aka: String,
-    val town: String,
-    val title: String,
-    val content: String,
-    val uploadTime: String
+    @SerializedName("Photo1") val photo1: String,
+    @SerializedName("Photo2") val photo2: String,
+    @SerializedName("Photo3") val photo3: String,
+    @SerializedName("Title") val title: String,
+    @SerializedName("Town") val town: String,
+    @SerializedName("Contents") val contents: String,
+    @SerializedName("UploadTime") val uploadTime: String,
+    @SerializedName("UserID") val userId: String,
+    @SerializedName("WritingID") val writingId: String
 )
 
 data class SharingRegister(

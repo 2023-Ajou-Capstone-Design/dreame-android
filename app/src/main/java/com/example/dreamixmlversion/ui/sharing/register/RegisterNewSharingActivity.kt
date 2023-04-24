@@ -1,17 +1,23 @@
-package com.example.dreamixmlversion.ui.sharing
+package com.example.dreamixmlversion.ui.sharing.register
 
 import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.dreamixmlversion.databinding.ActivityRegisterNewSharingBinding
+import com.example.dreamixmlversion.ui.sharing.RegisterImageAdapter
+import com.example.dreamixmlversion.ui.sharing.SharingImageItem
+import com.example.dreamixmlversion.ui.sharing.detail.SharingDetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class RegisterNewSharingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRegisterNewSharingBinding
@@ -20,6 +26,7 @@ class RegisterNewSharingActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uriList ->
             updateImages(uriList)
         }
+    private val viewModel: RegisterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +39,14 @@ class RegisterNewSharingActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        registerImageAdapter = RegisterImageAdapter(deleteImageClickListener = {
-            val list = arrayListOf<SharingImageItem>()
-            list.addAll(registerImageAdapter.currentList)
-            list.remove(it)
-            registerImageAdapter.submitList(list)
-        })
+        registerImageAdapter = RegisterImageAdapter(
+            deleteImageClickListener = {
+                val list = arrayListOf<SharingImageItem>()
+                list.addAll(registerImageAdapter.currentList)
+                list.remove(it)
+                registerImageAdapter.submitList(list)
+            })
+        binding.imageRecyclerView.adapter = registerImageAdapter
     }
 
     private fun initGalleryImageButton() {
@@ -47,20 +56,39 @@ class RegisterNewSharingActivity : AppCompatActivity() {
     }
 
     private fun checkExternalStoragePermission() {
-        when {
-            ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED -> {
-                loadImage()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_MEDIA_IMAGES
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    loadImage()
+                }
+                shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_MEDIA_IMAGES
+                ) -> {
+                    showPermissionInfoDialog()
+                }
+                else -> {
+                    requestReadExternalStorage()
+                }
             }
-            shouldShowRequestPermissionRationale(
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ) -> {
-                showPermissionInfoDialog()
-            }
-            else -> {
-                requestReadExternalStorage()
+        } else {
+            when {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    loadImage()
+                }
+                shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ) -> {
+                    showPermissionInfoDialog()
+                }
+                else -> {
+                    requestReadExternalStorage()
+                }
             }
         }
     }
@@ -80,11 +108,19 @@ class RegisterNewSharingActivity : AppCompatActivity() {
     }
 
     private fun requestReadExternalStorage() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-            REQUEST_EXTERNAL_STORAGE_CODE
-        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
+                REQUEST_EXTERNAL_STORAGE_CODE
+            )
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                REQUEST_EXTERNAL_STORAGE_CODE
+            )
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -114,13 +150,14 @@ class RegisterNewSharingActivity : AppCompatActivity() {
     private fun initRegisterSharingButton() {
         with(binding) {
             registerNewSharingButton.setOnClickListener {
-                registerNewSharingToServer()
+                val images = registerImageAdapter.currentList.map { it.uri }
+                val title = titleEditTextView.text.toString()
+                val content = contentEditTextView.text.toString()
+                viewModel.registerNewSharing(title, content)
+                setResult(RESULT_OK)
+                finish()
             }
         }
-    }
-
-    private fun registerNewSharingToServer() = with(binding) {
-
     }
 
     companion object {

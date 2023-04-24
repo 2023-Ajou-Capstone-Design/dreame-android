@@ -18,8 +18,11 @@ class SharingAdapter(
             with(binding) {
 //                sharingThumbnailImageView.setImageResource()
                 sharingTitleTextView.text = sharingItem.title
-//                sharingAddressTextView.text = sharingItem.address
-//                sharingTimeTextView.text = sharingItem
+                sharingAddressTextView.text = sharingItem.town
+                sharingTimeTextView.text = sharingItem.uploadTime
+                root.setOnClickListener {
+                    sharingItemClickListener(sharingItem)
+                }
             }
         }
     }

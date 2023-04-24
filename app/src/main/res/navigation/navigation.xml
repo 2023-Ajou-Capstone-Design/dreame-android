@@ -17,7 +17,14 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
+            app:exitAnim="@anim/slide_out_left">
+
+            <argument
+                android:name="address"
+                android:defaultValue=""
+                app:argType="string"/>
+
+        </action>
 
     </fragment>
 
@@ -26,13 +33,21 @@
         android:name="com.example.dreamixmlversion.ui.login.QuestionScreen"
         android:label="fragment_question"
         tools:layout="@layout/fragment_question">
+
         <action
             android:id="@+id/action_question_to_register_nickname"
             app:destination="@id/registerNickname"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"/>
+            app:exitAnim="@anim/slide_out_left">
+
+            <argument
+                android:name="isChild"
+                android:defaultValue="false"
+                app:argType="boolean"/>
+
+        </action>
     </fragment>
 
     <fragment

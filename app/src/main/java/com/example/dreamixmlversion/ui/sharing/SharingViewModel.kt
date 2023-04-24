@@ -23,62 +23,18 @@ class SharingViewModel @Inject constructor(
     private val sharingRepository: SharingRepository
 ) : ViewModel() {
 
+
     private val _queriedSharingItemLiveData =
         MutableLiveData<SharingUiState>(SharingUiState.Uninitialized)
     val queriedSharingItemLiveData: LiveData<SharingUiState> = _queriedSharingItemLiveData
 
-    fun getSharingItemsNearbyUser(latLng: DreameLatLng, mbr: Int) {
+    fun getSharingItemsNearbyUser(town: String) {
         viewModelScope.launch {
 //            _queriedStoresLiveData.postValue(StoreUiState.Loading)
             _queriedSharingItemLiveData.postValue(
                 SharingUiState.SuccessGetSharingItems(
                     sharingRepository.getSharingListInfo(
-                        latLng, mbr
-                    )
-                )
-            )
-        }
-    }
-
-    private val _queriedSharingDetailInfoLiveData =
-        MutableLiveData<SharingDetailUiState>(SharingDetailUiState.Uninitialized)
-    val queriedSharingDetailInfoLiveData: LiveData<SharingDetailUiState> =
-        _queriedSharingDetailInfoLiveData
-    fun getSharingDetailInfo(userId: String, writingId: String) {
-        viewModelScope.launch {
-            _queriedSharingDetailInfoLiveData.postValue(SharingDetailUiState.Loading)
-            _queriedSharingDetailInfoLiveData.postValue(
-                SharingDetailUiState.SuccessGetDetailInfo(
-                    sharingRepository.getDetailSharingInfo(
-                        userId, writingId
-                    )
-                )
-            )
-        }
-    }
-
-
-    private val _registerSharingLiveData =
-        MutableLiveData<RegisterUiState>(RegisterUiState.Uninitialized)
-    val registerSharingLiveData: LiveData<RegisterUiState> =
-        _registerSharingLiveData
-
-
-    fun registerNewSharing(
-        userId: String,
-        writingId: String,
-        title: String,
-        content: String,
-        photo1: String,
-        photo2: String,
-        photo3: String
-    ) {
-        viewModelScope.launch {
-            _registerSharingLiveData.postValue(RegisterUiState.Loading)
-            _registerSharingLiveData.postValue(
-                RegisterUiState.RegisterSharing(
-                    sharingRepository.registerNewSharing(
-                        userId, writingId, title, content, photo1, photo2, photo3
+                        town
                     )
                 )
             )

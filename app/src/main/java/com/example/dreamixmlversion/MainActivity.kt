@@ -1,8 +1,13 @@
 package com.example.dreamixmlversion
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.dreamixmlversion.databinding.ActivityMainBinding
 import com.example.dreamixmlversion.ui.chat.ChatFragment
@@ -19,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        startActivity(Intent(this, LoginActivity::class.java))
+//        startActivity(Intent(this, LoginActivity::class.java))
         initFragments()
     }
 
@@ -30,11 +35,22 @@ class MainActivity : AppCompatActivity() {
 
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.home_dest -> replaceFragment(homeFragment, HomeFragment.TAG)
-                R.id.chat_dest -> replaceFragment(chatFragment, ChatFragment.TAG)
-                R.id.user_dest -> replaceFragment(userFragment, UserFragment.TAG)
+                R.id.home_dest -> {
+                    replaceFragment(homeFragment, HomeFragment.TAG)
+                    return@setOnItemSelectedListener true
+                }
+                R.id.chat_dest -> {
+                    replaceFragment(chatFragment, ChatFragment.TAG)
+                    return@setOnItemSelectedListener true
+                }
+                R.id.user_dest -> {
+                    replaceFragment(userFragment, UserFragment.TAG)
+                    return@setOnItemSelectedListener true
+                }
+                else -> {
+                    return@setOnItemSelectedListener false
+                }
             }
-            true
         }
 
         replaceFragment(HomeFragment(), HomeFragment.TAG)

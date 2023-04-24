@@ -1,15 +1,26 @@
 package com.example.dreamixmlversion.ui.map
 
+import android.Manifest
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.UiThread
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dreamixmlversion.R
@@ -20,6 +31,9 @@ import com.example.dreamixmlversion.data.db.entity.CategoryEntity
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.databinding.ActivityMapBinding
 import com.example.dreamixmlversion.ui.map.uistate.*
+import com.example.dreamixmlversion.ui.sharing.register.RegisterNewSharingActivity
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.*
@@ -27,7 +41,6 @@ import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.overlay.OverlayImage
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -62,6 +75,22 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val viewModel: StoreViewModel by viewModels()
 
+    private val locationPermissionRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        when {
+            permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) ||
+                    permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
+                checkLocationPermission()
+            }
+            else -> {
+                showPermissionInfoDialog()
+            }
+        }
+    }
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapBinding.inflate(layoutInflater)
@@ -75,7 +104,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         initBottomSheetStoreList()
         initBottomSheetDetailDialog()
         initFavoriteButton()
-        bindMarkingOnMap()
+        initMarkingOnMap()
     }
 
     private fun initSearchEditTextView() {
@@ -114,7 +143,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initFavoriteButton() {
         binding.favoritesImageButton.setOnClickListener {
-            viewModel.getFavoriteStores("") // todo userId 기입
+            viewModel.getFavoriteStores("Tester") // todo userId 기입
         }
     }
 
@@ -178,8 +207,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun checkLocationPermission() {}
-
     private fun showProgressBarInBottomSheetStoreList() {
         bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         bottomSheetStoreListProgressBar.isVisible = true
@@ -242,7 +269,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         this.markers = markers
     }
 
-    private fun moveToPos(lat: Double, lng: Double) {
+    private fun moveToPos(lat: Double = dreameLatLng.lat, lng: Double = dreameLatLng.lng) {
         val cameraUpdate =
             CameraUpdate.scrollTo(LatLng(lat, lng))
                 .animate(CameraAnimation.Easing)
@@ -284,11 +311,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun bindMarkingOnMap() {
-        dreameLatLng = DreameLatLng(37.2784, 127.0442) // 위치 임의 선정
-//        moveToPos(dreameLatLng.lat, dreameLatLng.lng)
-
-        viewModel.getStoresNearbyUserForMarking(dreameLatLng, 7000)
+    private fun initMarkingOnMap() {
         viewModel.queriedStoresLiveData.observe(this) {
             when (it) {
                 is StoreUiState.Uninitialized -> checkLocationPermission()
@@ -298,23 +321,81 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun checkLocationPermission() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPositionPermission()
+            return
+        }
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener {
+                dreameLatLng = DreameLatLng(it.latitude, it.longitude)
+                moveToPos()
+                viewModel.getStoresNearbyUserForMarking(dreameLatLng, 3000)
+            }
+    }
+
+    private fun showPermissionInfoDialog() {
+        AlertDialog.Builder(this).apply {
+            setMessage("위치 정보를 가져오기 위해서, 위치 권한이 필요합니다.")
+            setNegativeButton("취소", null)
+            setPositiveButton("동의") { _, _ ->
+                requestPositionPermission()
+            }
+        }.show()
+    }
+
+    private fun requestPositionPermission() {
+        locationPermissionRequest.launch(
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            )
+        )
+    }
+
     private fun showProgressBarInBottomSheetDetail() {
         bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetDetailProgressBar.isVisible = true
     }
 
-    private fun bindDetailInfo(detailInfoOfStore: DetailInfoItem) {
-        bottomSheetDetailProgressBar.isVisible = false
-        findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text = detailInfoOfStore.address
-        findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text = detailInfoOfStore.cateName
-        findViewById<TextView>(R.id.bottomSheetDetailWorkingTimeTextView).text =
-            "${detailInfoOfStore.dayStart}~${detailInfoOfStore.dayFinish}"
-        findViewById<TextView>(R.id.bottomSheetDetailPhoneNumberTextView).text = detailInfoOfStore.phone
-        findViewById<TextView>(R.id.bottomSheetDetailProvidedSubjectTextView).text =
-            "${detailInfoOfStore.provided1}, ${detailInfoOfStore.provided2}"
-        findViewById<TextView>(R.id.bottomSheetDetailStoreNameTextView).text = detailInfoOfStore.storeName
-        // todo : image
-        findViewById<TextView>(R.id.bottomSheetDetailSubCategoryTextView).text = detailInfoOfStore.subCateName
+    private fun bindDetailInfo(detailInfoOfStore: DetailInfoItem?) {
+        detailInfoOfStore?.let { item ->
+            bottomSheetDetailProgressBar.isVisible = false
+            findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text = item.address
+            findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text = item.cateName
+            findViewById<TextView>(R.id.bottomSheetDetailWorkingTimeTextView).text =
+                "${item.dayStart}~${item.dayFinish}"
+            findViewById<TextView>(R.id.bottomSheetDetailPhoneNumberTextView).text = item.phone
+            findViewById<TextView>(R.id.bottomSheetDetailProvidedSubjectTextView).text =
+                "${item.provided1}, ${item.provided2}"
+            findViewById<TextView>(R.id.bottomSheetDetailStoreNameTextView).text = item.storeName
+            // todo : image
+            findViewById<TextView>(R.id.bottomSheetDetailSubCategoryTextView).text =
+                item.subCateName
+
+            findViewById<ImageButton>(R.id.bottomSheetDetailCallButton).setOnClickListener {
+//            startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${"031-219-3678".split("-").joinToString(separator = "")}")))
+                startActivity(
+                    Intent(
+                        Intent.ACTION_DIAL,
+                        Uri.parse("tel:${item.phone.split("-").joinToString(separator = "")}}")
+                    )
+                )
+            }
+
+            findViewById<ImageButton>(R.id.bottomSheetDetailFavoriteButton).setOnClickListener {
+
+            }
+        }
     }
 
     @UiThread

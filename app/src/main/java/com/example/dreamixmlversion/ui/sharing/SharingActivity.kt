@@ -2,14 +2,14 @@ package com.example.dreamixmlversion.ui.sharing
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.dreamixmlversion.data.api.response.entity.SharingDataItemEntity
-import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.databinding.ActivitySharingBinding
+import com.example.dreamixmlversion.ui.sharing.detail.SharingDetailActivity
+import com.example.dreamixmlversion.ui.sharing.register.RegisterNewSharingActivity
 import com.example.dreamixmlversion.ui.sharing.uiState.SharingUiState
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,8 +31,15 @@ class SharingActivity : AppCompatActivity() {
         binding = ActivitySharingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initSwipeRefreshLayout()
         initRecyclerView()
         initFloatingButton()
+    }
+
+    private fun initSwipeRefreshLayout() = with(binding) {
+        refreshLayout.setOnRefreshListener {
+            viewModel.getSharingItemsNearbyUser("수원시 영통구 원천동")
+        }
     }
 
     private fun initRecyclerView() {
@@ -52,6 +59,8 @@ class SharingActivity : AppCompatActivity() {
                 SharingUiState.Error -> TODO()
             }
         }
+
+        viewModel.getSharingItemsNearbyUser("수원시 영통구 원천동")
     }
 
     private fun callSharing() {
@@ -61,14 +70,15 @@ class SharingActivity : AppCompatActivity() {
     }
 
     private fun showProgressBar() {
-        binding.progressBar.isVisible = true
+        binding.refreshLayout.isRefreshing = true
     }
 
     private fun hideProgressBar() {
-        binding.progressBar.isVisible = false
+        binding.refreshLayout.isRefreshing = false
     }
 
     private fun bindSharingDataOnRecyclerView(items: List<SharingDataItemEntity>) {
+        hideProgressBar()
         sharingAdapter.submitList(items)
     }
 

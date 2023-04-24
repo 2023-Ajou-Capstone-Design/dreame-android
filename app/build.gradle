@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id("com.google.dagger.hilt.android")
     id 'kotlin-parcelize'
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -96,4 +97,14 @@ dependencies {
 //    implementation("androidx.room:room-runtime:2.5.1")
 //    annotationProcessor("androidx.room:room-compiler:2.5.1")
 //    kapt("androidx.room:room-compiler:2.5.1")
+
+    // okhttp3
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.10.0")
+
+    // SwipeRefreshLayout
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    // Google-play location
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
 }

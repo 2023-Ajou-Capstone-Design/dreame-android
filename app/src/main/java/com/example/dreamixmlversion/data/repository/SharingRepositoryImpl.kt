@@ -1,5 +1,6 @@
 package com.example.dreamixmlversion.data.repository
 
+import android.graphics.Bitmap
 import com.example.dreamixmlversion.data.api.DreameApi
 import com.example.dreamixmlversion.data.api.response.entity.SharingDataItemEntity
 import com.example.dreamixmlversion.data.api.response.entity.SharingDetailInfo
@@ -9,33 +10,32 @@ import javax.inject.Inject
 
 class SharingRepositoryImpl @Inject constructor(
     private val dreameApi: DreameApi
-): SharingRepository {
+) : SharingRepository {
 
     override suspend fun getSharingListInfo(
-        latLng: DreameLatLng,
-        mbr: Int
+        town: String
     ): List<SharingDataItemEntity> {
         return dreameApi.getSharingInfo(
-            latLng.lat.toFloat(), latLng.lng.toFloat(), mbr
+            town
         ).body()?.items ?: listOf()
     }
 
     override suspend fun getDetailSharingInfo(
         userId: String,
         writingId: String
-    ): SharingDetailInfo {
-        return dreameApi.getSharingDetailInfo()
+    ): SharingDetailInfo? {
+        return dreameApi.getSharingDetailInfo(userId, writingId).body()?.items?.first()
     }
 
     override suspend fun registerNewSharing(
         userId: String,
-        writingId: String,
         title: String,
         content: String,
-        photo1: String,
-        photo2: String,
-        photo3: String
-    ): SharingRegister {
-        return dreameApi.registerNewSharing()
+        images: List<Bitmap>?,
+        town: String
+    ): Boolean {
+        return dreameApi.registerNewSharing(
+            userId, title, content, null, null, null, town
+        )
     }
 }

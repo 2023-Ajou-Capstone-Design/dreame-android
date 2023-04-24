@@ -15,3 +15,8 @@ data class StoreDataBottomSheetListResponse(
     val items: List<StoreDataOnBottomSheetList>
 )
 
+data class StoreDetailInfoResponse(
+    @SerializedName("items")
+    val items: List<DetailInfoItem>
+)
+

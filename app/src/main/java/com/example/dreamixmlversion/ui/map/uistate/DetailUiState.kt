@@ -9,7 +9,7 @@ sealed class DetailUiState {
     object Loading: DetailUiState()
 
     data class SuccessGetDetailInfo(
-        val detailInfoItem: DetailInfoItem
+        val detailInfoItem: DetailInfoItem?
     ): DetailUiState()
 
     object Error: DetailUiState()
