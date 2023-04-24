@@ -1,32 +1,34 @@
 package com.example.dreamixmlversion.ui.login
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.dreamixmlversion.R
+import com.example.dreamixmlversion.databinding.FragmentLoginBinding
 
-class LoginScreen: Fragment() {
+class LoginScreen : LoginBaseFragment<FragmentLoginBinding>() {
+    override fun getViewBinding(): FragmentLoginBinding =
+        FragmentLoginBinding.inflate(layoutInflater)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
-
-        view.findViewById<Button>(R.id.loginButton).setOnClickListener {
-            val address = view.findViewById<EditText>(R.id.addressEditTextView).text.toString()
-
-            val action = LoginScreenDirections.actionLoginScreenToQuestion(address)
-            view.findNavController().navigate(action)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding?.apply {
+            loginScreenFragment = this@LoginScreen
+            viewModel = loginViewModel
         }
 
-        return view
+        _binding?.loginButton?.setOnClickListener {
+            moveToQuestion(_binding?.addressEditTextView?.text.toString())
+        }
+    }
+
+    private fun moveToQuestion(address: String?) {
+        if (address?.isNotEmpty() == true) {
+            loginViewModel.setEmailAddress(address)
+            findNavController().navigate(R.id.action_login_screen_to_question)
+        } else {
+            Toast.makeText(requireContext(), "ID를 입력해주세요.", Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/login_screen"
-    android:id="@+id/loginNavigation">
+    android:id="@+id/navigation">
 
     <fragment
         android:id="@+id/login_screen"
@@ -17,14 +17,7 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left">
-
-            <argument
-                android:name="address"
-                android:defaultValue=""
-                app:argType="string"/>
-
-        </action>
+            app:exitAnim="@anim/slide_out_left"/>
 
     </fragment>
 
@@ -35,24 +28,33 @@
         tools:layout="@layout/fragment_question">
 
         <action
-            android:id="@+id/action_question_to_register_nickname"
+            android:id="@+id/action_question_to_setting_town"
+            app:destination="@id/settingTown"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingTown"
+        android:name="com.example.dreamixmlversion.ui.login.SettingTownScreen"
+        android:label="fragment_setting_town"
+        tools:layout="@layout/fragment_setting_town">
+
+        <action
+            android:id="@+id/action_setting_town_to_register_nickname"
             app:destination="@id/registerNickname"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left">
+            app:exitAnim="@anim/slide_out_left"/>
 
-            <argument
-                android:name="isChild"
-                android:defaultValue="false"
-                app:argType="boolean"/>
-
-        </action>
     </fragment>
 
     <fragment
         android:id="@+id/registerNickname"
-        android:name="com.example.dreamixmlversion.ui.login.RegisterNickNameScreen"
+        android:name="com.example.dreamixmlversion.ui.login.RegisterNicknameScreen"
         android:label="fragment_register_nickname"
         tools:layout="@layout/fragment_register_nickname">
     </fragment>

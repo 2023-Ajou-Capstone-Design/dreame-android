@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.dreamixmlversion.ui.login.LoginViewModel" />
+
+        <variable
+            name="questionScreenFragment"
+            type="com.example.dreamixmlversion.ui.login.SettingTownScreen" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/login_constraint"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/registerNickNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="동네 설정하기"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/addressLinearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/addressLinearLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/registerButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/registerNickNameTextView">
+
+            <EditText
+                android:id="@+id/firstDestinationEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_weight="1"
+                android:background="@color/gray_background"
+                android:gravity="center"
+                android:hint="경기도"
+                android:paddingHorizontal="12dp"
+                android:layout_marginHorizontal="4dp"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/secondDestinationEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="24dp"
+                android:layout_weight="1"
+                android:background="@color/gray_background"
+                android:gravity="center"
+                android:hint="수원시"
+                android:paddingHorizontal="12dp"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/thirdDestinationEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginTop="24dp"
+                android:layout_weight="1"
+                android:background="@color/gray_background"
+                android:gravity="center"
+                android:hint="원천동"
+                android:paddingHorizontal="12dp"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/registerButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@color/dreami_main_color"
+            android:text="등록하기"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/addressLinearLayout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

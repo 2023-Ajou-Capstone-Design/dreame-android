@@ -1,48 +1,86 @@
 package com.example.dreamixmlversion.ui.login
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.core.widget.addTextChangedListener
+import androidx.navigation.fragment.findNavController
 import com.example.dreamixmlversion.R
+import com.example.dreamixmlversion.databinding.FragmentQuestionBinding
+import com.example.dreamixmlversion.ui.login.LoginBaseFragment
 
-class QuestionScreen: Fragment() {
+class QuestionScreen: LoginBaseFragment<FragmentQuestionBinding>() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_question, container, false)
+    override fun getViewBinding(): FragmentQuestionBinding = FragmentQuestionBinding.inflate(layoutInflater)
 
-        view.findViewById<Button>(R.id.radio_yes).setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_question_to_register_nickname)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding?.apply {
+            questionScreenFragment = this@QuestionScreen
+            viewModel = loginViewModel
         }
-
-        view.findViewById<Button>(R.id.radio_no).setOnClickListener {
-            Navigation.findNavController(view).navigate(R.id.action_question_to_register_nickname)
-        }
-
-        return view
     }
 
-    fun onRadioButtonClicked(view: View) {
-        if (view is RadioButton) {
-            val checked = view.isChecked
+    fun showCardNumberLayout() {
+        _binding?.cardNumberInputConstraintLayout?.visibility = View.VISIBLE
+        activateRegisterButton()
+        initRadioNoButton()
+        initPostponeButton()
+    }
 
-            when (view.getId()) {
-                R.id.radio_yes -> {
-                    Toast.makeText(requireContext(), "yes", Toast.LENGTH_LONG).show()
-                }
-                R.id.radio_no -> {
-                    Toast.makeText(requireContext(), "no", Toast.LENGTH_LONG).show()
-                }
-            }
+    fun hideCardNumberLayout() {
+        _binding?.cardNumberInputConstraintLayout?.visibility = View.INVISIBLE
+    }
+
+    private fun activateRegisterButton() {
+        _binding?.cardNumber1?.addTextChangedListener {
+            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete() == true
+        }
+        _binding?.cardNumber2?.addTextChangedListener {
+            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete() == true
+        }
+        _binding?.cardNumber3?.addTextChangedListener {
+            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete() == true
+        }
+        _binding?.cardNumber4?.addTextChangedListener {
+            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete() == true
+        }
+
+        _binding?.registerCardNumberButton?.setOnClickListener {
+            val cardNumber =
+                "${_binding?.cardNumber1?.text}${_binding?.cardNumber2?.text}${_binding?.cardNumber3?.text}${_binding?.cardNumber4?.text}"
+            setCardNumberAndMoveToSettingTown(cardNumber)
+        }
+    }
+
+    private fun isWrittenComplete(): Boolean {
+        if (
+            _binding?.cardNumber1?.text?.length == 4 &&
+            _binding?.cardNumber2?.text?.length == 4 &&
+            _binding?.cardNumber3?.text?.length == 4 &&
+            _binding?.cardNumber4?.text?.length == 4
+        ) {
+            return true
+        }
+        return false
+    }
+
+    private fun moveToSettingTown() {
+        findNavController().navigate(R.id.action_question_to_register_nickname)
+    }
+
+    private fun setCardNumberAndMoveToSettingTown(cardNumber: String? = null) {
+        loginViewModel.setCardNumber(cardNumber)
+        moveToSettingTown()
+    }
+
+    private fun initRadioNoButton() {
+        _binding?.radioNo?.setOnClickListener {
+            setCardNumberAndMoveToSettingTown()
+        }
+    }
+    private fun initPostponeButton() {
+        _binding?.postponeRegisterButton?.setOnClickListener {
+            setCardNumberAndMoveToSettingTown()
         }
     }
 }
