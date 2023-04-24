@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/login_screen"
-    android:id="@+id/navigation">
+    android:id="@+id/loginNavigation">
 
     <fragment
         android:id="@+id/login_screen"

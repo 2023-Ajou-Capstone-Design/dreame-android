@@ -38,6 +38,9 @@ android {
     viewBinding {
         enabled = true
     }
+    dataBinding {
+        enabled = true
+    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -60,7 +63,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    implementation("androidx.fragment:fragment-ktx:1.5.6")
+    implementation("androidx.fragment:fragment-ktx:1.5.7")
 
     // kakaomap api
 //    implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -78,7 +81,7 @@ dependencies {
     // viewModel KTX
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     // ViewModel - Activity
-    implementation 'androidx.activity:activity-ktx:1.7.0'
+    implementation 'androidx.activity:activity-ktx:1.7.1'
 
     // Coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
@@ -107,4 +110,8 @@ dependencies {
 
     // Google-play location
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+
+    // navigation
+//    def nav_version = "2.5.3"
+//    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 }

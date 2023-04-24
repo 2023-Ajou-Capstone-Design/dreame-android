@@ -39,8 +39,6 @@
         <activity android:name=".ui.login.LoginActivity"/>
         <activity android:name=".ui.map.MapActivity"/>
         <activity android:name=".ui.sharing.SharingActivity"/>
-        <activity android:name=".ui.sharing.detail.SharingDetailActivity"/>
-        <activity android:name=".ui.sharing.register.RegisterNewSharingActivity"/>
     </application>
 
 </manifest>

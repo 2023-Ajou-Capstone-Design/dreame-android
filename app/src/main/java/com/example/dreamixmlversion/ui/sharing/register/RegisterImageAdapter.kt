@@ -1,6 +1,7 @@
-package com.example.dreamixmlversion.ui.sharing
+package com.example.dreamixmlversion.ui.sharing.register
 
-import android.net.Uri
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -16,7 +17,8 @@ class RegisterImageAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(sharingImageItem: SharingImageItem) {
             with(binding) {
-                previewImageView.setImageURI(sharingImageItem.uri)
+                val resized = Bitmap.createScaledBitmap(sharingImageItem.bitmapImage, 350, 350, true)
+                previewImageView.setImageBitmap(resized)
                 deleteImageButton.setOnClickListener {
                     deleteImageClickListener(sharingImageItem)
                 }
@@ -24,10 +26,10 @@ class RegisterImageAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RegisterImageAdapter.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(ItemSharingImageAttchedBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-    override fun onBindViewHolder(holder: RegisterImageAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 
@@ -40,11 +42,12 @@ class RegisterImageAdapter(
                 return oldItem == newItem
             }
 
+            @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(
                 oldItem: SharingImageItem,
                 newItem: SharingImageItem
             ): Boolean {
-                return oldItem.uri == newItem.uri
+                return oldItem.bitmapImage == newItem.bitmapImage
             }
 
         }
@@ -52,5 +55,5 @@ class RegisterImageAdapter(
 }
 
 data class SharingImageItem(
-    val uri: Uri
+    val bitmapImage: Bitmap
 )

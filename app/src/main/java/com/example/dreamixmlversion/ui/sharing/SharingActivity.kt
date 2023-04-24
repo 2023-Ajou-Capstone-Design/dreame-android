@@ -1,91 +1,21 @@
 package com.example.dreamixmlversion.ui.sharing
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import com.example.dreamixmlversion.data.api.response.entity.SharingDataItemEntity
+import androidx.navigation.findNavController
+import com.example.dreamixmlversion.R
 import com.example.dreamixmlversion.databinding.ActivitySharingBinding
-import com.example.dreamixmlversion.ui.sharing.detail.SharingDetailActivity
-import com.example.dreamixmlversion.ui.sharing.register.RegisterNewSharingActivity
-import com.example.dreamixmlversion.ui.sharing.uiState.SharingUiState
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SharingActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySharingBinding
-    private lateinit var sharingAdapter: SharingAdapter
-    private val viewModel: SharingViewModel by viewModels()
-    private val startForRegisterNewSharing =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == SharingDetailActivity.RESULT_CODE) {
-
-            }
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySharingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        initSwipeRefreshLayout()
-        initRecyclerView()
-        initFloatingButton()
-    }
-
-    private fun initSwipeRefreshLayout() = with(binding) {
-        refreshLayout.setOnRefreshListener {
-            viewModel.getSharingItemsNearbyUser("수원시 영통구 원천동")
-        }
-    }
-
-    private fun initRecyclerView() {
-        sharingAdapter = SharingAdapter {
-            startActivity(Intent(this, SharingDetailActivity::class.java).apply {
-                putExtra(SharingDetailActivity.WRITING_ID, it.writingId)
-                putExtra(SharingDetailActivity.USER_ID, it.userId)
-            })
-        }
-        binding.sharingRecyclerView.adapter = sharingAdapter
-
-        viewModel.queriedSharingItemLiveData.observe(this) {
-            when (it) {
-                SharingUiState.Uninitialized -> callSharing()
-                SharingUiState.Loading -> showProgressBar()
-                is SharingUiState.SuccessGetSharingItems -> bindSharingDataOnRecyclerView(it.sharingItems)
-                SharingUiState.Error -> TODO()
-            }
-        }
-
-        viewModel.getSharingItemsNearbyUser("수원시 영통구 원천동")
-    }
-
-    private fun callSharing() {
-//        viewModel.getSharingItemsNearbyUser(
-//            DreameLatLng(13.00, 23.00), 5000
-//        )
-    }
-
-    private fun showProgressBar() {
-        binding.refreshLayout.isRefreshing = true
-    }
-
-    private fun hideProgressBar() {
-        binding.refreshLayout.isRefreshing = false
-    }
-
-    private fun bindSharingDataOnRecyclerView(items: List<SharingDataItemEntity>) {
-        hideProgressBar()
-        sharingAdapter.submitList(items)
-    }
-
-    private fun initFloatingButton() {
-        binding.addSharingFloatingButton.setOnClickListener {
-//            startForRegisterNewSharing.launch()
-            startActivity(Intent(this, RegisterNewSharingActivity::class.java))
-        }
     }
 }

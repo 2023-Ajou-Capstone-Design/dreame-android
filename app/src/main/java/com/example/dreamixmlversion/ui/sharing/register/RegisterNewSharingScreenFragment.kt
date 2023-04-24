@@ -2,36 +2,43 @@ package com.example.dreamixmlversion.ui.sharing.register
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.dreamixmlversion.databinding.ActivityRegisterNewSharingBinding
-import com.example.dreamixmlversion.ui.sharing.RegisterImageAdapter
-import com.example.dreamixmlversion.ui.sharing.SharingImageItem
-import com.example.dreamixmlversion.ui.sharing.detail.SharingDetailViewModel
+import androidx.navigation.fragment.findNavController
+import com.example.dreamixmlversion.R
+import com.example.dreamixmlversion.databinding.FragmentRegisterNewSharingBinding
+import com.example.dreamixmlversion.ui.sharing.SharingBaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterNewSharingActivity : AppCompatActivity() {
+class RegisterNewSharingScreenFragment : SharingBaseFragment<FragmentRegisterNewSharingBinding>() {
 
-    private lateinit var binding: ActivityRegisterNewSharingBinding
     private lateinit var registerImageAdapter: RegisterImageAdapter
+
     private val imageLoadLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) { uriList ->
+            if (uriList.size > 3) {
+                Toast.makeText(requireActivity(), "최대 3장까지 첨부 가능합니다.", Toast.LENGTH_SHORT).show()
+                return@registerForActivityResult
+            }
             updateImages(uriList)
         }
-    private val viewModel: RegisterViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityRegisterNewSharingBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun getViewBinding(): FragmentRegisterNewSharingBinding =
+        FragmentRegisterNewSharingBinding.inflate(layoutInflater)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         initRecyclerView()
         initGalleryImageButton()
@@ -46,11 +53,11 @@ class RegisterNewSharingActivity : AppCompatActivity() {
                 list.remove(it)
                 registerImageAdapter.submitList(list)
             })
-        binding.imageRecyclerView.adapter = registerImageAdapter
+        _binding?.imageRecyclerView?.adapter = registerImageAdapter
     }
 
     private fun initGalleryImageButton() {
-        binding.galleryImageButton.setOnClickListener {
+        _binding?.galleryImageButton?.setOnClickListener {
             checkExternalStoragePermission()
         }
     }
@@ -59,7 +66,7 @@ class RegisterNewSharingActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             when {
                 ContextCompat.checkSelfPermission(
-                    this,
+                    requireContext(),
                     Manifest.permission.READ_MEDIA_IMAGES
                 ) == PackageManager.PERMISSION_GRANTED -> {
                     loadImage()
@@ -76,7 +83,7 @@ class RegisterNewSharingActivity : AppCompatActivity() {
         } else {
             when {
                 ContextCompat.checkSelfPermission(
-                    this,
+                    requireActivity(),
                     Manifest.permission.READ_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED -> {
                     loadImage()
@@ -98,7 +105,7 @@ class RegisterNewSharingActivity : AppCompatActivity() {
     }
 
     private fun showPermissionInfoDialog() {
-        AlertDialog.Builder(this).apply {
+        AlertDialog.Builder(requireActivity()).apply {
             setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
             setNegativeButton("취소", null)
             setPositiveButton("동의") { _, _ ->
@@ -110,57 +117,67 @@ class RegisterNewSharingActivity : AppCompatActivity() {
     private fun requestReadExternalStorage() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
-                this,
+                requireActivity(),
                 arrayOf(Manifest.permission.READ_MEDIA_IMAGES),
                 REQUEST_EXTERNAL_STORAGE_CODE
             )
         } else {
             ActivityCompat.requestPermissions(
-                this,
+                requireActivity(),
                 arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                 REQUEST_EXTERNAL_STORAGE_CODE
             )
         }
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        when (requestCode) {
-            REQUEST_EXTERNAL_STORAGE_CODE -> {
-                val resultCode = grantResults.firstOrNull() ?: PackageManager.PERMISSION_GRANTED
-                if (resultCode == PackageManager.PERMISSION_GRANTED) {
-                    loadImage()
-                }
-            }
-        }
-    }
-
     private fun updateImages(uriList: List<Uri>) {
-        val images = uriList.map { SharingImageItem(it) }
+        val images = uriList.map { SharingImageItem(convertToBitmap(it)) }
         val updatedImages =
             registerImageAdapter.currentList.toMutableList().apply { addAll(images) }
         registerImageAdapter.submitList(updatedImages)
     }
 
+    private fun convertToBitmap(uri: Uri): Bitmap {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
+            ImageDecoder.decodeBitmap(source)
+        } else {
+            MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
+        }
+    }
+
     private fun initRegisterSharingButton() {
-        with(binding) {
-            registerNewSharingButton.setOnClickListener {
-                val images = registerImageAdapter.currentList.map { it.uri }
-                val title = titleEditTextView.text.toString()
-                val content = contentEditTextView.text.toString()
-                viewModel.registerNewSharing(title, content)
-                setResult(RESULT_OK)
-                finish()
+        with(_binding) {
+            this?.registerNewSharingButton?.setOnClickListener {
+                if (registerImageAdapter.currentList.size == 0) {
+                    alertByToast("사진을 최소 1장 첨부해주세요.")
+                    return@setOnClickListener
+                }
+                if (titleEditTextView.text.toString().isEmpty()) {
+                    alertByToast("제목을 적어주세요.")
+                    return@setOnClickListener
+                }
+                if (contentEditTextView.text.toString().isEmpty()) {
+                    alertByToast("내용을 적어주세요.")
+                    return@setOnClickListener
+                }
+                sharingViewModel.registerNewSharing(
+                    titleEditTextView.text.toString(),
+                    contentEditTextView.text.toString()
+                )
+                findNavController().navigate(R.id.action_popup_to_sharing_list_screen)
             }
         }
     }
 
+    private fun alertByToast(content: String) =
+        Toast.makeText(requireContext(), content, Toast.LENGTH_SHORT).show()
+
+    private fun checkRegister() {
+
+    }
+
     companion object {
-        const val REQUEST_EXTERNAL_STORAGE_CODE = 2000
+        const val REQUEST_EXTERNAL_STORAGE_CODE = 10112
     }
 }

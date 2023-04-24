@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sharingNavigation"
+    app:startDestination="@id/sharing_list_screen">
+
+    <fragment
+        android:id="@+id/sharing_list_screen"
+        android:name="com.example.dreamixmlversion.ui.sharing.list.SharingListScreenFragment"
+        android:label="fragment_sharing"
+        tools:layout="@layout/fragment_sharing_list">
+
+        <action
+            android:id="@+id/action_sharing_list_screen_to_detail_screen"
+            app:destination="@id/detail_sharing_screen"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+
+        <action
+            android:id="@+id/action_sharing_list_screen_to_register_new_sharing_screen"
+            app:destination="@id/register_new_sharing_screen"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/detail_sharing_screen"
+        android:name="com.example.dreamixmlversion.ui.sharing.detail.DetailSharingScreenFragment"
+        android:label="fragment_detail_sharing"
+        tools:layout="@layout/fragment_sharing_detail">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/register_new_sharing_screen"
+        android:name="com.example.dreamixmlversion.ui.sharing.register.RegisterNewSharingScreenFragment"
+        android:label="fragment_register_new_sharing"
+        tools:layout="@layout/fragment_register_new_sharing">
+
+        <action
+            android:id="@+id/action_popup_to_sharing_list_screen"
+            app:destination="@id/sharing_list_screen"
+            app:popUpTo="@id/sharing_list_screen" />
+
+    </fragment>
+
+</navigation>
