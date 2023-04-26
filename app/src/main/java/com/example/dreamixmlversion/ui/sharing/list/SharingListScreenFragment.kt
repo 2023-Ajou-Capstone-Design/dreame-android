@@ -22,6 +22,7 @@ class SharingListScreenFragment: SharingBaseFragment<FragmentSharingListBinding>
         super.onViewCreated(view, savedInstanceState)
 
         _binding?.apply {
+            sharingListFragment = this@SharingListScreenFragment
             viewModel = sharingViewModel
         }
 

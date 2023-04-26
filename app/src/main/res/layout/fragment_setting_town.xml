@@ -10,7 +10,7 @@
             type="com.example.dreamixmlversion.ui.login.LoginViewModel" />
 
         <variable
-            name="questionScreenFragment"
+            name="settingTownFragment"
             type="com.example.dreamixmlversion.ui.login.SettingTownScreen" />
     </data>
 

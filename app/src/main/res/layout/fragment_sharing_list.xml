@@ -11,7 +11,7 @@
             type="com.example.dreamixmlversion.ui.sharing.SharingViewModel" />
 
         <variable
-            name="loginScreenFragment"
+            name="sharingListFragment"
             type="com.example.dreamixmlversion.ui.sharing.list.SharingListScreenFragment" />
     </data>
 

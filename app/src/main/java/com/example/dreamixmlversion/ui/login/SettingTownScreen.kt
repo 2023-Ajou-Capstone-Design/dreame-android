@@ -6,7 +6,9 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.dreamixmlversion.R
 import com.example.dreamixmlversion.databinding.FragmentSettingTownBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingTownScreen: LoginBaseFragment<FragmentSettingTownBinding>() {
 
     override fun getViewBinding(): FragmentSettingTownBinding = FragmentSettingTownBinding.inflate(layoutInflater)
@@ -14,10 +16,11 @@ class SettingTownScreen: LoginBaseFragment<FragmentSettingTownBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding?.apply {
-            questionScreenFragment = this@SettingTownScreen
+            settingTownFragment = this@SettingTownScreen
             viewModel = loginViewModel
         }
 
+        // todo 행정구역 어떻게 가져와야 함
         initRegisterTown()
     }
 
@@ -28,7 +31,7 @@ class SettingTownScreen: LoginBaseFragment<FragmentSettingTownBinding>() {
             } else {
                 val address =
                     "${_binding?.firstDestinationEditText?.text} ${_binding?.secondDestinationEditText?.text} ${_binding?.thirdDestinationEditText?.text}"
-                loginViewModel.setTownAddress(address)
+                _binding?.viewModel?.setTownAddress(address)
                 findNavController().navigate(R.id.action_setting_town_to_register_nickname)
             }
         }

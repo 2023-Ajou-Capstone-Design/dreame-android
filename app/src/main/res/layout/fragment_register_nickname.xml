@@ -10,7 +10,7 @@
             type="com.example.dreamixmlversion.ui.login.LoginViewModel" />
 
         <variable
-            name="questionScreenFragment"
+            name="registerNicknameFragment"
             type="com.example.dreamixmlversion.ui.login.RegisterNicknameScreen" />
     </data>
 

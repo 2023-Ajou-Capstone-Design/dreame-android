@@ -1,9 +1,6 @@
 package com.example.dreamixmlversion.di
 
-import com.example.dreamixmlversion.data.repository.SharingRepository
-import com.example.dreamixmlversion.data.repository.SharingRepositoryImpl
-import com.example.dreamixmlversion.data.repository.StoreRepository
-import com.example.dreamixmlversion.data.repository.StoreRepositoryImpl
+import com.example.dreamixmlversion.data.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,4 +18,8 @@ abstract class RepositoryModule {
     @ViewModelScoped
     @Binds
     abstract fun bindSharingRepository(impl: SharingRepositoryImpl): SharingRepository
+
+    @ViewModelScoped
+    @Binds
+    abstract fun bindLoginRepository(impl: LoginRepositoryImpl): LoginRepository
 }

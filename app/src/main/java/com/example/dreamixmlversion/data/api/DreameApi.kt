@@ -84,4 +84,9 @@ interface DreameApi {
         @Query("Photo3") photo3: String? = null,
         @Query("Town") town: String
         ): Boolean
+
+//    @POST("")
+//    suspend fun checkDuplicateNickname(
+//        @Query("") nickname: String
+//    ): Boolean
 }

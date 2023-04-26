@@ -6,7 +6,9 @@ import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.dreamixmlversion.R
 import com.example.dreamixmlversion.databinding.FragmentLoginBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoginScreen : LoginBaseFragment<FragmentLoginBinding>() {
     override fun getViewBinding(): FragmentLoginBinding =
         FragmentLoginBinding.inflate(layoutInflater)
@@ -25,7 +27,7 @@ class LoginScreen : LoginBaseFragment<FragmentLoginBinding>() {
 
     private fun moveToQuestion(address: String?) {
         if (address?.isNotEmpty() == true) {
-            loginViewModel.setEmailAddress(address)
+            _binding?.viewModel?.setEmailAddress(address)
             findNavController().navigate(R.id.action_login_screen_to_question)
         } else {
             Toast.makeText(requireContext(), "ID를 입력해주세요.", Toast.LENGTH_SHORT).show()

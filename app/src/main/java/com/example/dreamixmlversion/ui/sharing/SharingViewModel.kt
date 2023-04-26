@@ -39,13 +39,20 @@ class SharingViewModel @Inject constructor(
     fun getSharingItemsNearbyUser(town: String) {
         viewModelScope.launch {
             _queriedSharingItemLiveData.postValue(SharingUiState.Loading)
+
+            removeAllElement()
             sharingRepository.getSharingListInfo(town).forEach {
                 sharingList.add(it)
             }
+
             _queriedSharingItemLiveData.postValue(
                 SharingUiState.SuccessGetSharingItems(sharingList)
             )
         }
+    }
+
+    private fun removeAllElement() {
+        sharingList.forEach { sharingList.remove(it) }
     }
 
     private val _queriedSharingDetailInfoLiveData =

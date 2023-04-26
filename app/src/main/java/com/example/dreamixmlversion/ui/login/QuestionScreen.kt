@@ -7,7 +7,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.dreamixmlversion.R
 import com.example.dreamixmlversion.databinding.FragmentQuestionBinding
 import com.example.dreamixmlversion.ui.login.LoginBaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class QuestionScreen: LoginBaseFragment<FragmentQuestionBinding>() {
 
     override fun getViewBinding(): FragmentQuestionBinding = FragmentQuestionBinding.inflate(layoutInflater)
@@ -18,12 +20,13 @@ class QuestionScreen: LoginBaseFragment<FragmentQuestionBinding>() {
             questionScreenFragment = this@QuestionScreen
             viewModel = loginViewModel
         }
+
+        initRadioNoButton()
     }
 
     fun showCardNumberLayout() {
         _binding?.cardNumberInputConstraintLayout?.visibility = View.VISIBLE
         activateRegisterButton()
-        initRadioNoButton()
         initPostponeButton()
     }
 
@@ -65,11 +68,11 @@ class QuestionScreen: LoginBaseFragment<FragmentQuestionBinding>() {
     }
 
     private fun moveToSettingTown() {
-        findNavController().navigate(R.id.action_question_to_register_nickname)
+        findNavController().navigate(R.id.action_question_to_setting_town)
     }
 
     private fun setCardNumberAndMoveToSettingTown(cardNumber: String? = null) {
-        loginViewModel.setCardNumber(cardNumber)
+        _binding?.viewModel?.setCardNumber(cardNumber)
         moveToSettingTown()
     }
 
@@ -78,6 +81,7 @@ class QuestionScreen: LoginBaseFragment<FragmentQuestionBinding>() {
             setCardNumberAndMoveToSettingTown()
         }
     }
+
     private fun initPostponeButton() {
         _binding?.postponeRegisterButton?.setOnClickListener {
             setCardNumberAndMoveToSettingTown()

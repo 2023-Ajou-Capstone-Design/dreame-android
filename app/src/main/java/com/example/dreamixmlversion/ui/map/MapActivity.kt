@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dreamixmlversion.R
 import com.example.dreamixmlversion.data.api.response.entity.DetailInfoItem
@@ -92,6 +93,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+//        val fm = supportFragmentManager
+//        val mapFragment = fm.findFragmentById(R.id.mapView) as MapFragment?
+//            ?: MapFragment.newInstance().also {
+//                fm.beginTransaction().add(R.id.mapView, it).commit()
+//            }
+
+//        mapFragment.getMapAsync(this)
         binding.mapView.getMapAsync(this)
         binding.mapView.onCreate(savedInstanceState)
 
@@ -334,7 +342,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient.lastLocation
             .addOnSuccessListener {
                 dreameLatLng = DreameLatLng(it.latitude, it.longitude)
-                moveToPos()
+                moveToPos(dreameLatLng.lat, dreameLatLng.lng)
                 viewModel.getStoresNearbyUserForMarking(dreameLatLng, 3000)
             }
     }
