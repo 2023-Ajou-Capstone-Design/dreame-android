@@ -96,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:background="@color/dreami_main_color"
+            android:background="@color/dreame_main_color"
             android:text="등록하기"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"

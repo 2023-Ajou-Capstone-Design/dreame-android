@@ -93,13 +93,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val fm = supportFragmentManager
-//        val mapFragment = fm.findFragmentById(R.id.mapView) as MapFragment?
-//            ?: MapFragment.newInstance().also {
-//                fm.beginTransaction().add(R.id.mapView, it).commit()
-//            }
-
-//        mapFragment.getMapAsync(this)
         binding.mapView.getMapAsync(this)
         binding.mapView.onCreate(savedInstanceState)
 
@@ -113,7 +106,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initSearchEditTextView() {
         binding.searchEditTextView.setOnEditorActionListener { editText, _, _ ->
-
 
             currentFocus?.let { view ->
                 val inputMethodManager =
@@ -141,6 +133,8 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 latLng = dreameLatLng,
                 mbr = 5000
             )
+
+            bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
         binding.categoryRecyclerView.adapter = categoryAdapter
     }

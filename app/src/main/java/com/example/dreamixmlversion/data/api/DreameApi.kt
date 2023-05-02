@@ -89,4 +89,10 @@ interface DreameApi {
 //    suspend fun checkDuplicateNickname(
 //        @Query("") nickname: String
 //    ): Boolean
+
+    @POST("MyPage/AKA")
+    suspend fun changeNickname(
+        @Query("UserID") userId: String,
+        @Query("AKA") nickname: String
+    ): Boolean
 }

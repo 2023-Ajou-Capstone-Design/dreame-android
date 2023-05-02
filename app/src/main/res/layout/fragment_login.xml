@@ -63,7 +63,7 @@
             android:id="@+id/loginButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/dreami_main_color"
+            android:background="@color/dreame_main_color"
             android:text="로그인"
             android:textColor="@color/black"
             android:textSize="20sp"

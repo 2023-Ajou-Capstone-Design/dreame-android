@@ -109,7 +109,7 @@ class RegisterNewSharingScreenFragment : SharingBaseFragment<FragmentRegisterNew
             setMessage("이미지를 가져오기 위해서, 외부 저장소 읽기 권한이 필요합니다.")
             setNegativeButton("취소", null)
             setPositiveButton("동의") { _, _ ->
-                requestReadExternalStorage()
+                loadImage()
             }
         }.show()
     }

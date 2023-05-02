@@ -29,10 +29,31 @@ class UserFragment: Fragment(R.layout.fragment_user) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkUserRole()
         initViews()
     }
 
-    private fun initViews() {
+    private fun checkUserRole() {
 
+    }
+
+    private fun initViews() {
+        _binding?.let {
+            it.profileImageView.setOnClickListener {
+
+            }
+            it.changeNicknameButton.setOnClickListener {
+
+            }
+            it.checkMyPostingButton.setOnClickListener {
+
+            }
+            it.townSettingButton.setOnClickListener {
+
+            }
+            it.secessionButton.setOnClickListener {
+
+            }
+        }
     }
 }
