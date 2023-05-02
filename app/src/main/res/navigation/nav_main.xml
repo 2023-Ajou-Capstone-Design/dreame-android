@@ -2,13 +2,25 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/sharingNavigation"
-    app:startDestination="@id/sharing_list_screen">
+    app:startDestination="@+id/home_dest"
+    android:id="@+id/nav_main">
 
     <fragment
-        android:id="@+id/userScreen"
+        android:id="@+id/home_dest"
+        android:name="com.example.dreamixmlversion.ui.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/chat_dest"
+        android:name="com.example.dreamixmlversion.ui.chat.ChatFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chat"/>
+
+    <fragment
+        android:id="@+id/user_dest"
         android:name="com.example.dreamixmlversion.ui.user.UserFragment"
-        android:label="fragment_user"
+        android:label="MyPage"
         tools:layout="@layout/fragment_user">
 
         <action
@@ -24,7 +36,7 @@
     <fragment
         android:id="@+id/posting_screen"
         android:name="com.example.dreamixmlversion.ui.sharing.list.SharingListScreenFragment"
-        android:label="fragment_my_sharing_list"
+        android:label="Sharing"
         tools:layout="@layout/fragment_sharing_list">
 
         <action
@@ -40,7 +52,7 @@
     <fragment
         android:id="@+id/detail_sharing_screen"
         android:name="com.example.dreamixmlversion.ui.sharing.detail.DetailSharingScreenFragment"
-        android:label="fragment_my_detail_sharing_posting"
+        android:label="SharingDetail"
         tools:layout="@layout/fragment_sharing_detail">
 
     </fragment>

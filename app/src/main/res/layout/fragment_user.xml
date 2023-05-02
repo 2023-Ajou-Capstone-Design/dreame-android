@@ -33,12 +33,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/dreame_main_color"
+        android:text="닉네임 변경"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/profileImageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="닉네임 변경" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/checkMyPostingButton"
@@ -47,13 +47,13 @@
         android:layout_marginTop="24dp"
         android:background="@color/white"
         android:gravity="start|center"
+        android:text="내가 쓴 글 확인하기"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profileImageView"
-        tools:text="내가 쓴 글 확인하기" />
+        app:layout_constraintTop_toBottomOf="@id/profileImageView" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/townSettingButton"
@@ -61,13 +61,13 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="start|center"
+        android:text="동네 설정 및 등록"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/checkMyPostingButton"
-        tools:text="동네 설정 및 등록" />
+        app:layout_constraintTop_toBottomOf="@id/checkMyPostingButton" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/secessionButton"
@@ -75,13 +75,13 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:gravity="start|center"
+        android:text="탈퇴하기"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/townSettingButton"
-        tools:text="탈퇴하기" />
+        app:layout_constraintTop_toBottomOf="@id/townSettingButton" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -89,6 +89,7 @@
         android:layout_marginHorizontal="30dp"
         android:background="@color/dreame_main_color"
         android:padding="12dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
