@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dreamixmlversion.data.db.preference.PreferenceManager
 import com.example.dreamixmlversion.data.repository.LoginRepository
+import com.example.dreamixmlversion.ui.sharing.uiState.SharingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,28 +18,23 @@ class LoginViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _emailAddress = MutableLiveData<String>()
-//    val emailAddress: LiveData<String> = _emailAddress
-
-    //    private val _childCardNumber = MutableLiveData<Map<Boolean, String?>>()
+    private val _identity = MutableLiveData<String>()
     private val _childCardNumber = MutableLiveData<String?>()
-//    val childCardNumber: LiveData<Map<Boolean, String?>> = _childCardNumber
-
     private val _townAddress = MutableLiveData<String>()
-//    val townAddress: LiveData<String> = _townAddress
-
     private val _nickname = MutableLiveData<String>()
-//    val nickname: LiveData<String> = _nickname
 
     fun setEmailAddress(address: String) {
         _emailAddress.value = address
     }
 
+    fun setIdentity(identity: String) {
+        _identity.value = identity
+    }
+
     fun setCardNumber(cardNumber: String?) {
         if (cardNumber.isNullOrBlank()) {
-//            _childCardNumber.value = mapOf(false to null)
             _childCardNumber.value = null
         } else {
-//            _childCardNumber.value = mapOf(true to cardNumber)
             _childCardNumber.value = cardNumber
         }
     }
@@ -62,16 +58,39 @@ class LoginViewModel @Inject constructor(
     }
 
     fun registerFinally() {
+        saveToServer()
+
+        saveToLocalDB()
+    }
+
+    private val _queriedRegisterProfileLiveData =
+        MutableLiveData<LoginUiState>(LoginUiState.Uninitialized)
+    val queriedRegisterProfileLiveData: LiveData<LoginUiState> = _queriedRegisterProfileLiveData
+
+    private fun saveToLocalDB() {
         preferenceManager.putDreameEmailAddress(_emailAddress.value.toString())
         preferenceManager.putDreameChildCardNumber(_childCardNumber.value.toString())
         preferenceManager.putDreameTownAddress(_townAddress.value.toString())
         preferenceManager.putDreameNickname(_nickname.value.toString())
     }
 
-    fun getRegistrationInfo(): String {
-        return "email: ${preferenceManager.getDreameEmailAddress()}\n" +
-                "cardNumber: ${preferenceManager.getDreameChildCardNumber()}\n" +
-                "town: ${preferenceManager.getDreameTownAddress()}\n" +
-                "nickname: ${preferenceManager.getDreameNickname()}"
+    private fun saveToServer() {
+        viewModelScope.launch {
+            try {
+                _queriedRegisterProfileLiveData.postValue(
+                    LoginUiState.RegisterProfile(
+                        loginRepository.registerUserProfile(
+                            _emailAddress.value.toString(),
+                            _identity.value.toString(),
+                            _childCardNumber.value.toString(),
+                            _townAddress.value.toString(),
+                            _nickname.value.toString()
+                        )
+                    )
+                )
+            } catch (_: java.lang.Exception) {
+
+            }
+        }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.dreamixmlversion.ui.login
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
@@ -24,6 +26,4 @@ class LoginActivity: AppCompatActivity() {
         // Set up the action bar for use with the NavController
 //        setupActionBarWithNavController(navController)
     }
-
-
 }

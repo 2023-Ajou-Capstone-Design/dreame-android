@@ -11,6 +11,7 @@
     <color name="dreame_main_color">#FF93D8F5</color>
     <color name="category_background_color">#FFE49F</color>
     <color name="image_thumbnail_color">#FF6599</color>
-    <color name="gray_background">#E6E6E6</color>
+    <color name="gray_background">#D9D9D9</color>
     <color name="warm_color">#FFEEB9</color>
+    <color name="card_number_background">#FFFDDBDB</color>
 </resources>

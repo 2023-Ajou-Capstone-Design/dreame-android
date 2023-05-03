@@ -1,14 +1,13 @@
 package com.example.dreamixmlversion
 
-import android.content.res.Resources
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
+import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -16,24 +15,31 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.dreamixmlversion.ui.chat.ChatFragment
 import com.example.dreamixmlversion.ui.home.HomeFragment
+import com.example.dreamixmlversion.ui.login.LoginActivity
 import com.example.dreamixmlversion.ui.user.UserFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity() : AppCompatActivity() {
 
-//    lateinit var binding: ActivityMainBinding
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        binding = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
         setContentView(R.layout.activity_main)
 
-//        startActivity(Intent(this, LoginActivity::class.java))
-//        initFragments()
+        checkLogin()
         initNavigation()
+    }
+
+    private fun checkLogin() {
+        if (viewModel.checkLogin() == null) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        }
     }
 
     private fun initNavigation() {
@@ -55,6 +61,15 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
 
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.home_dest || destination.id == R.id.chat_dest || destination.id == R.id.user_dest) {
+                toolbar.visibility = View.VISIBLE
+                bottomNavigationView.visibility = View.VISIBLE
+            } else {
+                toolbar.visibility = View.GONE
+                bottomNavigationView.visibility = View.GONE
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

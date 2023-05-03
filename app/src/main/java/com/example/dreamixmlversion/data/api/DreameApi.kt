@@ -90,6 +90,16 @@ interface DreameApi {
 //        @Query("") nickname: String
 //    ): Boolean
 
+    @POST("LogIn/")
+    suspend fun registerUserProfile(
+        @Query("Profile") profile: String? = null,
+        @Query("Account") account: String,
+        @Query("Card") childCardNumber: String ?= null,
+        @Query("userType") userType: String,
+        @Query("Town") town: String,
+        @Query("AKA") aka: String
+    ): Boolean
+
     @POST("MyPage/AKA")
     suspend fun changeNickname(
         @Query("UserID") userId: String,

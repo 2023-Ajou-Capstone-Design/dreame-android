@@ -84,6 +84,7 @@ class QuestionScreen: LoginBaseFragment<FragmentQuestionBinding>() {
 
     private fun initPostponeButton() {
         _binding?.postponeRegisterButton?.setOnClickListener {
+            _binding?.viewModel?.setIdentity("99")
             setCardNumberAndMoveToSettingTown()
         }
     }
