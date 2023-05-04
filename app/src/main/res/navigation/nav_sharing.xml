@@ -19,7 +19,6 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
-
         <action
             android:id="@+id/action_sharing_list_screen_to_register_new_sharing_screen"
             app:destination="@id/register_new_sharing_screen"

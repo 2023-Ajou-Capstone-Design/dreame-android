@@ -34,6 +34,27 @@ class SharedPreferenceManager @Inject constructor(
         }
     }
 
+    override fun putDreameUserType(userType: String) {
+        with(sharedPreferences.edit()) {
+            putString(R.string.shared_preference_dreame_user_type.toString(), userType)
+            apply()
+        }
+    }
+
+    override fun getDreameUserType(): String? {
+
+        val value = sharedPreferences.getString(
+            R.string.shared_preference_dreame_user_type.toString(),
+            INVALID_STRING_VALUE
+        )
+
+        return if (value == INVALID_STRING_VALUE) {
+            null
+        } else {
+            value
+        }
+    }
+
     override fun putDreameChildCardNumber(number: String) {
         with(sharedPreferences.edit()) {
             putString(R.string.shared_preference_dreame_child_card_number.toString(), number)

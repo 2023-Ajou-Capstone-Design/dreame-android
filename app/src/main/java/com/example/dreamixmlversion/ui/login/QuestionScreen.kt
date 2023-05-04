@@ -72,6 +72,7 @@ class QuestionScreen: LoginBaseFragment<FragmentQuestionBinding>() {
     }
 
     private fun setCardNumberAndMoveToSettingTown(cardNumber: String? = null) {
+        _binding?.viewModel?.setIdentity("01")
         _binding?.viewModel?.setCardNumber(cardNumber)
         moveToSettingTown()
     }

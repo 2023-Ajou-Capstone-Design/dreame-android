@@ -9,7 +9,18 @@
         android:id="@+id/home_dest"
         android:name="com.example.dreamixmlversion.ui.home.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home"/>
+        tools:layout="@layout/fragment_home">
+
+        <action
+            android:id="@+id/action_home_screen_to_posting_screen"
+            app:destination="@id/sharing_list_screen"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
 
     <fragment
         android:id="@+id/chat_dest"
@@ -25,7 +36,7 @@
 
         <action
             android:id="@+id/action_user_screen_to_posting_screen"
-            app:destination="@id/posting_screen"
+            app:destination="@id/sharing_list_screen"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -34,7 +45,7 @@
     </fragment>
 
     <fragment
-        android:id="@+id/posting_screen"
+        android:id="@+id/sharing_list_screen"
         android:name="com.example.dreamixmlversion.ui.sharing.list.SharingListScreenFragment"
         android:label="Sharing"
         tools:layout="@layout/fragment_sharing_list">
@@ -46,6 +57,27 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+
+        <action
+            android:id="@+id/action_sharing_list_screen_to_register_new_sharing_screen"
+            app:destination="@id/register_new_sharing_screen"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/register_new_sharing_screen"
+        android:name="com.example.dreamixmlversion.ui.sharing.register.RegisterNewSharingScreenFragment"
+        android:label="fragment_register_new_sharing"
+        tools:layout="@layout/fragment_register_new_sharing">
+
+        <action
+            android:id="@+id/action_popup_to_sharing_list_screen"
+            app:destination="@id/sharing_list_screen"
+            app:popUpTo="@id/sharing_list_screen" />
 
     </fragment>
 

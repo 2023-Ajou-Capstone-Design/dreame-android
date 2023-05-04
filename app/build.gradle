@@ -115,4 +115,6 @@ dependencies {
     // navigation
 //    def nav_version = "2.5.3"
 //    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+//    implementation 'org.jsoup:jsoup:1.16.1'
 }

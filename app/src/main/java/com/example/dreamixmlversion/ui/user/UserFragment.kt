@@ -1,31 +1,17 @@
 package com.example.dreamixmlversion.ui.user
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.example.dreamixmlversion.R
-import com.example.dreamixmlversion.databinding.FragmentHomeBinding
 import com.example.dreamixmlversion.databinding.FragmentUserBinding
 
-class UserFragment: Fragment(R.layout.fragment_user) {
+class UserFragment : UserBaseFragment<FragmentUserBinding>() {
 
     companion object {
         const val TAG = "UserFragment"
     }
 
-    private var _binding: FragmentUserBinding? = null
-    private val binding get() = _binding!!
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentUserBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    override fun getViewBinding(): FragmentUserBinding =
+        FragmentUserBinding.inflate(layoutInflater)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,26 +20,46 @@ class UserFragment: Fragment(R.layout.fragment_user) {
     }
 
     private fun checkUserRole() {
+        val userType = userViewModel.getUserType()
 
+        if (userType == "01") { // 결식아동
+            _binding?.checkMyPostingButton?.visibility = View.GONE
+        } else if (userType == "99") { // 푸드셰어러(기타)
+            _binding?.checkMyPostingButton?.visibility = View.VISIBLE
+        }
     }
 
     private fun initViews() {
         _binding?.let {
+            it.profileNickNameTextView.text = userViewModel.getNickname()
+
             it.profileImageView.setOnClickListener {
 
             }
-            it.changeNicknameButton.setOnClickListener {
 
+            it.changeNicknameButton.setOnClickListener {
+                userViewModel
             }
+
             it.checkMyPostingButton.setOnClickListener {
 
             }
+
             it.townSettingButton.setOnClickListener {
 
             }
+
             it.secessionButton.setOnClickListener {
 
             }
         }
+    }
+
+    fun showCardNumberLayout() {
+        _binding?.changeNicknameLayout?.visibility = View.VISIBLE
+    }
+
+    fun hideCardNumberLayout() {
+        _binding?.changeNicknameLayout?.visibility = View.INVISIBLE
     }
 }

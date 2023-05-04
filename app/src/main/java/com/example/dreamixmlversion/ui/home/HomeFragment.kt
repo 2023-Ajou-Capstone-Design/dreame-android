@@ -17,7 +17,6 @@ class HomeFragment: Fragment(R.layout.fragment_home) {
         const val TAG = "HomeFragment"
     }
 
-//    private var binding: FragmentHomeBinding ?= null
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 

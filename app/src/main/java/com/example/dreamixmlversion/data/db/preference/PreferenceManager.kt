@@ -1,12 +1,14 @@
 package com.example.dreamixmlversion.data.db.preference
 
-import android.provider.ContactsContract.CommonDataKinds.Nickname
-
 interface PreferenceManager {
 
     fun putDreameEmailAddress(address: String)
 
     fun getDreameEmailAddress(): String?
+
+    fun putDreameUserType(userType: String)
+
+    fun getDreameUserType(): String?
 
     fun putDreameChildCardNumber(number: String)
 
