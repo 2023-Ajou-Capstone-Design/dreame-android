@@ -1,17 +1,18 @@
 package com.example.dreamixmlversion.data.repository
 
 import android.graphics.Bitmap
-import com.example.dreamixmlversion.data.api.response.entity.SharingDataItemEntity
-import com.example.dreamixmlversion.data.api.response.entity.SharingDetailInfo
-import com.example.dreamixmlversion.data.api.response.entity.SharingRegister
-import com.example.dreamixmlversion.data.db.entity.DreameLatLng
-import java.util.Date
+import com.example.dreamixmlversion.data.api.response.model.SharingDataItemEntity
+import com.example.dreamixmlversion.data.api.response.model.SharingDetailInfo
 
 
 interface SharingRepository {
 
-    suspend fun getSharingListInfo(
+    suspend fun getSharingListInfoByTown(
         town: String
+    ): List<SharingDataItemEntity>
+
+    suspend fun getMySharingListInfo(
+        userId: String
     ): List<SharingDataItemEntity>
 
     suspend fun getDetailSharingInfo(
@@ -23,7 +24,7 @@ interface SharingRepository {
         userId: String,
         title: String,
         content: String,
-        images: List<Bitmap>?,
+        images: List<Bitmap>,
         town: String
     ): Boolean
 }

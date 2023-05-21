@@ -1,6 +1,6 @@
 package com.example.dreamixmlversion.ui.map.uistate
 
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
+import com.example.dreamixmlversion.data.api.response.model.StoreDataOnBottomSheetList
 
 
 sealed class BottomSheetListUiState {

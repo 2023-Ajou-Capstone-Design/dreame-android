@@ -1,7 +1,7 @@
 package com.example.dreamixmlversion.data.repository
 
 import com.example.dreamixmlversion.data.api.DreameApi
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
+import com.example.dreamixmlversion.data.api.response.model.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class StoreRepositoryImpl @Inject constructor(
     private val dreameApi: DreameApi
-): StoreRepository {
+) : StoreRepository {
 
     // spots에 저장 (SpotDataEntity 형태로 가공)
     // 정렬되어 받음
@@ -51,21 +51,24 @@ class StoreRepositoryImpl @Inject constructor(
     }
 
 
-    override suspend fun getDetailStoreInfo(storeId: Int, storeType: String) = withContext(Dispatchers.IO) {
+    override suspend fun getDetailStoreInfo(storeId: Int, storeType: String) =
+        withContext(Dispatchers.IO) {
 
-        // todo : storeId 파라미터로 api 호출
-        dreameApi.getDetailSpotData(storeId, storeType).body()?.items?.first()
-//        dreameApi.getDetailSpotData(5064, "1").body()!!
-    }
+            // todo : storeId 파라미터로 api 호출
+            dreameApi.getDetailSpotData(storeId, storeType).body()?.items?.first()
+        }
 
     override suspend fun getFavoriteStores(userId: String) = withContext(Dispatchers.IO) {
-//        dreameApi.getFavoriteStores(userId).body()?.items ?: listOf()
         dreameApi.getFavoriteStores(userId).body()?.items ?: listOf()
     }
 
-    override suspend fun updateFavorite(storeId: Int, storeType: String, userId: String): Boolean {
-//        return dreameApi.updateFavorite(storeId, storeType, userId)
-        return true
+    override suspend fun checkFavorite(storeId: Int, storeType: String, userId: String): Boolean {
+        return dreameApi.addBookmark(storeId, storeType, userId)
     }
+
+    override suspend fun unCheckFavorite(storeId: Int, storeType: String, userId: String): Boolean {
+        return dreameApi.delBookmark(storeId, storeType, userId)
+    }
+
 
 }

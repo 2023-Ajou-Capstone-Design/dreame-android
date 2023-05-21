@@ -49,7 +49,6 @@ class RegisterImageAdapter(
             ): Boolean {
                 return oldItem.bitmapImage == newItem.bitmapImage
             }
-
         }
     }
 }

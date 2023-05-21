@@ -1,12 +1,14 @@
-package com.example.dreamixmlversion.ui.sharing
+package com.example.dreamixmlversion.ui.sharing.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dreamixmlversion.data.api.response.entity.SharingDataItemEntity
+import com.example.dreamixmlversion.data.api.response.model.SharingDataItemEntity
 import com.example.dreamixmlversion.databinding.ItemSharingBinding
+import com.example.dreamixmlversion.extension.convertToBitmap
+import com.example.dreamixmlversion.extension.decodeForBase64
 
 class SharingAdapter(
     private val sharingItemClickListener: (SharingDataItemEntity) -> Unit
@@ -16,7 +18,10 @@ class SharingAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(sharingItem: SharingDataItemEntity) {
             with(binding) {
-//                sharingThumbnailImageView.setImageResource()
+
+                if (sharingItem.thumbnailImage.isNotEmpty()) {
+                    sharingThumbnailImageView.setImageBitmap(sharingItem.thumbnailImage.decodeForBase64())
+                }
                 sharingTitleTextView.text = sharingItem.title
                 sharingAddressTextView.text = sharingItem.town
                 sharingTimeTextView.text = sharingItem.uploadTime
@@ -27,10 +32,10 @@ class SharingAdapter(
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SharingAdapter.ViewHolder =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(ItemSharingBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-    override fun onBindViewHolder(holder: SharingAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(currentList[position])
     }
 

@@ -6,7 +6,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import com.example.dreamixmlversion.R
 import com.example.dreamixmlversion.databinding.FragmentQuestionBinding
-import com.example.dreamixmlversion.ui.login.LoginBaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -36,21 +35,22 @@ class QuestionScreen: LoginBaseFragment<FragmentQuestionBinding>() {
 
     private fun activateRegisterButton() {
         _binding?.cardNumber1?.addTextChangedListener {
-            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete() == true
+            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete()
         }
         _binding?.cardNumber2?.addTextChangedListener {
-            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete() == true
+            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete()
         }
         _binding?.cardNumber3?.addTextChangedListener {
-            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete() == true
+            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete()
         }
         _binding?.cardNumber4?.addTextChangedListener {
-            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete() == true
+            _binding?.registerCardNumberButton?.isEnabled = isWrittenComplete()
         }
 
         _binding?.registerCardNumberButton?.setOnClickListener {
             val cardNumber =
                 "${_binding?.cardNumber1?.text}${_binding?.cardNumber2?.text}${_binding?.cardNumber3?.text}${_binding?.cardNumber4?.text}"
+            _binding?.viewModel?.setUserType("01")
             setCardNumberAndMoveToSettingTown(cardNumber)
         }
     }
@@ -72,20 +72,20 @@ class QuestionScreen: LoginBaseFragment<FragmentQuestionBinding>() {
     }
 
     private fun setCardNumberAndMoveToSettingTown(cardNumber: String? = null) {
-        _binding?.viewModel?.setIdentity("01")
         _binding?.viewModel?.setCardNumber(cardNumber)
         moveToSettingTown()
     }
 
     private fun initRadioNoButton() {
-        _binding?.radioNo?.setOnClickListener {
+        _binding?.radioNoButton?.setOnClickListener {
+            _binding?.viewModel?.setUserType("99")
             setCardNumberAndMoveToSettingTown()
         }
     }
 
     private fun initPostponeButton() {
         _binding?.postponeRegisterButton?.setOnClickListener {
-            _binding?.viewModel?.setIdentity("99")
+            _binding?.viewModel?.setUserType("01")
             setCardNumberAndMoveToSettingTown()
         }
     }

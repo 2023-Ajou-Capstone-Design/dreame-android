@@ -1,8 +1,8 @@
 package com.example.dreamixmlversion.data.repository
 
-import com.example.dreamixmlversion.data.api.response.entity.DetailInfoItem
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
+import com.example.dreamixmlversion.data.api.response.model.DetailInfoItem
+import com.example.dreamixmlversion.data.api.response.model.StoreDataForMarking
+import com.example.dreamixmlversion.data.api.response.model.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 
 interface StoreRepository {
@@ -34,7 +34,13 @@ interface StoreRepository {
         userId: String
     ): List<StoreDataOnBottomSheetList>
 
-    suspend fun updateFavorite(
+    suspend fun checkFavorite(
+        storeId: Int,
+        storeType: String,
+        userId: String
+    ): Boolean
+
+    suspend fun unCheckFavorite(
         storeId: Int,
         storeType: String,
         userId: String

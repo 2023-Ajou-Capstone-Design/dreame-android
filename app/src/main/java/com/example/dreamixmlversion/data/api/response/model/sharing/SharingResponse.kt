@@ -1,5 +1,7 @@
-package com.example.dreamixmlversion.data.api.response.entity
+package com.example.dreamixmlversion.data.api.response.model.sharing
 
+import com.example.dreamixmlversion.data.api.response.model.SharingDataItemEntity
+import com.example.dreamixmlversion.data.api.response.model.SharingDetailInfo
 import com.google.gson.annotations.SerializedName
 
 data class SharingListResponse(

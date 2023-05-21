@@ -5,12 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
-import com.example.dreamixmlversion.data.db.entity.CategoryEntity
+import com.example.dreamixmlversion.data.api.response.model.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.databinding.ItemStoreBinding
-import dagger.hilt.android.scopes.ActivityScoped
-import javax.inject.Inject
 
 class StoreAdapter: ListAdapter<StoreDataOnBottomSheetList, StoreAdapter.ViewHolder>(diffUtil) {
 

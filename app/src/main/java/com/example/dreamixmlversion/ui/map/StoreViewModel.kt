@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
+import com.example.dreamixmlversion.data.db.preference.PreferenceManager
 import com.example.dreamixmlversion.data.repository.StoreRepository
 import com.example.dreamixmlversion.ui.map.uistate.BottomSheetListUiState
 import com.example.dreamixmlversion.ui.map.uistate.DetailUiState
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StoreViewModel @Inject constructor(
-    private val storeRepository: StoreRepository
+    private val storeRepository: StoreRepository,
+    private val preferenceManager: PreferenceManager
 ) : ViewModel() {
 
     private val _queriedStoresLiveData = MutableLiveData<StoreUiState>(StoreUiState.Uninitialized)
@@ -23,7 +25,6 @@ class StoreViewModel @Inject constructor(
 
     fun getStoresNearbyUserForMarking(latLng: DreameLatLng, mbr: Int) {
         viewModelScope.launch {
-//            _queriedStoresLiveData.postValue(StoreUiState.Loading)
             _queriedStoresLiveData.postValue(
                 StoreUiState.SuccessGetStores(
                     storeRepository.getStoresNearbyUserForMarking(
@@ -86,20 +87,30 @@ class StoreViewModel @Inject constructor(
         }
     }
 
-    fun getFavoriteStores(userId: String) {
+    fun getFavoriteStores() {
         viewModelScope.launch {
             _queriedStoresOnBottomSheetListLiveData.postValue(BottomSheetListUiState.Loading)
             _queriedStoresOnBottomSheetListLiveData.postValue(
                 BottomSheetListUiState.SuccessGetStoresOnBottomSheetList(
-                    storeRepository.getFavoriteStores(userId)
+                    storeRepository.getFavoriteStores(
+                        preferenceManager.getDreameEmailAddress().toString()
+                    )
                 )
             )
         }
     }
 
-//    fun updateFavorite(storeId: Int, storeType: String, userId: String) {
-//        viewModelScope.launch {
-//            storeRepository.
-//        }
-//    }
+    fun updateFavorite(storeId: Int, storeType: String, isBookmarked: Boolean) {
+        viewModelScope.launch {
+            if (isBookmarked) {
+                storeRepository.unCheckFavorite(
+                    storeId, storeType, preferenceManager.getDreameEmailAddress().toString()
+                )
+            } else {
+                storeRepository.checkFavorite(
+                    storeId, storeType, preferenceManager.getDreameEmailAddress().toString()
+                )
+            }
+        }
+    }
 }

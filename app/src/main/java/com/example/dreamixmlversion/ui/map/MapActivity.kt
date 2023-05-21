@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,12 +20,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dreamixmlversion.R
-import com.example.dreamixmlversion.data.api.response.entity.DetailInfoItem
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
+import com.example.dreamixmlversion.data.api.response.model.DetailInfoItem
+import com.example.dreamixmlversion.data.api.response.model.StoreDataForMarking
+import com.example.dreamixmlversion.data.api.response.model.StoreDataOnBottomSheetList
 import com.example.dreamixmlversion.data.db.entity.CategoryEntity
 import com.example.dreamixmlversion.data.db.entity.DreameLatLng
 import com.example.dreamixmlversion.databinding.ActivityMapBinding
@@ -141,7 +141,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initFavoriteButton() {
         binding.favoritesImageButton.setOnClickListener {
-            viewModel.getFavoriteStores("Tester") // todo userId 기입
+            viewModel.getFavoriteStores() // todo userId 기입
         }
     }
 
@@ -365,9 +365,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         bottomSheetDetailProgressBar.isVisible = true
     }
 
+    private var isBookmarked = false
+    private val bookMarkButton by lazy {
+        findViewById<ImageButton>(R.id.bottomSheetDetailFavoriteButton)
+    }
+
     private fun bindDetailInfo(detailInfoOfStore: DetailInfoItem?) {
+        isBookmarked = false
         detailInfoOfStore?.let { item ->
             bottomSheetDetailProgressBar.isVisible = false
+            if (item.isBookmark == 1) {
+                isBookmarked = true
+            }
+            setBookmark()
             findViewById<TextView>(R.id.bottomSheetDetailAddressTextView).text = item.address
             findViewById<TextView>(R.id.bottomSheetDetailCategoryTextView).text = item.cateName
             findViewById<TextView>(R.id.bottomSheetDetailWorkingTimeTextView).text =
@@ -390,9 +400,19 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
             }
 
-            findViewById<ImageButton>(R.id.bottomSheetDetailFavoriteButton).setOnClickListener {
-
+            bookMarkButton.setOnClickListener {
+                viewModel.updateFavorite(item.storeID, item.storeType, isBookmarked)
+                isBookmarked = !isBookmarked
+                setBookmark()
             }
+        }
+    }
+
+    private fun setBookmark() {
+        if (isBookmarked) {
+            bookMarkButton.setImageResource(R.drawable.book_checked)
+        } else {
+            bookMarkButton.setImageResource(R.drawable.baseline_bookmark_border_24)
         }
     }
 

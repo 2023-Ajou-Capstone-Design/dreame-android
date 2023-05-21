@@ -1,11 +1,13 @@
 package com.example.dreamixmlversion.data.repository
 
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataOnBottomSheetList
-
 interface UserRepository {
+
+    suspend fun getRestPoint(userId: String): String
 
     suspend fun changeNickname(
         userId: String,
         nickname: String
     ): Boolean
+
+    suspend fun getProfileImage(userId: String): String
 }

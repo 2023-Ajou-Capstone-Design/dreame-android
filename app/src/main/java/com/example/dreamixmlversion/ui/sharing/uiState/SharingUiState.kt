@@ -1,6 +1,6 @@
 package com.example.dreamixmlversion.ui.sharing.uiState
 
-import com.example.dreamixmlversion.data.api.response.entity.SharingDataItemEntity
+import com.example.dreamixmlversion.data.api.response.model.SharingDataItemEntity
 
 sealed class SharingUiState {
     object Uninitialized: SharingUiState()
@@ -12,4 +12,5 @@ sealed class SharingUiState {
     ): SharingUiState()
 
     object Error: SharingUiState()
+
 }

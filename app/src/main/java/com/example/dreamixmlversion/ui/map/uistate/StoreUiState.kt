@@ -1,6 +1,6 @@
 package com.example.dreamixmlversion.ui.map.uistate
 
-import com.example.dreamixmlversion.data.api.response.entity.StoreDataForMarking
+import com.example.dreamixmlversion.data.api.response.model.StoreDataForMarking
 
 sealed class StoreUiState {
     object Uninitialized: StoreUiState()

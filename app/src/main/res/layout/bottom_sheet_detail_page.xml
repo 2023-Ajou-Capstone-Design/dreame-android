@@ -51,24 +51,24 @@
 
             <ImageButton
                 android:id="@+id/bottomSheetDetailCallButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:src="@drawable/baseline_call_24" />
 
             <ImageButton
                 android:id="@+id/bottomSheetDetailFavoriteButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_weight="1"
                 android:background="@color/white"
-                android:src="@drawable/baseline_bookmark_border_24" />
+                android:src="@drawable/baseline_bookmark_border_24"/>
 
             <ImageButton
                 android:id="@+id/bottomSheetDetailDistanceButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_weight="1"
                 android:background="@color/white"
                 android:src="@drawable/baseline_assistant_direction_24" />

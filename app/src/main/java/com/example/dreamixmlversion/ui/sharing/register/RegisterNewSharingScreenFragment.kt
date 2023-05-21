@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -17,6 +18,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.dreamixmlversion.R
 import com.example.dreamixmlversion.databinding.FragmentRegisterNewSharingBinding
+import com.example.dreamixmlversion.extension.convertToBitmap
+import com.example.dreamixmlversion.extension.toToast
 import com.example.dreamixmlversion.ui.sharing.SharingBaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,9 +43,16 @@ class RegisterNewSharingScreenFragment : SharingBaseFragment<FragmentRegisterNew
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        onBackButtonClicked()
         initRecyclerView()
         initGalleryImageButton()
         initRegisterSharingButton()
+    }
+
+    private fun onBackButtonClicked() {
+        requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().popBackStack()
+        }
     }
 
     private fun initRecyclerView() {
@@ -131,50 +141,36 @@ class RegisterNewSharingScreenFragment : SharingBaseFragment<FragmentRegisterNew
     }
 
     private fun updateImages(uriList: List<Uri>) {
-        val images = uriList.map { SharingImageItem(convertToBitmap(it)) }
+        val images = uriList.map { SharingImageItem(it.convertToBitmap(requireActivity())) }
         val updatedImages =
             registerImageAdapter.currentList.toMutableList().apply { addAll(images) }
         registerImageAdapter.submitList(updatedImages)
     }
 
-    private fun convertToBitmap(uri: Uri): Bitmap {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
-            ImageDecoder.decodeBitmap(source)
-        } else {
-            MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, uri)
-        }
-    }
-
     private fun initRegisterSharingButton() {
         with(_binding) {
             this?.registerNewSharingButton?.setOnClickListener {
-                if (registerImageAdapter.currentList.size == 0) {
-                    alertByToast("사진을 최소 1장 첨부해주세요.")
-                    return@setOnClickListener
-                }
+//                if (registerImageAdapter.currentList.size == 0) {
+//                    ("사진을 최소 1장 첨부해주세요.").toToast(requireActivity())
+//                    return@setOnClickListener
+//                }
                 if (titleEditTextView.text.toString().isEmpty()) {
-                    alertByToast("제목을 적어주세요.")
+                    ("제목을 적어주세요.").toToast(requireActivity())
                     return@setOnClickListener
                 }
                 if (contentEditTextView.text.toString().isEmpty()) {
-                    alertByToast("내용을 적어주세요.")
+                    ("내용을 적어주세요.").toToast(requireActivity())
                     return@setOnClickListener
                 }
                 sharingViewModel.registerNewSharing(
                     titleEditTextView.text.toString(),
-                    contentEditTextView.text.toString()
+                    contentEditTextView.text.toString(),
+                    registerImageAdapter.currentList.toList()
                 )
-                findNavController().navigate(R.id.action_popup_to_sharing_list_screen)
+
+//                findNavController().navigate(R.id.action_popup_from_detail_sharing_screen_to_sharing_list_screen)
             }
         }
-    }
-
-    private fun alertByToast(content: String) =
-        Toast.makeText(requireContext(), content, Toast.LENGTH_SHORT).show()
-
-    private fun checkRegister() {
-
     }
 
     companion object {

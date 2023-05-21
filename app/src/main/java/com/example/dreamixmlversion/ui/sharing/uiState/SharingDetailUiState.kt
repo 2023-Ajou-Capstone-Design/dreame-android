@@ -1,6 +1,6 @@
 package com.example.dreamixmlversion.ui.sharing.uiState
 
-import com.example.dreamixmlversion.data.api.response.entity.SharingDetailInfo
+import com.example.dreamixmlversion.data.api.response.model.SharingDetailInfo
 
 sealed class SharingDetailUiState {
 

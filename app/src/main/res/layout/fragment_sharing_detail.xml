@@ -4,110 +4,167 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:padding="12dp">
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/imageViewPager"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:background="@color/dreame_main_color"
-        app:layout_constraintBottom_toTopOf="@id/akaTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="12dp"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewPager"
-        app:layout_constraintEnd_toEndOf="@id/imageViewPager"
-        app:layout_constraintStart_toStartOf="@id/imageViewPager"
-        app:tabBackground="@drawable/selector_tab"
-        app:tabIndicator="@null" />
-
-    <TextView
-        android:id="@+id/akaTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="12dp"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageViewPager"
-        tools:text="닉네임" />
-
-    <TextView
-        android:id="@+id/townTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@id/akaTextView"
-        app:layout_constraintTop_toBottomOf="@id/akaTextView"
-        tools:text="수원시 영통구 원천동" />
-
-    <TextView
-        android:id="@+id/timeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="@id/townTextView"
-        app:layout_constraintTop_toBottomOf="@id/townTextView"
-        tools:text="오후 4시 10분" />
-
-    <TextView
-        android:id="@+id/sharingTitleTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="12dp"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timeTextView"
-        tools:text="파김치" />
-
-    <TextView
-        android:id="@+id/sharingContentTextView"
-        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="12dp"
-        android:textColor="@color/black"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@id/chatButton"
-        app:layout_constraintEnd_toEndOf="@id/sharingTitleTextView"
-        app:layout_constraintStart_toStartOf="@id/sharingTitleTextView"
-        app:layout_constraintTop_toBottomOf="@id/sharingTitleTextView"
-        tools:text="절대 눈치보지 말고 배부터 채우자 !!!!" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/chatButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="12dp"
-        android:background="@color/dreame_main_color"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="채팅하기" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/imageViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="@color/dreame_main_color"
+                app:layout_constraintBottom_toTopOf="@id/akaTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                app:layout_constraintBottom_toBottomOf="@id/imageViewPager"
+                app:layout_constraintEnd_toEndOf="@id/imageViewPager"
+                app:layout_constraintStart_toStartOf="@id/imageViewPager"
+                app:tabBackground="@drawable/selector_tab"
+                app:tabIndicator="@null" />
+
+            <TextView
+                android:id="@+id/akaTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageViewPager"
+                tools:text="닉네임" />
+
+            <TextView
+                android:id="@+id/townTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/akaTextView"
+                app:layout_constraintTop_toBottomOf="@id/akaTextView"
+                tools:text="수원시 영통구 원천동" />
+
+            <TextView
+                android:id="@+id/timeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/townTextView"
+                app:layout_constraintTop_toBottomOf="@id/townTextView"
+                tools:text="오후 4시 10분" />
+
+            <TextView
+                android:id="@+id/sharingTitleTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="12dp"
+                android:background="@drawable/shape_corner_rect"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/timeTextView"
+                tools:text="파김치" />
+
+            <TextView
+                android:id="@+id/sharingContentTextView"
+                android:layout_width="0dp"
+                android:layout_height="400dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/shape_corner_rect"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@id/chatButton"
+                app:layout_constraintEnd_toEndOf="@id/sharingTitleTextView"
+                app:layout_constraintStart_toStartOf="@id/sharingTitleTextView"
+                app:layout_constraintTop_toBottomOf="@id/sharingTitleTextView"
+                tools:text="절대 눈치보지 말고 배부터 채우자 !!!!" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/chatButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:background="@color/dreame_main_color"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="채팅하기" />
+
+            <LinearLayout
+                android:id="@+id/modifySharingLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/modifySharingButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/gray_background"
+                    android:text="수정하기"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/deleteSharingButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:layout_weight="1"
+                    android:background="@color/gray_background"
+                    android:text="삭제하기"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

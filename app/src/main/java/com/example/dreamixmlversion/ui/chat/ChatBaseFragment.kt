@@ -1,4 +1,4 @@
-package com.example.dreamixmlversion.ui.user
+package com.example.dreamixmlversion.ui.chat
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
 
-abstract class UserBaseFragment<VB: ViewBinding>: Fragment() {
+abstract class ChatBaseFragment<VB: ViewBinding>: Fragment() {
 
-    internal val userViewModel: UserViewModel by activityViewModels()
+    internal val chatViewModel: ChatViewModel by activityViewModels()
 
     internal var _binding: VB? = null
     private val binding get() = _binding!!

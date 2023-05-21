@@ -1,4 +1,4 @@
-package com.example.dreamixmlversion.data.api.response.entity
+package com.example.dreamixmlversion.data.api.response.model
 
 import com.google.gson.annotations.SerializedName
 
@@ -27,19 +27,6 @@ data class StoreDataOnBottomSheetList(
     @SerializedName("SubCategory") val subCategory: String
 )
 
-//data class StoreDataBySearchingKeyword(
-//    @SerializedName("StoreID") val storeId: Int,
-//    @SerializedName("StoreType") val storeType: String,
-//    @SerializedName("StorePhoto") val storePhoto: String,
-//    @SerializedName("StoreName") val storeName: String,
-//    @SerializedName("CateName") val cateName: String,
-//    @SerializedName("SubCateName") val subCateName: String,
-//    @SerializedName("StorePointLng") val storePointLng: Float,
-//    @SerializedName("StorePointLat") val storePointLat: Float,
-//    @SerializedName("Category") val category: String,
-//    @SerializedName("SubCategory") val subCategory: String
-//)
-
 data class DetailInfoItem(
     @SerializedName("Address") val address: String,
     @SerializedName("CateName") val cateName: String,
@@ -60,4 +47,5 @@ data class DetailInfoItem(
     @SerializedName("StoreType") val storeType: String,
     @SerializedName("SubCateName") val subCateName: String,
     @SerializedName("WorkDay") val workDay: String,
+    @SerializedName("Bookmarked") val isBookmark: Int
 )

@@ -1,4 +1,4 @@
-package com.example.dreamixmlversion.data.api.response.entity
+package com.example.dreamixmlversion.data.api.response.model
 
 import com.google.gson.annotations.SerializedName
 

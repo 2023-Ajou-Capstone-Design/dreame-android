@@ -1,6 +1,9 @@
 package com.example.dreamixmlversion.data.api
 
-import com.example.dreamixmlversion.data.api.response.entity.*
+import com.example.dreamixmlversion.data.api.response.model.*
+import com.example.dreamixmlversion.data.api.response.model.login.*
+import com.example.dreamixmlversion.data.api.response.model.sharing.SharingDetailResponse
+import com.example.dreamixmlversion.data.api.response.model.sharing.SharingListResponse
 import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -9,7 +12,6 @@ import retrofit2.http.Query
 interface DreameApi {
 
     @POST("map/MyPosition")
-//    @POST("v3/99a78bae-47e1-42f1-8421-5d90c4c8a28e")
     suspend fun getAllStoresNearbyUserForMarking(
         @Query("myPositionLat") myPositionLat: Float,
         @Query("myPositionLng") myPositionLng: Float,
@@ -17,7 +19,6 @@ interface DreameApi {
     ): Response<StoreDataForMarkingResponse>
 
     @POST("map/Choose/{Path}")
-//    @POST("v3/7b43db1b-b928-4b38-a3d5-60675c6ad58b")
     suspend fun getStoresClickedCategoryName(
         @Path("Path") path: String,
         @Query("Category") category: String ?= null,
@@ -30,7 +31,6 @@ interface DreameApi {
 
     // db에 keyword 검색
     @POST("map/KeywordSearch")
-//    @POST("v3/7b43db1b-b928-4b38-a3d5-60675c6ad58b")
     suspend fun searchByKeyword(
         @Query("Keyword") keyword: String,
         @Query("myPositionLat") myPositionLat: Float,
@@ -50,14 +50,19 @@ interface DreameApi {
 
     // db 업데이트 및 spots 최신화
     @POST("Bookmark/list")
-//    @POST("v3/7b43db1b-b928-4b38-a3d5-60675c6ad58b")
     suspend fun getFavoriteStores(
         @Query("UserID") userId: String
     ): Response<StoreDataBottomSheetListResponse>
 
-    @POST("Bookmark/{path}")
-    suspend fun updateFavorite(
-        @Path("path") path: String,
+    @POST("Bookmark/add")
+    suspend fun addBookmark(
+        @Query("StoreID") storeId: Int,
+        @Query("StoreType") storeType: String,
+        @Query("UserID") userId: String
+    ): Boolean
+
+    @POST("Bookmark/del")
+    suspend fun delBookmark(
         @Query("StoreID") storeId: Int,
         @Query("StoreType") storeType: String,
         @Query("UserID") userId: String
@@ -78,22 +83,48 @@ interface DreameApi {
     suspend fun registerNewSharing(
         @Query("UserID") userId: String,
         @Query("Title") title: String,
-        @Query("contents") content: String,
+        @Query("Contents") content: String,
         @Query("Photo1") photo1: String? = null,
         @Query("Photo2") photo2: String? = null,
         @Query("Photo3") photo3: String? = null,
         @Query("Town") town: String
         ): Boolean
 
+    @POST("MyPage/Card")
+    suspend fun getMyRestPoint(
+        @Query("UserID") userId: String
+    ): Response<String>
+
 //    @POST("")
 //    suspend fun checkDuplicateNickname(
 //        @Query("") nickname: String
 //    ): Boolean
 
-    @POST("LogIn/")
+    @POST("City/Do")
+    suspend fun getFirstRegionNameList(): Response<DoResponse>
+
+    @POST("City/Si")
+    suspend fun getSecondRegionNameList(
+        @Query("Do") townDo: String
+    ): Response<SiResponse>
+
+    @POST("City/GunGu")
+    suspend fun getThirdRegionNameList(
+        @Query("Do") townDo: String,
+        @Query("Si") townSi: String
+    ): Response<GunGuResponse>
+
+    @POST("City/Dong")
+    suspend fun getFourthRegionNameList(
+        @Query("Do") townDo: String,
+        @Query("Si") townSi: String,
+        @Query("GunGu") townGunGu: String
+    ): Response<DongResponse>
+
+    @POST("LogIn")
     suspend fun registerUserProfile(
-        @Query("Profile") profile: String? = null,
-        @Query("Account") account: String,
+        @Query("UserPhoto") userPhoto: String? = null,
+        @Query("UserID") userId: String,
         @Query("Card") childCardNumber: String ?= null,
         @Query("userType") userType: String,
         @Query("Town") town: String,
@@ -104,5 +135,10 @@ interface DreameApi {
     suspend fun changeNickname(
         @Query("UserID") userId: String,
         @Query("AKA") nickname: String
-    ): Boolean
+    ): Response<String>
+
+    @POST("MyPage/myList")
+    suspend fun inquireMySharing(
+        @Query("UserID") userId: String
+    ): Response<SharingListResponse>
 }

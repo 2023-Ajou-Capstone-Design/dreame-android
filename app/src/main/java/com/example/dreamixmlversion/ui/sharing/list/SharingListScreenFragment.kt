@@ -2,11 +2,11 @@ package com.example.dreamixmlversion.ui.sharing.list
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import com.example.dreamixmlversion.R
-import com.example.dreamixmlversion.data.api.response.entity.SharingDataItemEntity
+import com.example.dreamixmlversion.data.api.response.model.SharingDataItemEntity
 import com.example.dreamixmlversion.databinding.FragmentSharingListBinding
-import com.example.dreamixmlversion.ui.sharing.SharingAdapter
 import com.example.dreamixmlversion.ui.sharing.SharingBaseFragment
 import com.example.dreamixmlversion.ui.sharing.uiState.SharingUiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SharingListScreenFragment: SharingBaseFragment<FragmentSharingListBinding>() {
 
     private lateinit var sharingAdapter: SharingAdapter
+
     override fun getViewBinding(): FragmentSharingListBinding =
         FragmentSharingListBinding.inflate(layoutInflater)
 
@@ -26,21 +27,45 @@ class SharingListScreenFragment: SharingBaseFragment<FragmentSharingListBinding>
             viewModel = sharingViewModel
         }
 
+        onBackButtonClicked()
+        setSharingType()
         initSwipeRefreshLayout()
         initRecyclerView()
         initFloatingButton()
     }
 
+    private fun onBackButtonClicked() {
+        requireActivity().onBackPressedDispatcher.addCallback {
+//            clearSharingData()
+            findNavController().popBackStack()
+        }
+    }
+
+//    private fun setSharingUiStateTo(uiState: SharingUiState) {
+//        sharingViewModel.setSharingUiStateTo(uiState)
+//    }
+
+    private fun clearSharingData() {
+        sharingViewModel.initSharingListLivedata()
+    }
+
+    private fun setSharingType() {
+        val sharingType = arguments?.getString("sharingType").toString()
+        sharingViewModel.setSharingType(sharingType)
+    }
+
     private fun initSwipeRefreshLayout() = with(_binding) {
         this?.refreshLayout?.setOnRefreshListener {
-            sharingViewModel.getSharingItemsNearbyUser("수원시 영통구 원천동")
+            clearSharingData()
+            sharingViewModel.getSharingItems()
         }
     }
 
     private fun initRecyclerView() {
+
         sharingAdapter = SharingAdapter {
-            sharingViewModel.setDetailSharingWritingId(it.writingId)
-            findNavController().navigate(R.id.action_sharing_list_screen_to_detail_screen)
+            sharingViewModel.setDetailSharingInfo(it.userId, it.writingId)
+            findNavController().navigate(R.id.action_sharing_screen_to_detail_sharing)
         }
         _binding?.sharingRecyclerView?.adapter = sharingAdapter
 
@@ -55,7 +80,7 @@ class SharingListScreenFragment: SharingBaseFragment<FragmentSharingListBinding>
     }
 
     private fun callSharingInTown() {
-        sharingViewModel.getSharingItemsNearbyUser("수원시 영통구 원천동")
+        sharingViewModel.getSharingItems()
     }
 
     private fun showProgressBar() {
@@ -68,6 +93,9 @@ class SharingListScreenFragment: SharingBaseFragment<FragmentSharingListBinding>
 
     private fun bindSharingDataOnRecyclerView(items: List<SharingDataItemEntity>) {
         hideProgressBar()
+        if (sharingAdapter.itemCount != 0) {
+            sharingAdapter.submitList(null)
+        }
         sharingAdapter.submitList(items)
     }
 

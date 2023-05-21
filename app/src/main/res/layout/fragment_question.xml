@@ -50,7 +50,7 @@
             app:layout_constraintTop_toBottomOf="@id/questionTextView">
 
             <RadioButton
-                android:id="@+id/radio_yes"
+                android:id="@+id/radioYesButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{()->questionScreenFragment.showCardNumberLayout()}"
@@ -58,7 +58,7 @@
                 android:textColor="@color/black" />
 
             <RadioButton
-                android:id="@+id/radio_no"
+                android:id="@+id/radioNoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="아니오"

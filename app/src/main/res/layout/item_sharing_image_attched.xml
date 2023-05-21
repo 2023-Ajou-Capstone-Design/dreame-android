@@ -22,7 +22,7 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/deleteImageButton"
-        android:background="@drawable/shape_circle"
+        android:background="@drawable/shape_circle_food_sharing"
         android:src="@drawable/baseline_clear_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home">
 
         <action
-            android:id="@+id/action_home_screen_to_posting_screen"
+            android:id="@+id/action_home_screen_to_sharing_screen"
             app:destination="@id/sharing_list_screen"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -21,12 +21,33 @@
 
     </fragment>
 
-
     <fragment
         android:id="@+id/chat_dest"
-        android:name="com.example.dreamixmlversion.ui.chat.ChatFragment"
+        android:name="com.example.dreamixmlversion.ui.chat.chatlist.ChatListFragment"
         android:label="Chat"
-        tools:layout="@layout/fragment_chat"/>
+        tools:layout="@layout/fragment_chat">
+
+        <action
+            android:id="@+id/action_chat_screen_to_detail_screen"
+            app:destination="@id/chat_detail"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/chat_detail"
+        android:name="com.example.dreamixmlversion.ui.chat.chatdetail.ChatDetailFragment"
+        tools:layout="@layout/fragment_chatroom_detail">
+
+        <argument
+            android:name="otherUserId"
+            app:argType="string"
+            android:defaultValue=""/>
+
+    </fragment>
 
     <fragment
         android:id="@+id/user_dest"
@@ -35,7 +56,7 @@
         tools:layout="@layout/fragment_user">
 
         <action
-            android:id="@+id/action_user_screen_to_posting_screen"
+            android:id="@+id/action_user_screen_to_sharing_screen"
             app:destination="@id/sharing_list_screen"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -51,7 +72,7 @@
         tools:layout="@layout/fragment_sharing_list">
 
         <action
-            android:id="@+id/action_posting_screen_to_detail_sharing"
+            android:id="@+id/action_sharing_screen_to_detail_sharing"
             app:destination="@id/detail_sharing_screen"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
@@ -66,18 +87,28 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <argument
+            android:name="sharingType"
+            app:argType="string"
+            android:defaultValue="default"/>
+
     </fragment>
 
     <fragment
         android:id="@+id/register_new_sharing_screen"
         android:name="com.example.dreamixmlversion.ui.sharing.register.RegisterNewSharingScreenFragment"
-        android:label="fragment_register_new_sharing"
+        android:label="Register"
         tools:layout="@layout/fragment_register_new_sharing">
 
+<!--        <action-->
+<!--            android:id="@+id/action_popup_from_detail_sharing_screen_to_sharing_list_screen"-->
+<!--            app:destination="@id/sharing_list_screen"-->
+<!--            app:popUpTo="@id/sharing_list_screen" />-->
+
         <action
-            android:id="@+id/action_popup_to_sharing_list_screen"
-            app:destination="@id/sharing_list_screen"
-            app:popUpTo="@id/sharing_list_screen" />
+            android:id="@+id/action_popup_from_register_sharing_to_detail_sharing_screen"
+            app:destination="@id/detail_sharing_screen"
+            app:popUpTo="@id/detail_sharing_screen" />
 
     </fragment>
 
@@ -86,6 +117,19 @@
         android:name="com.example.dreamixmlversion.ui.sharing.detail.DetailSharingScreenFragment"
         android:label="SharingDetail"
         tools:layout="@layout/fragment_sharing_detail">
+
+        <action
+            android:id="@+id/action_detail_sharing_screen_to_register_sharing"
+            app:destination="@id/register_new_sharing_screen" />
+
+        <action
+            android:id="@+id/action_popup_from_detail_sharing_screen_to_sharing_list_screen"
+            app:destination="@id/sharing_list_screen"
+            app:popUpTo="@id/sharing_list_screen" />
+
+        <action
+            android:id="@+id/action_detail_sharing_screen_to_chat_detail_screen"
+            app:destination="@id/chat_detail"/>
 
     </fragment>
 

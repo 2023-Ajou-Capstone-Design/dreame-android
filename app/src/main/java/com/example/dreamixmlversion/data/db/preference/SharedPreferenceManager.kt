@@ -13,9 +13,9 @@ class SharedPreferenceManager @Inject constructor(
     private val sharedPreferences: SharedPreferences
 ) : PreferenceManager {
 
-    override fun putDreameEmailAddress(address: String) {
+    override fun putDreameEmailAddress(address: String?) {
         with(sharedPreferences.edit()) {
-            putString(R.string.shared_preference_dreame_email_address.toString(), address)
+            putString(R.string.preference_dreame_email_address.toString(), address)
             apply()
         }
     }
@@ -23,7 +23,7 @@ class SharedPreferenceManager @Inject constructor(
     override fun getDreameEmailAddress(): String? {
 
         val value = sharedPreferences.getString(
-            R.string.shared_preference_dreame_email_address.toString(),
+            R.string.preference_dreame_email_address.toString(),
             INVALID_STRING_VALUE
         )
 
@@ -34,9 +34,9 @@ class SharedPreferenceManager @Inject constructor(
         }
     }
 
-    override fun putDreameUserType(userType: String) {
+    override fun putDreameUserType(userType: String?) {
         with(sharedPreferences.edit()) {
-            putString(R.string.shared_preference_dreame_user_type.toString(), userType)
+            putString(R.string.preference_dreame_user_type.toString(), userType)
             apply()
         }
     }
@@ -44,7 +44,7 @@ class SharedPreferenceManager @Inject constructor(
     override fun getDreameUserType(): String? {
 
         val value = sharedPreferences.getString(
-            R.string.shared_preference_dreame_user_type.toString(),
+            R.string.preference_dreame_user_type.toString(),
             INVALID_STRING_VALUE
         )
 
@@ -55,9 +55,9 @@ class SharedPreferenceManager @Inject constructor(
         }
     }
 
-    override fun putDreameChildCardNumber(number: String) {
+    override fun putDreameChildCardNumber(number: String?) {
         with(sharedPreferences.edit()) {
-            putString(R.string.shared_preference_dreame_child_card_number.toString(), number)
+            putString(R.string.preference_dreame_child_card_number.toString(), number)
             apply()
         }
     }
@@ -65,7 +65,7 @@ class SharedPreferenceManager @Inject constructor(
     override fun getDreameChildCardNumber(): String? {
 
         val value = sharedPreferences.getString(
-            R.string.shared_preference_dreame_child_card_number.toString(),
+            R.string.preference_dreame_child_card_number.toString(),
             INVALID_STRING_VALUE
         )
 
@@ -76,9 +76,9 @@ class SharedPreferenceManager @Inject constructor(
         }
     }
 
-    override fun putDreameTownAddress(address: String) {
+    override fun putDreameTownAddress(address: String?) {
         with(sharedPreferences.edit()) {
-            putString(R.string.shared_preference_dreame_town_address.toString(), address)
+            putString(R.string.preference_dreame_town_address.toString(), address)
             apply()
         }
     }
@@ -86,7 +86,7 @@ class SharedPreferenceManager @Inject constructor(
     override fun getDreameTownAddress(): String? {
 
         val value = sharedPreferences.getString(
-            R.string.shared_preference_dreame_town_address.toString(),
+            R.string.preference_dreame_town_address.toString(),
             INVALID_STRING_VALUE
         )
 
@@ -97,9 +97,9 @@ class SharedPreferenceManager @Inject constructor(
         }
     }
 
-    override fun putDreameNickname(nickname: String) {
+    override fun putDreameNickname(nickname: String?) {
         with(sharedPreferences.edit()) {
-            putString(R.string.shared_preference_dreame_nickname.toString(), nickname)
+            putString(R.string.preference_dreame_nickname.toString(), nickname)
             apply()
         }
     }
@@ -107,7 +107,7 @@ class SharedPreferenceManager @Inject constructor(
     override fun getDreameNickname(): String? {
 
         val value = sharedPreferences.getString(
-            R.string.shared_preference_dreame_nickname.toString(),
+            R.string.preference_dreame_nickname.toString(),
             INVALID_STRING_VALUE
         )
 
@@ -119,6 +119,6 @@ class SharedPreferenceManager @Inject constructor(
     }
 
     companion object {
-        const val INVALID_STRING_VALUE = "INVALID_STRING_VALUE"
+        const val INVALID_STRING_VALUE = "null"
     }
 }
