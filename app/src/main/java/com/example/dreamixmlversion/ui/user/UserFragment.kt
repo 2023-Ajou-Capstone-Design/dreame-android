@@ -35,18 +35,22 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initViews()
         bindViews()
+    }
+
+    private fun initViews() {
+        initChangingNicknameButton()
+        initChangeNicknameLayout()
+        initCheckMySharingButton()
+        initTownSettingButton()
+        initSecessionButton()
     }
 
     private fun bindViews() {
 
         bindProfileImageView()
         bindNicknameTextView()
-        initChangingNicknameButton()
-        initChangeNicknameLayout()
-        initCheckMySharingButton()
-        initTownSettingButton()
-        initSecessionButton()
     }
 
     private fun bindProfileImageView() {

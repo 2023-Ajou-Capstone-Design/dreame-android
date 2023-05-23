@@ -41,12 +41,14 @@ class SettingTownScreen : LoginBaseFragment<FragmentSettingTownBinding>() {
     private fun inputRegionValueToTextView(regionName: String) {
         if (isFilledFirst().not()) {
             _binding?.firstDestinationTextView?.text = regionName
-        } else if (isFilledSecond()) {
+        } else if (isFilledSecond().not()) {
             _binding?.secondDestinationTextView?.text = regionName
-        } else if (isFilledThird()) {
+        } else if (isFilledThird().not()) {
             _binding?.thirdDestinationTextView?.text = regionName
         } else {
             _binding?.fourthDestinationTextView?.text = regionName
+
+            _binding?.registerButton?.visibility = View.VISIBLE
         }
     }
 
@@ -80,7 +82,7 @@ class SettingTownScreen : LoginBaseFragment<FragmentSettingTownBinding>() {
     private fun initThirdDestinationTextView() {
         _binding?.thirdDestinationTextView?.setOnClickListener {
             loginViewModel.requestTownList(
-                region = LoginViewModel.TOWN_DO,
+                region = LoginViewModel.TOWN_GUNGU,
                 _binding?.firstDestinationTextView?.text.toString(),
                 _binding?.secondDestinationTextView?.text.toString()
             )
@@ -90,7 +92,7 @@ class SettingTownScreen : LoginBaseFragment<FragmentSettingTownBinding>() {
     private fun initFourthDestinationTextView() {
         _binding?.fourthDestinationTextView?.setOnClickListener {
             loginViewModel.requestTownList(
-                region = LoginViewModel.TOWN_DO,
+                region = LoginViewModel.TOWN_DONG,
                 _binding?.firstDestinationTextView?.text.toString(),
                 _binding?.secondDestinationTextView?.text.toString(),
                 _binding?.thirdDestinationTextView?.text.toString(),
@@ -108,6 +110,7 @@ class SettingTownScreen : LoginBaseFragment<FragmentSettingTownBinding>() {
     }
 
     private fun bindTownListInRecyclerView(townList: List<String>) {
+        _binding?.partTownRecyclerView?.visibility = View.VISIBLE
         adapter.submitList(townList)
     }
 

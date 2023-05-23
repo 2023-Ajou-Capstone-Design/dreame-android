@@ -1,28 +1,29 @@
 package com.example.dreamixmlversion.data.repository
 
 import com.example.dreamixmlversion.data.api.DreameApi
+import com.example.dreamixmlversion.data.api.response.model.login.TownDo
 import javax.inject.Inject
 
 class LoginRepositoryImpl @Inject constructor(
     private val dreameApi: DreameApi
 ) : LoginRepository {
     override suspend fun getDo(): List<String> {
-        return dreameApi.getFirstRegionNameList().body()?.items?.map { it.toString() } ?: listOf()
+        return dreameApi.getFirstRegionNameList().body()?.items?.map { it.d } ?: listOf()
     }
 
     override suspend fun getSi(townDo: String): List<String> {
-        return dreameApi.getSecondRegionNameList(townDo).body()?.items?.map { it.toString() }
+        return dreameApi.getSecondRegionNameList(townDo).body()?.items?.map { it.s }
             ?: listOf()
     }
 
     override suspend fun getGunGu(townDo: String, townSi: String): List<String> {
-        return dreameApi.getThirdRegionNameList(townDo, townSi).body()?.items?.map { it.toString() }
+        return dreameApi.getThirdRegionNameList(townDo, townSi).body()?.items?.map { it.g }
             ?: listOf()
     }
 
     override suspend fun getDong(townDo: String, townSi: String, townGunGu: String): List<String> {
         return dreameApi.getFourthRegionNameList(townDo, townSi, townGunGu)
-            .body()?.items?.map { it.toString() } ?: listOf()
+            .body()?.items?.map { it.d } ?: listOf()
     }
 
 

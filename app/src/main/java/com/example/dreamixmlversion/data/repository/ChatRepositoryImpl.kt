@@ -1,6 +1,5 @@
 package com.example.dreamixmlversion.data.repository
 
-import android.util.Log
 import com.example.dreamixmlversion.data.api.response.model.chat.ChatMessageModel
 import com.example.dreamixmlversion.data.api.response.model.chat.ChatRoomItem
 import com.example.dreamixmlversion.data.api.response.model.chat.ProcessedChatRoomItem

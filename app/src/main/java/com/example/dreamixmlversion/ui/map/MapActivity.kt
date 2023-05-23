@@ -236,6 +236,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun markStoresOnMap(stores: List<StoreDataForMarking>) {
+        naverMap.minZoom = 5.0
+        naverMap.maxZoom = 18.0
+
         val markers = mutableListOf<Marker>()
         stores.forEach { store ->
             markers.add(Marker().apply {
@@ -289,15 +292,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun initBottomSheetDetailDialog() {
         bottomSheetDetailBehavior = BottomSheetBehavior.from(bottomSheetDetail)
         bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-//        bottomSheetDetailBehavior.addBottomSheetCallback(object: BottomSheetBehavior.BottomSheetCallback() {
-//            override fun onStateChanged(bottomSheet: View, newState: Int) {
-//
-//            }
-//
-//            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-//
-//            }
-//        })
 
         viewModel.queriedDetailInfoLiveData.observe(this) {
             when (it) {

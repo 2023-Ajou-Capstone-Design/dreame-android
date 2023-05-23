@@ -3,8 +3,8 @@ package com.example.dreamixmlversion.data.api.response.model.login
 import com.google.gson.annotations.SerializedName
 
 data class DoResponse(
-    @SerializedName("items")
-    val items: List<TownDo>
+    @SerializedName("items") val items: List<TownDo>,
+    @SerializedName("total") val total: Int
 )
 
 data class TownDo(
@@ -12,8 +12,8 @@ data class TownDo(
 )
 
 data class SiResponse(
-    @SerializedName("items")
-    val items: List<TownSi>
+    @SerializedName("items") val items: List<TownSi>,
+    @SerializedName("total") val total: Int
 )
 
 data class TownSi(
@@ -21,8 +21,8 @@ data class TownSi(
 )
 
 data class GunGuResponse(
-    @SerializedName("items")
-    val items: List<TownGunGu>
+    @SerializedName("items") val items: List<TownGunGu>,
+    @SerializedName("total") val total: Int
 )
 
 data class TownGunGu(
@@ -30,8 +30,8 @@ data class TownGunGu(
 )
 
 data class DongResponse(
-    @SerializedName("items")
-    val items: List<TownDong>
+    @SerializedName("items") val items: List<TownDong>,
+    @SerializedName("total") val total: Int
 )
 
 data class TownDong(

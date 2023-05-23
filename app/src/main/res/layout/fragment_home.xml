@@ -35,6 +35,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cardInfoLayout"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginTop="12dp"

@@ -71,6 +71,10 @@ class HomeFragment: Fragment() {
 
     private fun initCardInfo() {
         with(binding) {
+            if (viewModel.getUserType() == "99") {
+                _binding?.cardInfoLayout?.visibility = View.INVISIBLE
+            }
+
             updateCardNumberInfo()
 
             changeCardNumberButton.setOnClickListener {
