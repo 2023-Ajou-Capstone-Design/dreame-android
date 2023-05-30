@@ -43,7 +43,7 @@
         tools:layout="@layout/fragment_chatroom_detail">
 
         <argument
-            android:name="otherUserId"
+            android:name="otherNickname"
             app:argType="string"
             android:defaultValue=""/>
 

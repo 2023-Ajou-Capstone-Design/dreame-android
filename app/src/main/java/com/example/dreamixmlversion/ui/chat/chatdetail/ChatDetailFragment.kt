@@ -29,13 +29,13 @@ class ChatDetailFragment : ChatBaseFragment<FragmentChatroomDetailBinding>() {
         initChatMessageList()
         initMessageInputView()
         initSendMessageButton()
-        setOtherUser()
+        setOtherNickname()
         getMessages()
         setChatRoomTitle()
     }
 
     private fun initChatMessageList() {
-        chatMessageAdapter = ChatMessageAdapter(chatViewModel.myUserId)
+        chatMessageAdapter = ChatMessageAdapter(chatViewModel.myNickname)
         _binding?.chatMessageRecyclerView?.apply {
             adapter = chatMessageAdapter
         }
@@ -78,10 +78,10 @@ class ChatDetailFragment : ChatBaseFragment<FragmentChatroomDetailBinding>() {
         }
     }
 
-    private fun setOtherUser() {
-        val otherUserId = arguments?.getString("otherUserId").toString()
+    private fun setOtherNickname() {
+        val otherUserId = arguments?.getString("otherNickname").toString()
         if (otherUserId.isNotEmpty()) {
-            chatViewModel.setOtherUserId(otherUserId)
+            chatViewModel.setOtherNickname(otherUserId)
         }
     }
 

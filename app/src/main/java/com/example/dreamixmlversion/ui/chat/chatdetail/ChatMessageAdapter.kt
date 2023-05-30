@@ -13,7 +13,7 @@ import com.example.dreamixmlversion.data.api.response.model.chat.ChatMessageMode
 import com.example.dreamixmlversion.databinding.ItemChatroomDetailMyMessageBinding
 import com.example.dreamixmlversion.databinding.ItemChatroomDetailOpponentMessageBinding
 
-class ChatMessageAdapter(private val userId: String) :
+class ChatMessageAdapter(private val nickname: String) :
     ListAdapter<ChatMessageModel, RecyclerView.ViewHolder>(diffUtil) {
 
     inner class MyViewHolder(private val binding: ItemChatroomDetailMyMessageBinding) :
@@ -36,7 +36,7 @@ class ChatMessageAdapter(private val userId: String) :
             } else {
                 binding.profileImageView.visibility = View.VISIBLE
                 binding.nicknameTextView.visibility = View.VISIBLE
-                binding.nicknameTextView.text = item.writerUserId.toString()
+                binding.nicknameTextView.text = item.nickname.toString()
 //                binding.messageTextView.setMargins(0, 0, 0, 0)
             }
             binding.messageTextView.text = item.messageContent.toString()
@@ -44,7 +44,7 @@ class ChatMessageAdapter(private val userId: String) :
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (currentList[position].writerUserId == this.userId) MY else OPPONENT
+        return if (currentList[position].nickname == this.nickname) MY else OPPONENT
     }
 
     override fun onCreateViewHolder(

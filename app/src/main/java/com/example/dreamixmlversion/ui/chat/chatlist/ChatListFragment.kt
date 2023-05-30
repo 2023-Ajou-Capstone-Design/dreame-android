@@ -29,7 +29,7 @@ class ChatListFragment : ChatBaseFragment<FragmentChatBinding>() {
 
     private fun initChatRoomList() {
         chatListAdapter = ChatListAdapter { item ->
-            chatViewModel.setOtherUserId(item.otherUserId.toString())
+            chatViewModel.setOtherNickname(item.otherNickname.toString())
             chatViewModel.setChatRoomId(item.chatRoomId.toString())
             findNavController().navigate(R.id.action_chat_screen_to_detail_screen)
         }

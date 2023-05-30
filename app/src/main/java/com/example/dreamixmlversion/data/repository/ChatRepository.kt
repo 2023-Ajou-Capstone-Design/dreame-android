@@ -8,19 +8,19 @@ interface ChatRepository {
 
     val chatRooms: Flow<List<ProcessedChatRoomItem>>
 
-    suspend fun getChatRoomList(userId: String)
+    suspend fun getChatRoomList(nickname: String)
 
     suspend fun sendMessage(
-        otherUserId: String? = null,
+        otherNickname: String? = null,
         isExistChatRoom: Boolean,
-        myUserId: String,
+        myNickname: String,
         chatRoomId: String,
         messageContent: String
     )
 
     val messages: Flow<List<ChatMessageModel>>
 
-    suspend fun getChatMessageList(myUserId: String, otherUserId: String, chatRoomId: String? = null)
+    suspend fun getChatMessageList(myNickname: String, otherNickname: String, chatRoomId: String? = null)
 
     suspend fun removeEventListenerFromMessages()
 }

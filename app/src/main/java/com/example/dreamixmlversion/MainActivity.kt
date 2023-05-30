@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -54,18 +55,19 @@ class MainActivity() : AppCompatActivity() {
 
 //        var keyHash = Utility.getKeyHash(this)
 
-        checkLogin()
-        initNavigation()
-        checkExternalStoragePermission()
-        askNotificationPermission()
-    }
-
-    private fun checkLogin() {
-
-        if (viewModel.getEmailAddress() == null) {
+        if (checkLogin()) {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
+        } else {
+            initNavigation()
+//            checkExternalStoragePermission()
+            askNotificationPermission()
         }
+    }
+
+    private fun checkLogin(): Boolean {
+        Log.d("userId", viewModel.getEmailAddress().toString())
+        return viewModel.getEmailAddress() == null
     }
 
     private fun initNavigation() {
@@ -265,7 +267,7 @@ class MainActivity() : AppCompatActivity() {
             val tokenMap = mutableMapOf<String, Any>()
             tokenMap[FCM_TOKEN] = token
             Firebase.database.reference.child(USER_INFO)
-                .child(viewModel.getEmailAddress().toString().convertStrToBase64())
+                .child(viewModel.getNickname().toString().convertStrToBase64())
                 .updateChildren(tokenMap)
         }
     }

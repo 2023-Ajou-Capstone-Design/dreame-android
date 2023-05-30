@@ -40,8 +40,8 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
     override val chatRooms: Flow<List<ProcessedChatRoomItem>>
         get() = _chatRooms.asStateFlow()
 
-    override suspend fun getChatRoomList(userId: String) {
-        database.child(USER_INFO).child(userId.convertStrToBase64()).child(CHATROOM_INFO)
+    override suspend fun getChatRoomList(nickname: String) {
+        database.child(USER_INFO).child(nickname.convertStrToBase64()).child(CHATROOM_INFO)
             .orderByChild(
                 LAST_UPLOAD_TIME
             ).addValueEventListener(object : ValueEventListener {
@@ -71,87 +71,87 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
     private var chatRoomId: String? = null
 
     override suspend fun sendMessage(
-        otherUserId: String?,
+        otherNickname: String?,
         isExistChatRoom: Boolean,
-        myUserId: String,
+        myNickname: String,
         chatRoomId: String,
         messageContent: String
     ) {
-        addMessage(otherUserId, isExistChatRoom, myUserId, chatRoomId, messageContent)
-        sendNotification(myUserId, otherUserId!!, messageContent)
+        addMessage(otherNickname, isExistChatRoom, myNickname, chatRoomId, messageContent)
+        sendNotification(myNickname, otherNickname!!, messageContent)
     }
 
     private fun addMessage(
-        otherUserId: String?,
+        otherNickname: String?,
         isExistChatRoom: Boolean,
-        myUserId: String,
+        myNickname: String,
         chatRoomId: String,
         messageContent: String
     ) {
         if (!isExistChatRoom) {
-            createNewChatRoom(myUserId, otherUserId!!)
+            createNewChatRoom(myNickname, otherNickname!!)
         }
 
         if (chatRoomId.isNotEmpty()) {
             this.chatRoomId = chatRoomId
         }
 
-        createNewMessage(myUserId, messageContent)
-        updateLastMessage(myUserId, otherUserId!!, messageContent)
+        createNewMessage(myNickname, messageContent)
+        updateLastMessage(myNickname, otherNickname!!, messageContent)
     }
 
-    private fun createNewChatRoom(myUserId: String, otherUserId: String) {
+    private fun createNewChatRoom(myNickname: String, otherNickname: String) {
         // "/ChatRoomMessageInfo"에 push()로 채팅방 ID 생성
         val chatRoomKey = database.child(CHATROOM_MESSAGE_INFO).push().key.toString()
         this.chatRoomId = chatRoomKey
 
         val setChatRoom = hashMapOf<String, Any>(
             // "/UserInfo/$UserId/ChatOpponentInfo/$OtherUserId"에 ChatRoomId write
-            "/$USER_INFO/${myUserId.convertStrToBase64()}/$OPPONENT_INFO/${
-                otherUserId.convertStrToBase64()
+            "/$USER_INFO/${myNickname.convertStrToBase64()}/$OPPONENT_INFO/${
+                otherNickname.convertStrToBase64()
             }" to chatRoomKey,
             // "/UserInfo/$OtherUserId/ChatOpponentInfo/$UserId"에 ChatRoomId write
-            "/$USER_INFO/${otherUserId.convertStrToBase64()}/$OPPONENT_INFO/${
-                myUserId.convertStrToBase64()
+            "/$USER_INFO/${otherNickname.convertStrToBase64()}/$OPPONENT_INFO/${
+                myNickname.convertStrToBase64()
             }" to chatRoomKey
         )
 
         database.updateChildren(setChatRoom)
 
-        registerChatMember(chatRoomKey, myUserId, otherUserId)
+        registerChatMember(chatRoomKey, myNickname, otherNickname)
     }
 
-    private fun registerChatMember(chatRoomId: String, myUserId: String, otherUserId: String) {
+    private fun registerChatMember(chatRoomId: String, myNickname: String, otherNickname: String) {
         database.child(CHATROOM_MESSAGE_INFO).child(chatRoomId).child(CHATROOM_MEMBER)
-            .setValue(listOf(myUserId.convertStrToBase64(), otherUserId.convertStrToBase64()))
+            .setValue(listOf(myNickname.convertStrToBase64(), otherNickname.convertStrToBase64()))
     }
 
-    private fun updateLastMessage(myUserId: String, otherUserId: String, messageContent: String) {
+    private fun updateLastMessage(myNickname: String, otherNickname: String, messageContent: String) {
         val chatRoomUpdates = hashMapOf(
             // "/UserInfo/$UserId/ChatOpponentInfo/$OtherUserId"에 chatRoomItem write
-            "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/otherUserId" to
-                    otherUserId.convertStrToBase64(),
-            "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageWriterUserId" to myUserId.convertStrToBase64(),
-            "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageContent" to messageContent,
-            "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastUploadTime" to ServerValue.TIMESTAMP,
-            "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/unreadMessageNumber" to 0,
+            "$USER_INFO/${myNickname.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/otherUserId" to
+                    otherNickname.convertStrToBase64(),
+            "$USER_INFO/${myNickname.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageWriterUserId" to myNickname.convertStrToBase64(),
+            "$USER_INFO/${myNickname.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageContent" to messageContent,
+            "$USER_INFO/${myNickname.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastUploadTime" to ServerValue.TIMESTAMP,
+            "$USER_INFO/${myNickname.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/unreadMessageNumber" to 0,
 
             // "/UserInfo/$OtherUserId/ChatOpponentInfo/$UserId"에 chatRoomItem write
-            "$USER_INFO/${otherUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/otherUserId" to
-                    myUserId.convertStrToBase64(),
-            "$USER_INFO/${otherUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageWriterUserId" to myUserId.convertStrToBase64(),
-            "$USER_INFO/${otherUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageContent" to messageContent,
-            "$USER_INFO/${otherUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastUploadTime" to ServerValue.TIMESTAMP,
-            "$USER_INFO/${otherUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/unreadMessageNumber" to 0,
+            "$USER_INFO/${otherNickname.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/otherUserId" to
+                    myNickname.convertStrToBase64(),
+            "$USER_INFO/${otherNickname.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageWriterUserId" to myNickname.convertStrToBase64(),
+            "$USER_INFO/${otherNickname.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageContent" to messageContent,
+            "$USER_INFO/${otherNickname.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastUploadTime" to ServerValue.TIMESTAMP,
+            "$USER_INFO/${otherNickname.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/unreadMessageNumber" to 0,
         )
 
         database.updateChildren(chatRoomUpdates)
     }
 
-    private fun createNewMessage(myUserId: String, messageContent: String) {
+    private fun createNewMessage(myNickname: String, messageContent: String) {
         // todo "/ChatRoomMessageInfo"에 MessageModel write
         val messageModel = ChatMessageModel(
-            writerUserId = myUserId.convertStrToBase64(),
+            nickname = myNickname.convertStrToBase64(),
             messageContent = messageContent,
             uploadTime = ServerValue.TIMESTAMP
         )
@@ -160,9 +160,9 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
             .push().setValue(messageModel)
     }
 
-    private fun sendNotification(myUserId: String, otherUserId: String, messageContent: String) {
+    private fun sendNotification(myNickname: String, otherNickname: String, messageContent: String) {
 
-        database.child(USER_INFO).child(otherUserId.convertStrToBase64()).child(FCM_TOKEN)
+        database.child(USER_INFO).child(otherNickname.convertStrToBase64()).child(FCM_TOKEN)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val otherUserFcmToken = snapshot.value
@@ -171,7 +171,7 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
 
                     val root = JSONObject()
                     val notification = JSONObject()
-                    notification.put("title", myUserId)
+                    notification.put("title", myNickname)
                     notification.put("body", messageContent)
 
                     root.put("to", otherUserFcmToken)
@@ -212,8 +212,8 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
     private lateinit var chatRoomMessageDatabaseRef: DatabaseReference
 
     override suspend fun getChatMessageList(
-        myUserId: String,
-        otherUserId: String,
+        myNickname: String,
+        otherNickname: String,
         chatRoomId: String?
     ) {
         _messages.value = emptyList()
@@ -234,7 +234,7 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
             val chatMessage =
                 snapshot.getValue(ChatMessageModel::class.java) as ChatMessageModel
             val processedChatMessage =
-                chatMessage.copy(writerUserId = chatMessage.writerUserId!!.convertBase64ToStr())
+                chatMessage.copy(nickname = chatMessage.nickname!!.convertBase64ToStr())
             _messages.value = _messages.value.toList() + processedChatMessage
         }
 

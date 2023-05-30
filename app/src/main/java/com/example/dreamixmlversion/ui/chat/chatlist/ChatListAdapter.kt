@@ -17,7 +17,7 @@ class ChatListAdapter(
 
     inner class ViewHolder(private val binding: ItemChatroomBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ProcessedChatRoomItem) {
-            binding.otherUserTextView.text = item.otherUserId
+            binding.otherUserTextView.text = item.otherNickname
             binding.chatRoomLastMessageTextView.text = item.lastMessageContent
             binding.chatLastMessageTimeTextView.text = item.lastUploadTime.toString().convertDateFullToTimestamp()
             if (item.unreadMessageNumber != 0) {
@@ -53,7 +53,7 @@ class ChatListAdapter(
                 oldItem: ProcessedChatRoomItem,
                 newItem: ProcessedChatRoomItem
             ): Boolean {
-                return oldItem.otherUserId == newItem.otherUserId
+                return oldItem.otherNickname == newItem.otherNickname
             }
 
         }

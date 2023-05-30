@@ -66,6 +66,7 @@ class DetailSharingScreenFragment : SharingBaseFragment<FragmentSharingDetailBin
 
 //                bindViewPagerImage()
 
+                this?.userIdTextView?.text = item.userId
                 this?.akaTextView?.text = item.aka
                 initBottomButton(item.userId)
                 this?.townTextView?.text = item.town
@@ -91,8 +92,8 @@ class DetailSharingScreenFragment : SharingBaseFragment<FragmentSharingDetailBin
 
     private fun initChatButton() {
         _binding?.chatButton?.setOnClickListener {
-            val otherUserId = _binding?.akaTextView?.text.toString()
-            val action = DetailSharingScreenFragmentDirections.actionDetailSharingScreenToChatDetailScreen(otherUserId)
+            val otherNickname = _binding?.akaTextView?.text.toString()
+            val action = DetailSharingScreenFragmentDirections.actionDetailSharingScreenToChatDetailScreen(otherNickname)
             findNavController().navigate(action)
         }
     }

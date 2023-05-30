@@ -22,7 +22,7 @@ data class ChatRoomItem(
     fun toProcessCustomChatRoomItem(chatRoomId: String): ProcessedChatRoomItem {
         return ProcessedChatRoomItem(
             chatRoomId = chatRoomId,
-            otherUserId = otherUserId,
+            otherNickname = otherUserId,
             lastMessageWriterUserId = lastMessageWriterUserId,
             lastMessageContent = lastMessageContent,
             lastUploadTime = lastUploadTime,
@@ -33,7 +33,7 @@ data class ChatRoomItem(
 
 data class ProcessedChatRoomItem(
     val chatRoomId: String? = null,
-    val otherUserId: String? = null,
+    val otherNickname: String? = null,
     val lastMessageWriterUserId: String? = null,
     val lastMessageContent: String? = null,
     val lastUploadTime: Any? = null,

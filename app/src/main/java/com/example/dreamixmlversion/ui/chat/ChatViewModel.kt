@@ -21,38 +21,41 @@ class ChatViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _chatRoomId = MutableLiveData("")
-    private val _otherUserId = MutableLiveData<String>()
+    private val _otherNickname = MutableLiveData<String>()
 
     init {
         viewModelScope.launch {
-            chatRepository.getChatRoomList(getUserId())
+            chatRepository.getChatRoomList(getNickname())
         }
     }
 
     val myUserId = preferenceManager.getDreameEmailAddress().toString()
+    val myNickname = preferenceManager.getDreameNickname().toString()
 
     fun setChatRoomId(chatRoomId: String) {
         _chatRoomId.value = chatRoomId
     }
 
-    fun setOtherUserId(otherUserId: String) {
-        _otherUserId.value = otherUserId
+    fun setOtherNickname(otherNickname: String) {
+        _otherNickname.value = otherNickname
     }
 
-    fun getOtherUserId() = _otherUserId.value.toString()
+    fun getOtherUserId() = _otherNickname.value.toString()
 
     private fun getUserId(): String {
         return preferenceManager.getDreameEmailAddress().toString()
     }
+
+    private fun getNickname() = preferenceManager.getDreameNickname().toString()
 
     val chatRoomList = chatRepository.chatRooms
 
     fun addMessage(isChatRoom: Boolean, messageContent: String) {
         viewModelScope.launch {
             chatRepository.sendMessage(
-                otherUserId = _otherUserId.value.toString(),
+                otherNickname = _otherNickname.value.toString(),
                 isExistChatRoom = isChatRoom,
-                myUserId = getUserId(),
+                myNickname = getNickname(),
                 chatRoomId = _chatRoomId.value.toString(),
                 messageContent = messageContent
             )
@@ -63,8 +66,8 @@ class ChatViewModel @Inject constructor(
     fun getChatMessageList() {
         viewModelScope.launch {
             chatRepository.getChatMessageList(
-                getUserId(),
-                _otherUserId.value.toString(),
+                getNickname(),
+                _otherNickname.value.toString(),
                 _chatRoomId.value.toString()
             )
         }

@@ -12,4 +12,6 @@ class MainViewModel @Inject constructor(
 
     fun getEmailAddress() =
         preferenceManager.getDreameEmailAddress()
+
+    fun getNickname() = preferenceManager.getDreameNickname()
 }
