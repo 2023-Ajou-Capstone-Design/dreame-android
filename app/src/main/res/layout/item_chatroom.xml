@@ -33,10 +33,11 @@
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
-        android:maxLines="2"
+        android:maxLines="1"
         tools:text="다음주에 만나요\nvkdjval"
         android:textColor="@color/black"
         android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/unreadMessageCountTextView"
         app:layout_constraintBottom_toBottomOf="@id/chatRoomThumbnailImageView"
         app:layout_constraintStart_toStartOf="@id/otherUserTextView" />
 

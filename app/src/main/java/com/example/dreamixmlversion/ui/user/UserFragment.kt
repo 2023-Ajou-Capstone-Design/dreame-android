@@ -69,14 +69,9 @@ class UserFragment : Fragment() {
         }
     }
 
-    private fun processChangingNickname(isSuccess: Boolean) {
-        if (isSuccess) {
-            _binding?.changeNicknameEditTextView?.setText("")
-            bindNicknameTextView()
-            hideChangingNicknameLayout()
-        } else {
-            Toast.makeText(requireContext(), "닉네임 변경에 실패했습니다.", Toast.LENGTH_SHORT).show()
-        }
+    private fun processChangingNickname() {
+        bindNicknameTextView()
+        hideChangingNicknameLayout()
     }
 
     private fun initChangeNicknameLayout() {
@@ -89,11 +84,10 @@ class UserFragment : Fragment() {
         }
 
         _binding?.requestChangingNicknameButton?.setOnClickListener {
-            processChangingNickname(
-                userViewModel.changeNickname(
-                    _binding?.changeNicknameEditTextView?.text.toString()
-                )
+            userViewModel.changeNickname(
+                _binding?.changeNicknameEditTextView?.text.toString()
             )
+            processChangingNickname()
         }
     }
 

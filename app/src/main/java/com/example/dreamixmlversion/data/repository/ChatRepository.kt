@@ -10,17 +10,17 @@ interface ChatRepository {
 
     suspend fun getChatRoomList(userId: String)
 
-    suspend fun addMessage(
+    suspend fun sendMessage(
         otherUserId: String? = null,
         isExistChatRoom: Boolean,
         myUserId: String,
         chatRoomId: String,
-        messageContent: String? = null
+        messageContent: String
     )
 
     val messages: Flow<List<ChatMessageModel>>
 
     suspend fun getChatMessageList(myUserId: String, otherUserId: String, chatRoomId: String? = null)
 
-    suspend fun removeEventListenerFromMessages(chatRoomId: String)
+    suspend fun removeEventListenerFromMessages()
 }

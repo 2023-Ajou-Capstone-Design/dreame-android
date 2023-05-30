@@ -8,6 +8,7 @@ import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import java.util.function.BinaryOperator
 
 interface DreameApi {
 
@@ -89,6 +90,25 @@ interface DreameApi {
         @Query("Photo3") photo3: String? = null,
         @Query("Town") town: String
         ): Boolean
+
+    @POST("FoodShare/Modify")
+    suspend fun modifySharing(
+        @Query("UserID") userId: String,
+        @Query("Title") title: String,
+        @Query("contents") content: String,
+        @Query("Photo1") photo1: String? = null,
+        @Query("Photo2") photo2: String? = null,
+        @Query("Photo3") photo3: String? = null,
+        @Query("WritingID") writingId: String,
+        @Query("Town") town: String
+    ): Boolean
+
+    @POST("FoodShare/del")
+    suspend fun deleteSharing(
+        @Query("UserID") userId: String,
+        @Query("WritingID") writingId: String
+    ): Boolean
+
 
     @POST("MyPage/Card")
     suspend fun getMyRestPoint(

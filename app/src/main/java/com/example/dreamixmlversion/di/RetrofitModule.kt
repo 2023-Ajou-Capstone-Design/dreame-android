@@ -24,9 +24,9 @@ object RetrofitModule {
 
     private val client = OkHttpClient.Builder().apply {
         addInterceptor(interceptor)
-        connectTimeout(30, TimeUnit.SECONDS)
-        readTimeout(30, TimeUnit.SECONDS)
-        writeTimeout(30, TimeUnit.SECONDS)
+//        connectTimeout(30, TimeUnit.SECONDS)
+//        readTimeout(30, TimeUnit.SECONDS)
+//        writeTimeout(30, TimeUnit.SECONDS)
     }.build()
 
     private val retrofit: Retrofit = Retrofit.Builder()

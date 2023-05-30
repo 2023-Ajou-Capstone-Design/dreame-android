@@ -11,6 +11,7 @@
     <string name="preference_dreame_child_card_number">preference_dreame_child_card_number</string>
     <string name="preference_dreame_town_address">preference_dreame_town_address</string>
     <string name="preference_dreame_nickname">preference_dreame_nickname</string>
+    <string name="default_notification_channel_id">default_notification_channel_id</string>
 
 
 </resources>

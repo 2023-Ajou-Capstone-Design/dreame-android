@@ -1,6 +1,7 @@
 package com.example.dreamixmlversion.ui.sharing.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
 import androidx.core.view.isVisible
@@ -44,8 +45,8 @@ class DetailSharingScreenFragment : SharingBaseFragment<FragmentSharingDetailBin
 
     private fun callDetailInfo() {
         sharingViewModel.getSharingDetailInfo(
-            sharingViewModel.detailSharingUserId.value.toString(),
-            sharingViewModel.detailSharingWritingId.value.toString()
+            sharingViewModel.detailSharingUserId,
+            sharingViewModel.detailSharingWritingId
         )
     }
 
@@ -65,9 +66,8 @@ class DetailSharingScreenFragment : SharingBaseFragment<FragmentSharingDetailBin
 
 //                bindViewPagerImage()
 
-                val sharingUserId = item.userId
-                this?.akaTextView?.text = sharingUserId
-                initBottomButton(sharingUserId)
+                this?.akaTextView?.text = item.aka
+                initBottomButton(item.userId)
                 this?.townTextView?.text = item.town
                 this?.timeTextView?.text = item.uploadTime
                 this?.sharingTitleTextView?.text = item.title
@@ -79,9 +79,11 @@ class DetailSharingScreenFragment : SharingBaseFragment<FragmentSharingDetailBin
     private fun initBottomButton(sharingUserId: String) {
         if (sharingViewModel.isSameWriter(sharingUserId)) {
             _binding?.modifySharingLayout?.visibility = View.VISIBLE
+            _binding?.chatButton?.visibility = View.INVISIBLE
             initModifySharingButton()
             initDeleteSharingButton()
         } else {
+            _binding?.modifySharingLayout?.visibility = View.INVISIBLE
             _binding?.chatButton?.visibility = View.VISIBLE
             initChatButton()
         }
@@ -97,12 +99,17 @@ class DetailSharingScreenFragment : SharingBaseFragment<FragmentSharingDetailBin
 
     private fun initModifySharingButton() {
         _binding?.modifySharingButton?.setOnClickListener {
-            findNavController().navigate(R.id.action_detail_sharing_screen_to_register_sharing)
+            sharingViewModel.modifyMode = true
+            val sharingTitle = _binding?.sharingTitleTextView?.text.toString()
+            val sharingContent = _binding?.sharingContentTextView?.text.toString()
+            val action = DetailSharingScreenFragmentDirections.actionDetailSharingScreenToRegisterSharing(sharingTitle, sharingContent)
+            findNavController().navigate(action)
         }
     }
 
     private fun initDeleteSharingButton() {
         _binding?.deleteSharingButton?.setOnClickListener {
+            sharingViewModel.deleteSharing()
             findNavController().navigate(R.id.action_popup_from_detail_sharing_screen_to_sharing_list_screen)
         }
     }

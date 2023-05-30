@@ -61,4 +61,41 @@ class SharingRepositoryImpl @Inject constructor(
             userId, title, content, photo1, photo2, photo3, town
         )
     }
+
+    override suspend fun modifySharing(
+        userId: String,
+        title: String,
+        content: String,
+        images: List<Bitmap>,
+        writingId: String,
+        town: String
+    ): Boolean {
+
+        var photo1: String ?= null
+        var photo2: String ?= null
+        var photo3: String ?= null
+
+        when (images.size) {
+            1 -> {
+                photo1 = images[0].encodeToBase64()
+            }
+            2 -> {
+                photo1 = images[0].encodeToBase64()
+                photo2 = images[1].encodeToBase64()
+            }
+            3 -> {
+                photo1 = images[0].encodeToBase64()
+                photo2 = images[1].encodeToBase64()
+                photo3 = images[2].encodeToBase64()
+            }
+        }
+
+        return dreameApi.modifySharing(
+            userId, title, content, photo1, photo2, photo3, writingId, town
+        )
+    }
+
+    override suspend fun deleteSharing(userId: String, writingId: String): Boolean {
+        return dreameApi.deleteSharing(userId, writingId)
+    }
 }

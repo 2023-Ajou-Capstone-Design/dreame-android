@@ -21,14 +21,12 @@ class SharingViewModel @Inject constructor(
     private val preferenceManager: PreferenceManager
 ) : ViewModel() {
 
-    private val _detailSharingUserId = MutableLiveData<String>()
-    val detailSharingUserId: LiveData<String> = _detailSharingUserId
-    private val _detailSharingWritingId = MutableLiveData<String>()
-    val detailSharingWritingId: LiveData<String> = _detailSharingWritingId
+    var detailSharingUserId = ""
+    var detailSharingWritingId = ""
 
     fun setDetailSharingInfo(userId: String, writerUserId: String) {
-        _detailSharingUserId.value = userId
-        _detailSharingWritingId.value = writerUserId
+        detailSharingUserId = userId
+        detailSharingWritingId = writerUserId
     }
 
     private val sharingList = mutableListOf<SharingDataItemEntity>()
@@ -46,13 +44,10 @@ class SharingViewModel @Inject constructor(
         removeAllElement()
     }
 
-    fun setSharingUiStateTo(uiState: SharingUiState) {
-        _queriedSharingItemLiveData.postValue(uiState)
-    }
-
     fun getSharingItems() {
         viewModelScope.launch {
             _queriedSharingItemLiveData.postValue(SharingUiState.Loading)
+
 
             if (sharingType == SHARING_TYPE_BY_TOWN) {
                 getSharingByUserPos()
@@ -60,7 +55,7 @@ class SharingViewModel @Inject constructor(
                 getSharingOnlyUser()
             }
             _queriedSharingItemLiveData.postValue(
-                SharingUiState.SuccessGetSharingItems(sharingList)
+                SharingUiState.SuccessGetSharingItems(sharingList.toMutableList())
             )
         }
     }
@@ -101,6 +96,10 @@ class SharingViewModel @Inject constructor(
         }
     }
 
+    fun setDetailUninitialized() {
+        _queriedSharingDetailInfoLiveData.postValue(SharingDetailUiState.Uninitialized)
+    }
+
     private val _registerSharingLiveData =
         MutableLiveData<RegisterUiState>(RegisterUiState.Uninitialized)
     val registerSharingLiveData: LiveData<RegisterUiState> =
@@ -112,35 +111,33 @@ class SharingViewModel @Inject constructor(
         images: List<SharingImageItem>
     ) {
         viewModelScope.launch {
-            _registerSharingLiveData.postValue(RegisterUiState.Loading)
+//            _registerSharingLiveData.postValue(RegisterUiState.Loading)
             val userId = preferenceManager.getDreameEmailAddress().toString()
-            _registerSharingLiveData.postValue(
-                RegisterUiState.RegisterSharing(
-                    sharingRepository.registerNewSharing(
-                        userId,
-                        title,
-                        content,
-                        images.map { it.bitmapImage },
-                        preferenceManager.getDreameTownAddress().toString()
-                    )
+//            _registerSharingLiveData.postValue(
+            RegisterUiState.RegisterSharing(
+                sharingRepository.registerNewSharing(
+                    userId,
+                    title,
+                    content,
+                    images.map { it.bitmapImage },
+                    preferenceManager.getDreameTownAddress().toString()
                 )
+//                )
             )
             val addedData =
                 SharingDataItemEntity(
                     thumbnailImage = "",
                     title = title,
                     town = preferenceManager.getDreameTownAddress().toString(),
-                    uploadTime = "",
+                    uploadTime = "방금 전",
                     userId = userId,
-                    writingId = "방금 전"
+                    writingId = ""
                 )
-            val newList = mutableListOf<SharingDataItemEntity>()
-            newList.add(addedData)
-            sharingList.forEach {
-                newList.add(it)
-            }
+//            val newList = mutableListOf<SharingDataItemEntity>()
+//            newList.add(addedData)
+            sharingList.add(0, addedData)
             _queriedSharingItemLiveData.postValue(
-                SharingUiState.SuccessGetSharingItems(newList)
+                SharingUiState.SuccessGetSharingItems(sharingList.toMutableList())
             )
         }
     }
@@ -148,6 +145,53 @@ class SharingViewModel @Inject constructor(
     fun isSameWriter(sharingUserId: String): Boolean {
         val userId = preferenceManager.getDreameEmailAddress().toString()
         return userId == sharingUserId
+    }
+
+    var modifyMode = false
+
+    fun modifySharing(
+        title: String,
+        content: String,
+        images: List<SharingImageItem>,
+        writingId: String
+    ) {
+        viewModelScope.launch {
+            sharingRepository.modifySharing(
+                preferenceManager.getDreameEmailAddress().toString(),
+                title,
+                content,
+                images.map { it.bitmapImage },
+                writingId,
+                preferenceManager.getDreameTownAddress().toString()
+            )
+        }
+    }
+
+    fun deleteSharing() {
+        var deletingItem: SharingDataItemEntity? = null
+        sharingList.forEach {
+            if (it.writingId == detailSharingWritingId) {
+                deletingItem = it
+            }
+        }
+
+        sharingList.remove(deletingItem)
+
+        _queriedSharingItemLiveData.postValue(
+            SharingUiState.SuccessGetSharingItems(sharingList.toMutableList())
+        )
+
+        viewModelScope.launch {
+
+            sharingRepository.deleteSharing(
+                preferenceManager.getDreameEmailAddress().toString(),
+                detailSharingWritingId
+            )
+        }
+    }
+
+    fun stopUsingListViewModel() {
+
     }
 
     companion object {

@@ -27,4 +27,18 @@ interface SharingRepository {
         images: List<Bitmap>,
         town: String
     ): Boolean
+
+    suspend fun modifySharing(
+        userId: String,
+        title: String,
+        content: String,
+        images: List<Bitmap>,
+        writingId: String,
+        town: String
+    ): Boolean
+
+    suspend fun deleteSharing(
+        userId: String,
+        writingId: String
+    ): Boolean
 }

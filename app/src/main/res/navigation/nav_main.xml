@@ -110,6 +110,21 @@
             app:destination="@id/detail_sharing_screen"
             app:popUpTo="@id/detail_sharing_screen" />
 
+        <action
+            android:id="@+id/action_pop_up_from_register_sharing_to_sharing_list"
+            app:destination="@id/sharing_list_screen"
+            app:popUpTo="@id/sharing_list_screen"/>
+
+        <argument
+            android:name="sharingTitle"
+            app:argType="string"
+            android:defaultValue=""/>
+
+        <argument
+            android:name="sharingContent"
+            app:argType="string"
+            android:defaultValue=""/>
+
     </fragment>
 
     <fragment

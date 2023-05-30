@@ -56,9 +56,8 @@
                 android:background="@color/gray_background"
                 android:gravity="center"
                 android:hint="도"
-                android:paddingHorizontal="12dp"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/secondDestinationTextView"
@@ -70,9 +69,8 @@
                 android:layout_weight="1"
                 android:background="@color/gray_background"
                 android:gravity="center"
-                android:paddingHorizontal="12dp"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/thirdDestinationTextView"
@@ -84,9 +82,8 @@
                 android:layout_weight="1"
                 android:background="@color/gray_background"
                 android:gravity="center"
-                android:paddingHorizontal="12dp"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/fourthDestinationTextView"
@@ -98,9 +95,8 @@
                 android:layout_weight="1"
                 android:background="@color/gray_background"
                 android:gravity="center"
-                android:paddingHorizontal="12dp"
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 

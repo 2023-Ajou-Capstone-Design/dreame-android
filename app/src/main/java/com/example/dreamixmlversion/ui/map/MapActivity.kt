@@ -1,9 +1,11 @@
 package com.example.dreamixmlversion.ui.map
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Camera
 import android.net.Uri
 import android.os.Bundle
 import android.os.PersistableBundle
@@ -101,22 +103,36 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         initBottomSheetStoreList()
         initBottomSheetDetailDialog()
         initFavoriteButton()
+        initTrackCurrentPosButton()
         initMarkingOnMap()
     }
 
     private fun initSearchEditTextView() {
-        binding.searchEditTextView.setOnEditorActionListener { editText, _, _ ->
+        binding.searchEditTextView.apply {
+            setOnEditorActionListener { editText, _, _ ->
 
-            currentFocus?.let { view ->
-                val inputMethodManager =
-                    getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
+                currentFocus?.let { view ->
+                    val inputMethodManager =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                    inputMethodManager?.hideSoftInputFromWindow(view.windowToken, 0)
 
-                // todo 검색 query to server and process
+                    viewModel.getStoresBySearchingKeyword(editText.text.toString(), dreameLatLng, 5000)
+                }
 
-                viewModel.getStoresBySearchingKeyword(editText.text.toString(), dreameLatLng, 5000)
+                clearFocus()
+
+                return@setOnEditorActionListener true
             }
-            return@setOnEditorActionListener true
+            setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                    bottomSheetDetailBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+                } else {
+                    if (storeAdapter.itemCount != 0) {
+                        bottomSheetStoreListBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }
+                }
+            }
         }
     }
 
@@ -142,6 +158,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun initFavoriteButton() {
         binding.favoritesImageButton.setOnClickListener {
             viewModel.getFavoriteStores() // todo userId 기입
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun initTrackCurrentPosButton() {
+        binding.trackCurrentPosButton.setOnClickListener {
+            requestStoresByCurrentPos()
         }
     }
 
@@ -233,12 +256,14 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 storeType = it.storeType
             )
         })
+        zoomInTo(15.0)
     }
 
     private fun markStoresOnMap(stores: List<StoreDataForMarking>) {
         naverMap.minZoom = 5.0
         naverMap.maxZoom = 18.0
 
+        zoomInTo(15.0)
         val markers = mutableListOf<Marker>()
         stores.forEach { store ->
             markers.add(Marker().apply {
@@ -259,6 +284,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 infoWindow.open(this)
                 setOnClickListener {
                     moveToPos(store.storePointLat.toDouble(), store.storePointLng.toDouble())
+                    zoomInTo(17.0)
 
                     // todo -> detail Bottom Sheet
                     drawDetailStoreInfo(store.storeId, store.storeType)
@@ -274,6 +300,12 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         val cameraUpdate =
             CameraUpdate.scrollTo(LatLng(lat, lng))
                 .animate(CameraAnimation.Easing)
+        naverMap.moveCamera(cameraUpdate)
+    }
+
+    private fun zoomInTo(zoomValue: Double) {
+        val cameraUpdate =
+            CameraUpdate.zoomTo(zoomValue)
         naverMap.moveCamera(cameraUpdate)
     }
 
@@ -314,7 +346,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun checkLocationPermission() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -327,6 +358,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
             requestPositionPermission()
             return
         }
+        requestStoresByCurrentPos()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestStoresByCurrentPos() {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         fusedLocationClient.lastLocation
             .addOnSuccessListener {
                 dreameLatLng = DreameLatLng(it.latitude, it.longitude)

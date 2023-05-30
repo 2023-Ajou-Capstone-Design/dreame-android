@@ -1,6 +1,7 @@
 package com.example.dreamixmlversion.ui.sharing.list
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
@@ -22,6 +23,8 @@ class SharingListScreenFragment: SharingBaseFragment<FragmentSharingListBinding>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        Log.d("onViewCreated", "onViewCreated")
+
         _binding?.apply {
             sharingListFragment = this@SharingListScreenFragment
             viewModel = sharingViewModel
@@ -34,16 +37,17 @@ class SharingListScreenFragment: SharingBaseFragment<FragmentSharingListBinding>
         initFloatingButton()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+    }
+
     private fun onBackButtonClicked() {
         requireActivity().onBackPressedDispatcher.addCallback {
-//            clearSharingData()
+            clearSharingData()
             findNavController().popBackStack()
         }
     }
-
-//    private fun setSharingUiStateTo(uiState: SharingUiState) {
-//        sharingViewModel.setSharingUiStateTo(uiState)
-//    }
 
     private fun clearSharingData() {
         sharingViewModel.initSharingListLivedata()
@@ -56,7 +60,7 @@ class SharingListScreenFragment: SharingBaseFragment<FragmentSharingListBinding>
 
     private fun initSwipeRefreshLayout() = with(_binding) {
         this?.refreshLayout?.setOnRefreshListener {
-            clearSharingData()
+//            clearSharingData()
             sharingViewModel.getSharingItems()
         }
     }
@@ -65,6 +69,7 @@ class SharingListScreenFragment: SharingBaseFragment<FragmentSharingListBinding>
 
         sharingAdapter = SharingAdapter {
             sharingViewModel.setDetailSharingInfo(it.userId, it.writingId)
+            sharingViewModel.setDetailUninitialized()
             findNavController().navigate(R.id.action_sharing_screen_to_detail_sharing)
         }
         _binding?.sharingRecyclerView?.adapter = sharingAdapter

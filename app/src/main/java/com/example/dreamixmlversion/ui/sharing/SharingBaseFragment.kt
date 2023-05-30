@@ -1,6 +1,7 @@
 package com.example.dreamixmlversion.ui.sharing
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,5 +32,6 @@ abstract class SharingBaseFragment<VB: ViewBinding>: Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        Log.d("destroyed!!", "destroyed!!")
     }
 }

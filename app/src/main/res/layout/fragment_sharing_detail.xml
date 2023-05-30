@@ -96,63 +96,73 @@
                 android:background="@drawable/shape_corner_rect"
                 android:textColor="@color/black"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@id/chatButton"
+                app:layout_constraintBottom_toTopOf="@id/bottomLayout"
                 app:layout_constraintEnd_toEndOf="@id/sharingTitleTextView"
                 app:layout_constraintStart_toStartOf="@id/sharingTitleTextView"
                 app:layout_constraintTop_toBottomOf="@id/sharingTitleTextView"
                 tools:text="절대 눈치보지 말고 배부터 채우자 !!!!" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/chatButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:background="@color/dreame_main_color"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text="채팅하기" />
-
-            <LinearLayout
-                android:id="@+id/modifySharingLayout"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bottomLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
-                android:orientation="horizontal"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/modifySharingButton"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/chatButton"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_weight="1"
-                    android:background="@color/gray_background"
-                    android:text="수정하기"
+                    android:layout_margin="12dp"
+                    android:background="@color/dreame_main_color"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:text="채팅하기" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/deleteSharingButton"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/modifySharingLayout"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_weight="1"
-                    android:background="@color/gray_background"
-                    android:text="삭제하기"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_margin="12dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
 
-            </LinearLayout>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/modifySharingButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_weight="1"
+                        android:background="@color/gray_background"
+                        android:text="수정하기"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/deleteSharingButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_weight="1"
+                        android:background="@color/gray_background"
+                        android:text="삭제하기"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ProgressBar
                 android:id="@+id/progressBar"

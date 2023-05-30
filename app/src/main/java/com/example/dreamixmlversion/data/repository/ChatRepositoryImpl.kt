@@ -1,5 +1,14 @@
 package com.example.dreamixmlversion.data.repository
 
+import com.example.dreamixmlversion.data.api.FirebaseKey.CHATROOM_INFO
+import com.example.dreamixmlversion.data.api.FirebaseKey.CHATROOM_MEMBER
+import com.example.dreamixmlversion.data.api.FirebaseKey.CHATROOM_MESSAGE_INFO
+import com.example.dreamixmlversion.data.api.FirebaseKey.FCM_SERVER_KEY
+import com.example.dreamixmlversion.data.api.FirebaseKey.FCM_TOKEN
+import com.example.dreamixmlversion.data.api.FirebaseKey.LAST_UPLOAD_TIME
+import com.example.dreamixmlversion.data.api.FirebaseKey.MESSAGE_INFO
+import com.example.dreamixmlversion.data.api.FirebaseKey.OPPONENT_INFO
+import com.example.dreamixmlversion.data.api.FirebaseKey.USER_INFO
 import com.example.dreamixmlversion.data.api.response.model.chat.ChatMessageModel
 import com.example.dreamixmlversion.data.api.response.model.chat.ChatRoomItem
 import com.example.dreamixmlversion.data.api.response.model.chat.ProcessedChatRoomItem
@@ -8,6 +17,7 @@ import com.example.dreamixmlversion.extension.convertStrToBase64
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ServerValue
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
@@ -15,6 +25,11 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import java.io.IOException
 import javax.inject.Inject
 
 class ChatRepositoryImpl @Inject constructor() : ChatRepository {
@@ -44,7 +59,9 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
                             )
                         )
                     }
-                    _chatRooms.value = chatRoomItemList
+                    _chatRooms.value = chatRoomItemList.sortedByDescending {
+                        it.lastUploadTime.toString().toLong()
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {}
@@ -53,43 +70,69 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
 
     private var chatRoomId: String? = null
 
-    override suspend fun addMessage(
+    override suspend fun sendMessage(
         otherUserId: String?,
         isExistChatRoom: Boolean,
         myUserId: String,
         chatRoomId: String,
-        messageContent: String?
+        messageContent: String
+    ) {
+        addMessage(otherUserId, isExistChatRoom, myUserId, chatRoomId, messageContent)
+        sendNotification(myUserId, otherUserId!!, messageContent)
+    }
+
+    private fun addMessage(
+        otherUserId: String?,
+        isExistChatRoom: Boolean,
+        myUserId: String,
+        chatRoomId: String,
+        messageContent: String
     ) {
         if (!isExistChatRoom) {
-            // "/ChatRoomMessageInfo"에 push()로 채팅방 ID 생성
-            val chatRoomKey = database.child(CHATROOM_MESSAGE_INFO).push().key.toString()
-            this.chatRoomId = chatRoomKey
-
-            val setChatRoom = hashMapOf<String, Any>(
-                // "/UserInfo/$UserId/ChatOpponentInfo/$OtherUserId"에 ChatRoomId write
-                "/$USER_INFO/${myUserId.convertStrToBase64()}/$OPPONENT_INFO/${
-                    otherUserId!!.convertStrToBase64()
-                }" to chatRoomKey,
-                // "/UserInfo/$OtherUserId/ChatOpponentInfo/$UserId"에 ChatRoomId write
-                "/$USER_INFO/${otherUserId.convertStrToBase64()}/$OPPONENT_INFO/${
-                    myUserId.convertStrToBase64()
-                }" to chatRoomKey
-            )
-
-            val u = myUserId.convertStrToBase64()
-            database.updateChildren(setChatRoom)
+            createNewChatRoom(myUserId, otherUserId!!)
         }
 
         if (chatRoomId.isNotEmpty()) {
             this.chatRoomId = chatRoomId
         }
 
+        createNewMessage(myUserId, messageContent)
+        updateLastMessage(myUserId, otherUserId!!, messageContent)
+    }
+
+    private fun createNewChatRoom(myUserId: String, otherUserId: String) {
+        // "/ChatRoomMessageInfo"에 push()로 채팅방 ID 생성
+        val chatRoomKey = database.child(CHATROOM_MESSAGE_INFO).push().key.toString()
+        this.chatRoomId = chatRoomKey
+
+        val setChatRoom = hashMapOf<String, Any>(
+            // "/UserInfo/$UserId/ChatOpponentInfo/$OtherUserId"에 ChatRoomId write
+            "/$USER_INFO/${myUserId.convertStrToBase64()}/$OPPONENT_INFO/${
+                otherUserId.convertStrToBase64()
+            }" to chatRoomKey,
+            // "/UserInfo/$OtherUserId/ChatOpponentInfo/$UserId"에 ChatRoomId write
+            "/$USER_INFO/${otherUserId.convertStrToBase64()}/$OPPONENT_INFO/${
+                myUserId.convertStrToBase64()
+            }" to chatRoomKey
+        )
+
+        database.updateChildren(setChatRoom)
+
+        registerChatMember(chatRoomKey, myUserId, otherUserId)
+    }
+
+    private fun registerChatMember(chatRoomId: String, myUserId: String, otherUserId: String) {
+        database.child(CHATROOM_MESSAGE_INFO).child(chatRoomId).child(CHATROOM_MEMBER)
+            .setValue(listOf(myUserId.convertStrToBase64(), otherUserId.convertStrToBase64()))
+    }
+
+    private fun updateLastMessage(myUserId: String, otherUserId: String, messageContent: String) {
         val chatRoomUpdates = hashMapOf(
             // "/UserInfo/$UserId/ChatOpponentInfo/$OtherUserId"에 chatRoomItem write
             "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/otherUserId" to
-                    otherUserId!!.convertStrToBase64(),
+                    otherUserId.convertStrToBase64(),
             "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageWriterUserId" to myUserId.convertStrToBase64(),
-            "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageContent" to messageContent!!,
+            "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastMessageContent" to messageContent,
             "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/lastUploadTime" to ServerValue.TIMESTAMP,
             "$USER_INFO/${myUserId.convertStrToBase64()}/$CHATROOM_INFO/${this.chatRoomId}/unreadMessageNumber" to 0,
 
@@ -103,8 +146,9 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
         )
 
         database.updateChildren(chatRoomUpdates)
+    }
 
-
+    private fun createNewMessage(myUserId: String, messageContent: String) {
         // todo "/ChatRoomMessageInfo"에 MessageModel write
         val messageModel = ChatMessageModel(
             writerUserId = myUserId.convertStrToBase64(),
@@ -116,9 +160,56 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
             .push().setValue(messageModel)
     }
 
+    private fun sendNotification(myUserId: String, otherUserId: String, messageContent: String) {
+
+        database.child(USER_INFO).child(otherUserId.convertStrToBase64()).child(FCM_TOKEN)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val otherUserFcmToken = snapshot.value
+
+                    val client = OkHttpClient()
+
+                    val root = JSONObject()
+                    val notification = JSONObject()
+                    notification.put("title", myUserId)
+                    notification.put("body", messageContent)
+
+                    root.put("to", otherUserFcmToken)
+                    root.put("priority", "high")
+                    root.put("notification", notification)
+
+                    val requestBody =
+                        root.toString()
+                            .toRequestBody("application/json; charset=utf-8".toMediaType())
+                    val request =
+                        Request.Builder().post(requestBody)
+                            .url("https://fcm.googleapis.com/fcm/send")
+                            .header("Authorization", "key=$FCM_SERVER_KEY").build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            e.stackTraceToString()
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            // ignore onResponse
+                        }
+
+                    })
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+    }
+
     private val _messages = MutableStateFlow<List<ChatMessageModel>>(emptyList())
     override val messages: Flow<List<ChatMessageModel>>
         get() = _messages.asStateFlow()
+
+    private lateinit var chatRoomMessageDatabaseRef: DatabaseReference
 
     override suspend fun getChatMessageList(
         myUserId: String,
@@ -155,21 +246,14 @@ class ChatRepositoryImpl @Inject constructor() : ChatRepository {
 
     private fun connectMessageToRTDB(chatRoomId: String) {
         // todo 1. "/ChatRoomMessageInfo/$ChatRoomId"에 있는 메시지 목록을 받아온다.
-        database.child(CHATROOM_MESSAGE_INFO).child(chatRoomId).child(MESSAGE_INFO)
+        chatRoomMessageDatabaseRef =
+            database.child(CHATROOM_MESSAGE_INFO).child(chatRoomId).child(MESSAGE_INFO)
+        chatRoomMessageDatabaseRef
             .addChildEventListener(messageChildEventListener)
     }
 
-    override suspend fun removeEventListenerFromMessages(chatRoomId: String) {
-        database.child(CHATROOM_MESSAGE_INFO).child(chatRoomId).child(MESSAGE_INFO)
+    override suspend fun removeEventListenerFromMessages() {
+        chatRoomMessageDatabaseRef
             .removeEventListener(messageChildEventListener)
-    }
-
-    companion object {
-        const val USER_INFO = "ChatUserInfo"
-        const val OPPONENT_INFO = "ChatOpponentInfo"
-        const val CHATROOM_INFO = "ChatRoomInfo"
-        const val CHATROOM_MESSAGE_INFO = "ChatRoomMessageInfo"
-        const val LAST_UPLOAD_TIME = "LastUploadTime"
-        const val MESSAGE_INFO = "MessageInfo"
     }
 }

@@ -21,6 +21,9 @@ import com.example.dreamixmlversion.databinding.FragmentRegisterNewSharingBindin
 import com.example.dreamixmlversion.extension.convertToBitmap
 import com.example.dreamixmlversion.extension.toToast
 import com.example.dreamixmlversion.ui.sharing.SharingBaseFragment
+import com.example.dreamixmlversion.ui.sharing.SharingViewModel
+import com.example.dreamixmlversion.ui.sharing.detail.DetailSharingScreenFragmentDirections
+import com.example.dreamixmlversion.ui.user.UserFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,6 +50,7 @@ class RegisterNewSharingScreenFragment : SharingBaseFragment<FragmentRegisterNew
         initRecyclerView()
         initGalleryImageButton()
         initRegisterSharingButton()
+        bindData()
     }
 
     private fun onBackButtonClicked() {
@@ -162,15 +166,33 @@ class RegisterNewSharingScreenFragment : SharingBaseFragment<FragmentRegisterNew
                     ("내용을 적어주세요.").toToast(requireActivity())
                     return@setOnClickListener
                 }
-                sharingViewModel.registerNewSharing(
-                    titleEditTextView.text.toString(),
-                    contentEditTextView.text.toString(),
-                    registerImageAdapter.currentList.toList()
-                )
 
-//                findNavController().navigate(R.id.action_popup_from_detail_sharing_screen_to_sharing_list_screen)
+                if (sharingViewModel.modifyMode) {
+                    sharingViewModel.modifySharing(
+                        _binding?.titleEditTextView?.text.toString(),
+                        _binding?.contentEditTextView?.text.toString(),
+                        registerImageAdapter.currentList.toList(),
+                        sharingViewModel.detailSharingWritingId
+                    )
+                    findNavController().navigate(R.id.action_popup_from_register_sharing_to_detail_sharing_screen)
+                } else {
+                    sharingViewModel.registerNewSharing(
+                        titleEditTextView.text.toString(),
+                        contentEditTextView.text.toString(),
+                        registerImageAdapter.currentList.toList()
+                    )
+                    findNavController().navigate(R.id.action_pop_up_from_register_sharing_to_sharing_list)
+                }
             }
         }
+    }
+
+    private fun bindData() {
+        val sharingTitle = arguments?.getString("sharingTitle").toString()
+        val sharingContent = arguments?.getString("sharingContent").toString()
+
+        _binding?.titleEditTextView?.setText(sharingTitle)
+        _binding?.contentEditTextView?.setText(sharingContent)
     }
 
     companion object {

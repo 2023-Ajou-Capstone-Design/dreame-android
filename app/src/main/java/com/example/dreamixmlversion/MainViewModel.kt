@@ -10,6 +10,6 @@ class MainViewModel @Inject constructor(
     private val preferenceManager: PreferenceManager
 ): ViewModel() {
 
-    fun checkLogin() =
+    fun getEmailAddress() =
         preferenceManager.getDreameEmailAddress()
 }

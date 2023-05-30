@@ -10,12 +10,22 @@ plugins {
 }
 
 android {
+
+//    signingConfigs {
+//        debug {
+//            storeFile file('dreame.keystore')
+//            storePassword 'dreame'
+//            keyAlias 'dreamedebug'
+//            keyPassword 'dreame'
+//        }
+//    }
+
     namespace 'com.example.dreamixmlversion'
     compileSdk 33
 
     defaultConfig {
         applicationId "com.example.dreamixmlversion"
-        minSdk 24
+        minSdk 28
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -58,7 +68,7 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.10.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
@@ -116,4 +126,12 @@ dependencies {
 
     // Add the dependency for the Realtime Database library
     implementation 'com.google.firebase:firebase-database-ktx'
+
+    // FCM
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+
+//    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // kakao login
+    implementation "com.kakao.sdk:v2-user:2.13.0" // 카카오 로그인
 }

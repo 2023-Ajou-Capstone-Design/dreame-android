@@ -20,7 +20,8 @@ data class SharingDetailInfo(
     @SerializedName("Contents") val contents: String,
     @SerializedName("UploadTime") val uploadTime: String,
     @SerializedName("UserID") val userId: String,
-    @SerializedName("WritingID") val writingId: String
+    @SerializedName("WritingID") val writingId: String,
+    @SerializedName("AKA") val aka: String
 )
 
 data class SharingRegister(

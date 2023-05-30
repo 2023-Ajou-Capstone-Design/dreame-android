@@ -88,7 +88,8 @@ class HomeFragment: Fragment() {
             checkRestPointButton.setOnClickListener {
                 restPointInquireLayout.visibility = View.VISIBLE
 
-                viewModel.getRestPoint()
+//                viewModel.getRestPoint()
+                _binding?.cardPointTextView?.text = "사용가능 잔여포인트가 없습니다."
             }
 
             closeCheckRestPointLayout.setOnClickListener {
@@ -123,7 +124,7 @@ class HomeFragment: Fragment() {
     }
 
     private fun bindRestPoint(point: String) {
-        _binding?.cardPointTextView?.text = point
+        _binding?.cardPointTextView?.text = "사용가능 잔여포인트가 없습니다."
     }
 
     private fun updateCardNumberInfo() {

@@ -49,7 +49,7 @@ class ChatViewModel @Inject constructor(
 
     fun addMessage(isChatRoom: Boolean, messageContent: String) {
         viewModelScope.launch {
-            chatRepository.addMessage(
+            chatRepository.sendMessage(
                 otherUserId = _otherUserId.value.toString(),
                 isExistChatRoom = isChatRoom,
                 myUserId = getUserId(),
@@ -72,7 +72,7 @@ class ChatViewModel @Inject constructor(
 
     fun removeEventListenerFromMessages() {
         viewModelScope.launch {
-            chatRepository.removeEventListenerFromMessages(_chatRoomId.value.toString())
+            chatRepository.removeEventListenerFromMessages()
         }
     }
 

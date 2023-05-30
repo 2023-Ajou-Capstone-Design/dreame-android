@@ -46,16 +46,18 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun changeNickname(newNickName: String): Boolean {
-        var isSuccess = false
+//    private val _queriedChangingNicknameLivedata =
+//        MutableLiveData<UserRestPointUiState>(UserRestPointUiState.Uninitialized)
+//    val queriedChangingNicknameLivedata: LiveData<UserRestPointUiState> = _queriedChangingNicknameLivedata
+
+    fun changeNickname(newNickName: String) {
         viewModelScope.launch {
             preferenceManager.putDreameNickname(newNickName)
-            isSuccess = userRepository.changeNickname(
+            userRepository.changeNickname(
                 getUserId(),
                 newNickName
             )
         }
-        return !isSuccess
     }
 
     fun getUserType(): String {
