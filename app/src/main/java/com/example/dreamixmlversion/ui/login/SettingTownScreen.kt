@@ -123,7 +123,7 @@ class SettingTownScreen : LoginBaseFragment<FragmentSettingTownBinding>() {
             setOnClickListener {
                 _binding?.apply {
                     val town =
-                        "${firstDestinationTextView.text} ${secondDestinationTextView.text} ${thirdDestinationTextView.text} ${fourthDestinationTextView.text}"
+                        "${secondDestinationTextView.text} ${thirdDestinationTextView.text} ${fourthDestinationTextView.text}"
                     loginViewModel.setTownAddress(town)
                     findNavController().navigate(R.id.action_setting_town_to_register_nickname)
                 }

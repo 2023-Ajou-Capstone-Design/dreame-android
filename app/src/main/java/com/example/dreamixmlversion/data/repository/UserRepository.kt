@@ -10,4 +10,6 @@ interface UserRepository {
     ): Boolean
 
     suspend fun getProfileImage(userId: String): String
+
+    suspend fun updateNewTown(userId: String, address: String): String
 }

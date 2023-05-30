@@ -161,4 +161,10 @@ interface DreameApi {
     suspend fun inquireMySharing(
         @Query("UserID") userId: String
     ): Response<SharingListResponse>
+
+    @POST("MyPage/Town")
+    suspend fun updateTown(
+        @Query("UserID") userId: String,
+        @Query("Town") town: String
+    ): Response<String>
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dreamixmlversion.data.db.preference.PreferenceManager
 import com.example.dreamixmlversion.data.repository.LoginRepository
+import com.example.dreamixmlversion.data.repository.UserRepository
 import com.example.dreamixmlversion.ui.user.UserRestPointUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,7 +16,7 @@ import kotlin.math.log
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val loginRepository: LoginRepository,
-    private val preferenceManager: PreferenceManager,
+    private val preferenceManager: PreferenceManager
 ) : ViewModel() {
 
     private val _emailAddress = MutableLiveData<String>()

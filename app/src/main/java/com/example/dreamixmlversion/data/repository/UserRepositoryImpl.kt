@@ -21,4 +21,8 @@ class UserRepositoryImpl @Inject constructor(
         // dreameApi.getProfileImage(userId)
         return ""
     }
+
+    override suspend fun updateNewTown(userId: String, address: String): String {
+        return dreameApi.updateTown(userId, address).body().toString()
+    }
 }

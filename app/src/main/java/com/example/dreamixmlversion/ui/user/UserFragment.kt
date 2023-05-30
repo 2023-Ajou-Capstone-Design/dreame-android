@@ -1,5 +1,6 @@
 package com.example.dreamixmlversion.ui.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -117,7 +118,7 @@ class UserFragment : Fragment() {
 
     private fun initTownSettingButton() {
         _binding?.townSettingButton?.setOnClickListener {
-
+            startActivity(Intent(requireActivity(), SettingTownActivity::class.java))
         }
     }
 
